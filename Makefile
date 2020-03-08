@@ -4,7 +4,8 @@ OWNER?=dodasts
 
 PREFIX:= build/
 IMAGES:= centos7_grid \
-				htcondor/htcondor
+				htcondor/htcondor \
+				htcondor/cms
 
 .PHONY: init build push publish-doc
 
@@ -32,6 +33,7 @@ build-all:
 push/%: DARGS?=
 
 push/%:
+	docker tag $(OWNER)/$(notdir docker/$@) $(OWNER)/$(notdir docker/$@):$(VERSION)
 	docker push $(DARGS) $(OWNER)/$(notdir docker/$@):$(VERSION)
 
 push-all:

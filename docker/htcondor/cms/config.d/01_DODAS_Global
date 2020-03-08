@@ -1,0 +1,43 @@
+# Defaults to root@$(FULL_HOSTNAME)
+#CONDOR_ADMIN = < some valid email >
+## The condor ids may not be necessary
+#CONDOR_IDS = < uid.gid >
+
+CONDOR_HOST1=vocms0115.cern.ch
+CONDOR_HOST=$(CONDOR_HOST1)
+
+COLLECTOR_HOST1=$(CONDOR_HOST1):9618
+COLLECTOR_HOST=$(COLLECTOR_HOST1)
+
+# CCB to contact for all communication
+CCB_ADDRESS = $(CONDOR_HOST)
+
+# Collector to talk to
+COLLECTOR_NAME        =
+COLLECTOR_HOST        = $(CONDOR_HOST)
+MASTER.COLLECTOR_HOST = $(CONDOR_HOST)
+
+UID_DOMAIN = $(HOSTNAME)
+FILESYSTEM_DOMAIN = $(HOSTNAME)
+
+# How and when to send mail
+MAIL               = /bin/mail
+PUBLISH_OBITUARIES = False
+
+# Do not delegate any GSI credentials, usually this causes problems
+DELEGATE_JOB_GSI_CREDENTIALS = False
+
+# Up the max file descriptors so we do not get unusual errors
+#MAX_FILE_DESCRIPTORS = 131072
+
+# On updates, do a peaceful restart to preserve running jobs.
+MASTER_NEW_BINARY_RESTART = PEACEFUL
+
+## Disable VOMS checking
+USE_VOMS_ATTRIBUTES = False
+
+# LSB Attributes
+LSB_DISTRIBUTOR_ID = "ScientificFermi"
+LSB_RELEASE        = "6.5"
+LSB_DESCRIPTION    = "Scientific Linux Fermi release 6.5 (Ramsey)"
+

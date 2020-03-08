@@ -1,0 +1,8 @@
+GSI "^\/DC\=ch\/DC\=cern\/OU\=computers\/CN\=vocms068\.cern\.ch$" schedd_vocms068
+GSI "^\/DC\=ch\/DC\=cern\/OU\=Organic\ Units\/OU\=Users\/CN\=spiga\/CN\=606831\/CN\=Daniele\ Spiga$" daniele_dn
+GSI "^\/DC\=ch\/DC\=cern\/OU\=computers\/CN\=vocms0809\.cern\.ch$" collector_vocms0809
+GSI "^\/DC\=org\/DC\=opensciencegrid\/O\=Open\ Science\ Grid\/OU\=Services\/CN\=cmssrv215\.fnal\.gov$" collector_cmssrv215
+GSI "^\/DC\=ch\/DC\=cern\/OU\=computers\/CN\=vocms0816\.cern\.ch$" ccb_vocms0816
+FS root localuser
+GSI (.*) anonymous
+FS (.*) anonymous

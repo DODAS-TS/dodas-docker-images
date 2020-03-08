@@ -2,7 +2,7 @@ services:
     - docker
 
 before_install:
-    - VERSION=`cat version.txt` make build-all
+    - make build-all
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 deploy:

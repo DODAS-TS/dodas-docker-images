@@ -1,0 +1,26 @@
+# This file is AUTO-GENERATED and will be overwritten.
+GLIDEIN_Site = "T3_IT_Opportunistic" 
+GLIDEIN_In_Downtime = "True"
+GLIDEIN_Gatekeeper = "T3_IT_Opportunistic:8443"
+GLIDEIN_Supported_VOs = "CMS"
+START = ifthenelse(DESIRED_Sites isnt undefined, stringListMember(GLIDEIN_CMSSite,DESIRED_Sites), undefined)
+GLIDEIN_Req_MUPJ_gLExec = "False"
+GLIDEIN_REQUIRE_GLEXEC_USE = "False"
+GLIDEIN_MaxMemMBs = 28000
+GLIDEIN_Max_Walltime = 2600000
+GLIDEIN_Max_Idle = 2600000
+GLIDEIN_Retire_Time = 2427000
+GLIDEIN_REQUIRED_OS = "rhel6"
+GLIDEIN_SlotsLayout = "fixed"
+GLIDEIN_GridType = "ec2"
+GLIDEIN_REQUIRE_VOMS = "False"
+GLIDEIN_CMSSite = "T3_IT_Opportunistic" 
+GLIDEIN_SupportedAuthenticationMethod = "key_pair"
+GLIDEIN_Downtime_Comment = "On 2015-03-11 set to indefinite downtime suggested by Farrukh. --Vassil"
+GLIDEIN_Retire_Time_Spread = 7200
+GLIDEIN_TrustDomain = "HLT_Grizzly"
+GLIDEIN_GlobusRSL = ""
+STARTD_ATTRS = $(STARTD_ATTRS) GLIDEIN_Site GLIDEIN_In_Downtime GLIDEIN_Gatekeeper GLIDEIN_Supported_VOs GLIDEIN_Req_MUPJ_gLExec GLIDEIN_REQUIRE_GLEXEC_USE GLIDEIN_MaxMemMBs GLIDEIN_Max_Walltime GLIDEIN_Max_Idle GLIDEIN_Retire_Time GLIDEIN_REQUIRED_OS GLIDEIN_SlotsLayout GLIDEIN_GridType GLIDEIN_REQUIRE_VOMS GLIDEIN_CMSSite GLIDEIN_SupportedAuthenticationMethod GLIDEIN_Downtime_Comment GLIDEIN_Retire_Time_Spread GLIDEIN_TrustDomain GLIDEIN_GlobusRSL
+#GSI_DAEMON_NAME = "\/DC\=ch\/DC\=cern\/OU\=computers\/CN\=vocms0115\.cern\.ch" 
+STARTER_ALLOW_RUNAS_OWNER = False
+STARTER_DEBUG = D_ALL

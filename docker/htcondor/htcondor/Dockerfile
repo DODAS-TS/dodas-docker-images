@@ -1,15 +1,16 @@
-FROM dodasts/centos7_grid
+FROM dodasts/tts-cache:v0.1.3-k8s-6 as TTS
+
+FROM  dodasts/centos7_grid as BASE
 
 WORKDIR /etc/yum.repos.d
 
 RUN useradd -ms /bin/bash condor \
-    && wget http://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-development-rhel7.repo \
     && wget http://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo \
     && wget http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor \
     && rpm --import RPM-GPG-KEY-HTCondor \
     && yum --setopt=tsflags=nodocs -y update \
     && yum --setopt=tsflags=nodocs -y install \
-        condor-all \
+        condor-all-8.8.2-1.el7 \
         gcc \
         gcc-c++ \
         make \
@@ -21,6 +22,8 @@ RUN useradd -ms /bin/bash condor \
     && pip install --upgrade pip setuptools \
     && pip install j2cli paramiko psutil kazoo requests flask Flask-WTF htcondor \
     && systemctl disable condor
+
+FROM BASE as APP
 
 # Root home
 WORKDIR /root
@@ -81,5 +84,7 @@ RUN ln -s /opt/dodas/condor.sh /usr/local/sbin/dodas_condor \
 # CentOS uname characteristics
 RUN mv /bin/uname /bin/uname_old
 COPY ./bin/uname /bin/
+
+COPY --from=0 /usr/local/bin/tts-cache /usr/local/bin/tts-cache
 
 ENTRYPOINT ["/usr/local/sbin/dodas_condor"]

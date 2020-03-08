@@ -1,0 +1,32 @@
+# List of collectors
+GSI_DAEMON_NAME=$(GSI_DAEMON_NAME),/DC=ch/DC=cern/OU=computers/CN=vocms0815.cern.ch
+GSI_DAEMON_NAME=$(GSI_DAEMON_NAME),/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=cmssrv221.fnal.gov
+
+# Global pool CCBs
+GSI_DAEMON_NAME=$(GSI_DAEMON_NAME),/DC=ch/DC=cern/OU=computers/CN=vocms0806.cern.ch
+GSI_DAEMON_NAME=$(GSI_DAEMON_NAME),/DC=org/DC=opensciencegrid/O=Open Science Grid/OU=Services/CN=cmssrv258.fnal.gov
+
+# in case of HA setup, use:
+#COLLECTOR_HOST=cmsgwms-collector-global.cern.ch:COLLECTOR_PORT,cmssrv221.fnal.gov:COLLECTOR_PORT
+#CCB_ADDRESS=cmsgwms-ccb-global.cern.ch:CCB_PORT,cmssrv258.fnal.gov:CCB_PORT
+COLLECTOR_HOST=cmsgwms-collector-global.cern.ch:COLLECTOR_PORT
+COLLECTOR_HOST1=$(COLLECTOR_HOST)
+CCB_ADDRESS=cmsgwms-ccb-global.cern.ch:CCB_PORT
+
+MUST_MODIFY_REQUEST_EXPRS = False
+Requirements = START
+
+# Indicates that the startd can run any OS jobs
+GLIDEIN_REQUIRED_OS = "any"
+# Indicates that the startd has singularity
+HAS_Singularity=True
+# Indicates what the default singularity image should be (= CMS RHEL6 image)
+OSG_SINGULARITY_IMAGE_DEFAULT="/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el6:latest"
+# Indicates where to find the singularity binary
+OSG_SINGULARITY_PATH="/usr/bin/singularity"
+# Indicates the version of singularity
+OSG_SINGULARITY_VERSION="2.4.2-dist"
+# Tells the startd to advertise these attributes to the central manager
+STARTD_ATTRS = $(STARTD_ATTRS) GLIDEIN_REQUIRED_OS HAS_Singularity OSG_SINGULARITY_VERSION OSG_SINGULARITY_PATH OSG_SINGULARITY_IMAGE_DEFAULT
+
+USER_JOB_WRAPPER=/usr/local/libexec/singularity_wrapper.sh

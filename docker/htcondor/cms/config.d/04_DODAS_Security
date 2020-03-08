@@ -1,0 +1,36 @@
+USE_PROCESS_GROUPS = False
+
+DENY_WRITE         = anonymous@*
+DENY_ADMINISTRATOR = anonymous@*
+DENY_DAEMON        = anonymous@*
+DENY_NEGOTIATOR    = anonymous@*
+
+SEC_DEFAULT_AUTHENTICATION                = REQUIRED
+SEC_DEFAULT_AUTHENTICATION_METHODS        = GSI 
+SEC_DEFAULT_ENCRYPTION                    = OPTIONAL
+SEC_DEFAULT_INTEGRITY                     = REQUIRED
+SEC_DEFAULT_SESSION_DURATION              = 337623
+SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION  = True
+
+GSI_DELEGATION_KEYBITS    = 1024
+GSI_DAEMON_NAME = /DC=ch/DC=cern/OU=computers/CN=vocms0115.cern.ch
+# The CERN frontend details
+GSI_DAEMON_NAME=$(GSI_DAEMON_NAME),/DC=ch/DC=cern/OU=computers/CN=frontend02/vocms080.cern.ch
+GSI_DAEMON_NAME=$(GSI_DAEMON_NAME),/DC=ch/DC=cern/OU=computers/CN=cmspilot02/vocms080.cern.ch
+# FNAL frontend details (as HA)
+GSI_DAEMON_NAME=$(GSI_DAEMON_NAME),/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=cmsgwms-frontend.fnal.gov
+GSI_DAEMON_NAME=$(GSI_DAEMON_NAME),/DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=pilot/cmsgwms-frontend.fnal.gov
+GSI_DAEMON_TRUSTED_CA_DIR = /cvmfs/grid.cern.ch/etc/grid-security/certificates
+## HLT admins expressed interest in using a host cert baked into the VM image
+#GSI_DAEMON_CERT           = /etc/grid-security/certificates/hostcert.pem
+## Tier 0 admins wanted to use a proxy baked into the VM image
+GSI_DAEMON_PROXY          = /root/gwms_proxy
+
+CERTIFICATE_MAPFILE       = /etc/condor/certs/condor_mapfile
+
+# Extras  
+ALLOW_DAEMON = $(ALLOW_DAEMON), submit-side@matchsession/*.fnal.gov
+ALLOW_DAEMON = $(ALLOW_DAEMON), 172.17.0.2/24
+ALLOW_DAEMON = $(ALLOW_DAEMON), submit-side@matchsession/*.cern.ch
+
+USE_CCB = "True"
