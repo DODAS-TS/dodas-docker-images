@@ -9,7 +9,7 @@ IMAGES:= centos7_grid \
 
 .PHONY: init build push publish-doc
 
-all: env build
+all: build-all 
 
 help:
 	@echo "Available commands:\n"

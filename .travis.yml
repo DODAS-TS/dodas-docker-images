@@ -5,8 +5,5 @@ before_install:
     - make build-all
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-deploy:
-    provider: script
-    script:  VERSION=`cat version.txt` make push-all
-    on:
-        branch: master
+install:
+    - VERSION=`cat version.txt` make push-all
