@@ -6,4 +6,4 @@ before_install:
 
 script:
     - make build-all
-    - VERSION=`cat version.txt`  make publish-all
+    - VERSION=`cat version.txt`  make push-all
