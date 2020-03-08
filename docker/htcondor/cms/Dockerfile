@@ -1,4 +1,5 @@
-FROM dodasts/htcondor
+ARG BASE_CONTAINER=dodasts/htcondor
+FROM $BASE_CONTAINER
 
 COPY condorconfig/* /etc/condor/
 COPY config.d/* /etc/condor/config.d/

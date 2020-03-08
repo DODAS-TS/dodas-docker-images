@@ -1,6 +1,4 @@
 FROM centos:7
-LABEL maintainer="mirco.tracolli@pg.infn.it"
-LABEL Version=1.0
 
 # Reference for EL7 Worker Node
 # wn metapackage: https://twiki.cern.ch/twiki/bin/view/LCG/EL7WNMiddleware 

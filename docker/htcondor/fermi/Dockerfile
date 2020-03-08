@@ -1,4 +1,5 @@
-FROM dodasts/htcondor
+ARG BASE_CONTAINER=dodasts/htcondor
+FROM $BASE_CONTAINER
 
 ENV CONDABIN="${CONDAPFX}/bin/conda"
 ENV CONDAPFX="/cvmfs/fermi.local.repo/anaconda3"

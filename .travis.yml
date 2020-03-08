@@ -2,8 +2,8 @@ services:
     - docker
 
 before_install:
-    - make build-all
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-install:
-    - VERSION=`cat version.txt` make push-all
+script:
+    - make build-all
+    - VERSION=`cat version.txt`  make publish-all

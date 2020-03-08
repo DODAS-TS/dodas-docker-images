@@ -24,17 +24,14 @@ publish-doc:
 build/%: DARGS?=
 
 build/%:
-	echo $(PREFIX)
-	IMG=$(strip $(subst $(PREFIX), ,$@))
-	echo "docker build $(DARGS) --rm --force-rm -t $(OWNER)/$(notdir docker/$@):${VERSION} ./docker/$(strip $(subst $(PREFIX), ,$@))"
-	docker build $(DARGS) --rm --force-rm -t $(OWNER)/$(notdir docker/$@):${VERSION} ./docker/$(strip $(subst $(PREFIX), ,$@))
+	./scripts/travis-build.sh $(OWNER)/$(notdir docker/$@):${VERSION} docker/$(strip $(subst $(PREFIX), ,$@))
+
 
 build-all: $(foreach I,$(IMAGES),build/$(I) )
 
 push/%: DARGS?=
 
 push/%:
-	docker tag $(OWNER)/$(notdir docker/$@) $(OWNER)/$(notdir docker/$@):$(VERSION)
-	docker push $(DARGS) $(OWNER)/$(notdir docker/$@):$(VERSION)
+	./scripts/travis-publish.sh  $(OWNER)/$(notdir docker/$@) $(OWNER)/$(notdir docker/$@):$(VERSION)
 
 push-all:  $(foreach I,$(IMAGES),push/$(I) )
