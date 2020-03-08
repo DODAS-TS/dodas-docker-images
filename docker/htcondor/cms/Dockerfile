@@ -1,9 +1,9 @@
 FROM dodasts/htcondor
 
-COPY cms/condorconfig/* /etc/condor/
-COPY cms/config.d/* /etc/condor/config.d/
+COPY condorconfig/* /etc/condor/
+COPY config.d/* /etc/condor/config.d/
 
-COPY cms/dodas_bin/*  /usr/local/bin/
+COPY dodas_bin/*  /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/dodasexe_pre.sh \
     && chmod +x /usr/local/bin/dodasexe.sh \
