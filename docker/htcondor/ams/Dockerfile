@@ -1,0 +1,39 @@
+FROM dodasts/htcondor
+
+RUN yum --setopt=tsflags=nodocs -y install binutils \
+        boost-devel \
+        cmake \
+        curl \
+        cvs \
+        emacs \
+        freetype \
+        freetype-devel \
+        fuse \
+        gcc \
+        gcc-c++ \
+        gcc-gfortran \
+        git \
+        glibc-devel \
+        glibc-headers \
+        gsl-devel \
+        initscripts \
+        krb5-workstation \
+        libSM \
+        libX11-devel \
+        libXext \
+        libXext-devel \
+        libXft-devel \
+        libXpm \
+        libXpm-devel \
+        make \
+        man \
+        nano \
+        ncurses \
+        ncurses-devel \
+        openssl098e \
+        pam-krb5 \
+        screen \
+        subversion \
+        sudo \
+        vim \
+    && yum clean all

@@ -5,7 +5,9 @@ OWNER?=dodasts
 PREFIX:= build/
 IMAGES:= centos7_grid \
 				htcondor/htcondor \
-				htcondor/cms
+				htcondor/cms \
+				htcondor/ams \
+				htcondor/fermi
 
 .PHONY: init build push publish-doc
 
