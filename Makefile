@@ -5,6 +5,7 @@ OWNER?=dodasts
 PREFIX:= build/
 IMAGES:= centos7_grid \
 				cachingondemand/xrootd-escape-http \
+				cachingondemand/xrootd-escape-xrd \
 				htcondor/htcondor \
 				htcondor/cms \
 				htcondor/ams \
