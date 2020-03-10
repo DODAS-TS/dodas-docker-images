@@ -7,6 +7,7 @@ if [ ! -f /etc/grid-security/certificates/DODAS.pem ]; then
         ln -s /etc/grid-security/certificates/DODAS.pem /etc/grid-security/certificates/$i.0
         break
     done
+
 fi
 
 if [ ! -f /etc/grid-security/hostcert.pem ]; then

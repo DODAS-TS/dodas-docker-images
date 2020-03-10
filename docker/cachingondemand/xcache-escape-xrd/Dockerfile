@@ -4,6 +4,19 @@ FROM centos:7
 
 ENV XRD_VERSION=4.11.2 
 ENV XRD_HOST=localhost
+ENV REDIR_HOST=localhost
+ENV REDIR_CMSD_PORT=3113
+ENV CACHE_LOG_LEVEL=info
+ENV CACHE_XRD_PORT=1094
+ENV ORIGIN_HOST=myorigin.com
+ENV ORIGIN_XRD_PORT=1094
+ENV STREAMS=256
+ENV LOW_WM=0.85
+ENV HI_WM=0.95
+ENV CACHE_RAM_GB=6
+ENV BLOCK_SIZE=512k
+ENV N_PREFETCH=0
+ENV CACHE_PATH=/data
 
 RUN echo "LC_ALL=C" >> /etc/environment \ 
     && echo "LANGUAGE=C" >> /etc/environment \ 
@@ -60,4 +73,3 @@ COPY ca/DODAS.pem /etc/grid-security/certificates/DODAS.pem
 WORKDIR /xrd
 
 ENTRYPOINT ["/xrd/start.sh"]
-
