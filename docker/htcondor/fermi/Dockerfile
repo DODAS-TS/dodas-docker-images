@@ -1,8 +1,8 @@
 ARG BASE_CONTAINER=dodasts/htcondor
 FROM $BASE_CONTAINER
 
-ENV CONDABIN="${CONDAPFX}/bin/conda"
 ENV CONDAPFX="/cvmfs/fermi.local.repo/anaconda3"
+ENV CONDABIN="${CONDAPFX}/bin/conda"
 
 RUN yum install -y sqlite-devel \
   autoconf \

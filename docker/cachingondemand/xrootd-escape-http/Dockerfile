@@ -24,6 +24,18 @@ RUN yum install -y xrootd-server-$XRD_VERSION
 RUN yum -y install https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el7-release-latest.rpm 
 RUN yum install -y xrootd-scitokens scitokens-cpp xrootd-multiuser sudo
 
+RUN yum install -y xrootd-devel-$XRD_VERSION xrootd-server-devel-$XRD_VERSION scitokens-cpp-devel gcc-c++ rpm-build
+
+RUN git clone https://github.com/bbockelm/xrootd-scitokens /root/xrootd-scitokens
+
+WORKDIR /root/xrootd-scitokens
+
+RUN git checkout fix_apply_retval \
+       && mkdir -p /root/rpmbuild/SOURCES \
+       && git archive fix_apply_retval --prefix=xrootd-scitokens-1.1.0/ | gzip -7 > /root/rpmbuild/SOURCES/xrootd-scitokens-1.1.0.tar.gz
+RUN rpmbuild -bb rpm/xrootd-scitokens.spec \
+       && yum install -y /root/rpmbuild/RPMS/x86_64/xrootd-scitokens-1.1.0-1.el7.x86_64.rpm
+
 COPY config/* /etc/xrootd/
 
 RUN chown -R xrootd: /etc/xrootd/
@@ -32,9 +44,9 @@ COPY --from=0 /usr/local/bin/dodas-x509 /usr/local/bin/dodas-x509
 
 RUN chmod +x /usr/local/bin/dodas-x509
 
-RUN mkdir /data && chown -R xrootd: /data
+RUN mkdir -p /data && chown -R xrootd: /data
 
-RUN mkdir /xrd /var/run/xrootd && chown -R xrootd: /xrd /var/run/xrootd
+RUN mkdir -p /xrd /var/run/xrootd && chown -R xrootd: /xrd /var/run/xrootd
 
 COPY scripts/* /xrd/
 

@@ -47,9 +47,9 @@ COPY --from=0 /usr/local/bin/dodas-x509 /usr/local/bin/dodas-x509
 
 RUN chmod +x /usr/local/bin/dodas-x509
 
-RUN mkdir /data && chown -R xrootd: /data
+RUN mkdir -p /data && chown -R xrootd: /data
 
-RUN mkdir /xrd /var/run/xrootd && chown -R xrootd: /xrd /var/run/xrootd
+RUN mkdir -p /xrd /var/run/xrootd && chown -R xrootd: /xrd /var/run/xrootd
 
 COPY scripts/* /xrd/
 
