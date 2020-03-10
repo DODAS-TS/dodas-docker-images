@@ -23,5 +23,7 @@ services:
     - origin
   origin:
     build: ../xrootd-escape-xrd
+    environment:
+      XRD_HOST: origin
     expose:
         - 1094
