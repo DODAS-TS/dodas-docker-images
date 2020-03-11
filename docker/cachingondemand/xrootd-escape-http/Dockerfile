@@ -52,6 +52,8 @@ COPY scripts/* /xrd/
 
 RUN chmod -R +x /xrd/
 
+COPY ca/DODAS.pem /etc/grid-security/certificates/DODAS.pem
+
 WORKDIR /xrd
 
 ENTRYPOINT ["/xrd/start.sh"]

@@ -3,7 +3,7 @@ services:
   xcache:
     build: .
     expose:
-    - "1094"
+    - 1094
     environment:
       XRD_HOST: xcache
       ORIGIN_HOST: origin
