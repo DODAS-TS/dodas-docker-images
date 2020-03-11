@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  xcache:
+    build: .
+    expose:
+    - 8443
+    environment:
+      XRD_HOST: xcache
+      ORIGIN_HOST: origin
+      ORIGIN_XRD_PORT: 8443
+      CACHE_RAM_GB: 4
+    #     REDIR_HOST: localhost
+    #     REDIR_CMSD_PORT: 3113
+    #     CACHE_LOG_LEVEL: info
+    #     CACHE_HTTP_PORT: 8443
+    #     STREAMS: 256
+    #     LOW_WM: 0.85
+    #     HI_WM: 0.95
+    #     CACHE_PATH: /data
+    #     BLOCK_SIZE: 512k
+    #     N_PREFETCH: 0
+    links:
+    - origin
+  origin:
+    build: ../xrootd-escape-http
+    environment:
+      XRD_HOST: origin
+    expose:
+        - 8443
