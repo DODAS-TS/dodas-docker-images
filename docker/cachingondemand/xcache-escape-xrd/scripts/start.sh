@@ -2,7 +2,7 @@
 
 if [ ! -f /etc/grid-security/certificates/DODAS.pem ]; then
 
-    /usr/local/bin/dodas-x509 --hostname $XRD_HOST --gen-certs --ca-path /etc/grid-security/certificates --cert-path /etc/grid-security --ca-name DODAS
+    /usr/local/bin/dodas-x509 --hostname $XRD_HOST --generate-cert --ca-path /etc/grid-security/certificates --cert-path /etc/grid-security --ca-name DODAS
     for i in `openssl x509 -in /etc/grid-security/certificates/DODAS.pem -subject_hash`; do
         ln -s /etc/grid-security/certificates/DODAS.pem /etc/grid-security/certificates/$i.0
         break

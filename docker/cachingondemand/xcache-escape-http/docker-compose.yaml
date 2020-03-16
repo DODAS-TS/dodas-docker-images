@@ -6,7 +6,7 @@ services:
     - 8443
     environment:
       XRD_HOST: xcache
-      ORIGIN_HOST: origin
+      ORIGIN_HOST: https://origin
       ORIGIN_XRD_PORT: 8443
       CACHE_RAM_GB: 4
     #     REDIR_HOST: localhost
