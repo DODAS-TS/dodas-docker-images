@@ -1,6 +1,6 @@
 #! /bin/bash
 
-if [ ! -f /etc/grid-security/certificates/DODAS.pem ]; then
+if [ -f /etc/grid-security/certificates/DODAS.pem ]; then
 
     echo "Using predefined CA"
     /usr/local/bin/dodas-x509 --hostname $XRD_HOST --generate-cert --ca-path /etc/grid-security/certificates --cert-path /etc/grid-security --ca-name DODAS
@@ -8,7 +8,7 @@ if [ ! -f /etc/grid-security/certificates/DODAS.pem ]; then
         ln -s /etc/grid-security/certificates/DODAS.pem /etc/grid-security/certificates/$i.0
         chown -R xrootd: /etc/grid-security/hostcert.pem /etc/grid-security/hostcert.key
         break
-    donee
+    done
 
 fi
 

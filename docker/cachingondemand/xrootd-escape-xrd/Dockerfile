@@ -56,6 +56,7 @@ COPY scripts/* /xrd/
 RUN chmod -R +x /xrd/
 
 COPY ca/DODAS.pem /etc/grid-security/certificates/DODAS.pem
+COPY ca/DODAS.key /etc/grid-security/certificates/DODAS.key
 
 WORKDIR /xrd
 
