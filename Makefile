@@ -5,11 +5,14 @@ OWNER?=dodasts
 PREFIX:= build/
 IMAGES:= centos7_grid \
 				cachingondemand/xrootd-escape-http \
+				cachingondemand/xcache-escape-http \
 				cachingondemand/xrootd-escape-xrd \
+				cachingondemand/xcache-escape-xrd \
 				htcondor/htcondor \
 				htcondor/cms \
 				htcondor/ams \
-				htcondor/fermi
+				htcondor/fermi \
+				spark
 
 .PHONY: init build push publish-doc
 

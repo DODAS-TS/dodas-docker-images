@@ -18,8 +18,8 @@
 FROM openjdk:8-alpine
 
 ARG spark_jars=jars
-ARG img_path=kubernetes/dockerfiles
-ARG k8s_tests=kubernetes/tests
+ARG img_path=resource-managers/kubernetes/dockerfiles
+ARG k8s_tests=resource-managers/kubernetes/tests
 
 # Before building the docker image, first build and make a Spark distribution following
 # the instructions in http://spark.apache.org/docs/latest/building-spark.html.
@@ -40,20 +40,20 @@ RUN set -ex && \
     echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     chgrp root /etc/passwd && chmod ug+rw /etc/passwd
 
-COPY ${spark_jars} /opt/spark/jars
-COPY bin /opt/spark/bin
-COPY sbin /opt/spark/sbin
-COPY ${img_path}/spark/entrypoint.sh /opt/
-COPY examples /opt/spark/examples
-COPY ${k8s_tests} /opt/spark/tests
-COPY data /opt/spark/data
+COPY spark_src/${spark_jars} /opt/spark/jars
+COPY spark_src/bin /opt/spark/bin
+COPY spark_src/sbin /opt/spark/sbin
+COPY entrypoint.sh /opt/
+COPY spark_src/examples /opt/spark/examples
+#COPY spark_src/${k8s_tests} /opt/spark/tests
+COPY spark_src/data /opt/spark/data
+
+COPY minio_jars/* /opt/spark/jars/
 
 ENV SPARK_HOME /opt/spark
 
 WORKDIR /opt/spark/work-dir
 
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
-
-RUN rm $SPARK_HOME/jars/kubernetes-client-4.1.2.jar
 
 ADD https://repo1.maven.org/maven2/io/fabric8/kubernetes-client/4.4.2/kubernetes-client-4.4.2.jar $SPARK_HOME/jars
