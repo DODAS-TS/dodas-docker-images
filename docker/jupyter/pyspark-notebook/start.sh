@@ -2,6 +2,8 @@
 # Copyright (c) Jupyter Development Team.
 # Distributed under the terms of the Modified BSD License.
 
+goofys  -f --endpoint http://localhost:9000 test /home/jovyan/work
+
 set -e
 
 # Exec the specified command or fall back on bash
