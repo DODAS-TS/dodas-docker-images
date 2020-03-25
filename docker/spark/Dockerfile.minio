@@ -1,5 +1,0 @@
-FROM dodasts/spark
-
-COPY minio_jars/* /opt/spark/jars/
-
-
