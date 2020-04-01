@@ -24,7 +24,7 @@ GSI_DAEMON_TRUSTED_CA_DIR = /cvmfs/grid.cern.ch/etc/grid-security/certificates
 ## HLT admins expressed interest in using a host cert baked into the VM image
 #GSI_DAEMON_CERT           = /etc/grid-security/certificates/hostcert.pem
 ## Tier 0 admins wanted to use a proxy baked into the VM image
-GSI_DAEMON_PROXY          = /root/gwms_proxy
+GSI_DAEMON_PROXY          = /root/proxy/gwms_proxy
 
 CERTIFICATE_MAPFILE       = /etc/condor/certs/condor_mapfile
 

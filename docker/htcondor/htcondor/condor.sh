@@ -26,6 +26,15 @@ yum -y install ca_DODAS-TTS
 export X509_USER_PROXY=/root/proxy/gwms_proxy
 export X509_CERT_DIR=/etc/grid-security/certificates
 
+wget https://github.com/DODAS-TS/dodas-x509/releases/download/v0.0.1/dodas-x509
+mv dodas-x509 /usr/local/bin/dodas-x509
+chmod +x /usr/local/bin/dodas-x509
+
+dodas-x509 --ca-name DODAS --ca-path /etc/pki/tls/certs/ --cert-path /etc/pki/tls/certs/ --hostname ${NETWORK_INTERFACE}.xip.io
+mv /etc/pki/tls/certs/hostcert.key  /etc/pki/tls/private/
+
+chown -R condor:condor /var/lib/condor/spool
+
 until chmod 600 /root/proxy/gwms_proxy && voms-proxy-info --file /root/proxy/gwms_proxy
 do
     echo "Proxy not available, retry in 60s"
@@ -36,6 +45,13 @@ cat > /etc/condor/condormapfile << EOF
 GSI (.*) GSS_ASSIST_GRIDMAP
 GSI (.*) anonymous
 EOF
+
+if [ -z "$NETWORK_HOSTNAME" ];
+    then
+        export NETWORK_HOSTNAME=$(hostname)
+    else
+        echo "==> NETWORK_HOSTNAME with ENV"
+fi
 
 if [ "$1" == "master" ];
 then
@@ -154,6 +170,59 @@ then
     else
         echo "==> LOWPORT with ENV"
     fi
+    if [ -z "$DODAS_CLIENT_ID" ];
+    then
+        echo "NO DODAS CLIENT ID SPECIFIED"
+        exit 1
+    else
+        echo "==>  DODAS_CLIENT_ID with ENV"
+    fi
+    if [ -z "$DODAS_CLIENT_SECRET_FILE" ];
+    then
+        echo "NO DODAS CLIENT SECRET FILE SPECIFIED"
+        exit 1
+    else
+        if [ -z "$DODAS_CLIENT_SECRET" ];
+        then
+            echo "NO DODAS CLIENT SECRET SPECIFIED"
+            exit 1
+        else
+            echo "==>  DODAS_CLIENT_SECRET with ENV"
+            CREATE_DIR=$(dirname "$DODAS_CLIENT_SECRET_FILE")
+            mkdir -p $CREATE_DIR
+            echo $DODAS_CLIENT_SECRET > $DODAS_CLIENT_SECRET_FILE
+            chmod 600 $DODAS_CLIENT_SECRET_FILE
+        fi
+    fi
+    if [ -z "$DODAS_RETURN_URL_SUFFIX" ];
+    then
+        echo "NO DODAS_RETURN_URL_SUFFIX SPECIFIED"
+        exit 1
+    else
+        echo "==>  DODAS_RETURN_URL_SUFFIX with ENV"
+    fi
+    if [ -z "$DODAS_AUTHORIZATION_URL" ];
+    then
+        echo "NO DODAS_AUTHORIZATION_URL SPECIFIED"
+        exit 1
+    else
+        echo "==>  DODAS_AUTHORIZATION_URL with ENV"
+    fi
+    if [ -z "$DODAS_TOKEN_URL" ];
+    then
+        echo "NO DODAS_TOKEN_URL SPECIFIED"
+        exit 1
+    else
+        echo "==>  DODAS_TOKEN_URL with ENV"
+    fi
+    if [ -z "$DODAS_USER_URL" ];
+    then
+        echo "NO DODAS_USER_URL SPECIFIED"
+        exit 1
+    else
+        echo "==>  DODAS_USER_URL with ENV"
+    fi
+
     export CONDOR_DAEMON_LIST="MASTER, SCHEDD"
     export NETWORK_INTERFACE_STRING="NETWORK_INTERFACE = $NETWORK_INTERFACE"
     j2 /opt/dodas/htc_config/condor_config_schedd.template > /etc/condor/condor_config
@@ -183,6 +252,7 @@ EOF
     dodas_cache zookeeper SCHEDD_HOST "$NETWORK_INTERFACE"
     echo ""
     echo "==> Start condor"
+    httpd
     condor_master
     echo "==> Start the webUI on port 48080"
     cd /opt/dodas/htc_config/webapp

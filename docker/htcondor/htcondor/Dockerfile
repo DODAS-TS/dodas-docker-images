@@ -1,4 +1,4 @@
-FROM dodasts/tts-cache:v0.1.3-k8s-6 as TTS
+FROM dodasts/tts-cache:v0.1.3-k8s-12 as TTS
 FROM  dodasts/centos7_grid as BASE
 
 WORKDIR /etc/yum.repos.d
@@ -85,5 +85,22 @@ RUN mv /bin/uname /bin/uname_old
 COPY ./bin/uname /bin/
 
 COPY --from=0 /usr/local/bin/tts-cache /usr/local/bin/tts-cache
+
+ENTRYPOINT ["/usr/local/sbin/dodas_condor"]
+
+FROM APP AS TOKEN
+
+RUN yum -y install epel-release httpd mod_wsgi mod_ssl net-tools vim python2-pip git
+RUN pip install --upgrade pip
+RUN pip install git+https://github.com/htcondor/scitokens-credmon
+
+RUN mkdir -p /var/lib/condor/credentials && \
+    chgrp condor /var/lib/condor/credentials && \
+    chmod 2770 /var/lib/condor/credentials
+
+COPY httpd/ssl.conf /etc/httpd/conf.d/ssl.conf
+RUN mkdir -p  /var/www/wsgi-scripts/scitokens-credmon/
+COPY httpd/scitokens-credmon.wsgi /var/www/wsgi-scripts/scitokens-credmon/scitokens-credmon.wsgi
+COPY httpd/scitokens_credmon.conf /etc/httpd/conf.d/scitokens_credmon.conf
 
 ENTRYPOINT ["/usr/local/sbin/dodas_condor"]
