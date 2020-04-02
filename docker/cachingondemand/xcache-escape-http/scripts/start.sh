@@ -24,6 +24,6 @@ if [ ! -f /etc/grid-security/hostcert.pem ]; then
     done
 fi
 
-sudo -E -u xrootd /usr/bin/xrootd -k 3 -l /var/log/xrootd/xrootd.log -c /etc/xrootd/xrootd-http.cfg -n http &
+sudo -E -u xrootd /usr/bin/xrootd -l /var/log/xrootd/xrootd.log -c /etc/xrootd/xrootd-http.cfg -n http &
 
 sleep infinity

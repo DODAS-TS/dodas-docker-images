@@ -24,6 +24,6 @@ if [ ! -f /etc/grid-security/hostcert.pem ]; then
     chown -R xrootd: /etc/grid-security/hostcert.pem /etc/grid-security/hostcert.key
 fi
 
-sudo -E -u xrootd /usr/bin/xrootd -k 3 -l /var/log/xrootd/xrootd.log -c /etc/xrootd/xrootd-escape.cfg -n escape &
+sudo -E -u xrootd /usr/bin/xrootd -l /var/log/xrootd/xrootd.log -c /etc/xrootd/xrootd-escape.cfg -n escape &
 
 sleep infinity
