@@ -51,7 +51,7 @@ RUN rpmbuild -bb rpm/xrootd-scitokens.spec \
 
 COPY config/* /etc/xrootd/
 
-COPY  config/client.plugins.d/* /etc/xrootd/client.plugins.d/*
+COPY  config/client.plugins.d/* /etc/xrootd/client.plugins.d/
 
 RUN chown -R xrootd: /etc/xrootd/
 
