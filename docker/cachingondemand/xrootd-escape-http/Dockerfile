@@ -26,15 +26,15 @@ RUN yum install -y xrootd-scitokens scitokens-cpp xrootd-multiuser sudo
 
 RUN yum install -y xrootd-devel-$XRD_VERSION xrootd-server-devel-$XRD_VERSION scitokens-cpp-devel gcc-c++ rpm-build
 
-RUN git clone https://github.com/bbockelm/xrootd-scitokens /root/xrootd-scitokens
+#RUN git clone https://github.com/bbockelm/xrootd-scitokens /root/xrootd-scitokens
 
 WORKDIR /root/xrootd-scitokens
 
-RUN git checkout fix_apply_retval \
-       && mkdir -p /root/rpmbuild/SOURCES \
-       && git archive fix_apply_retval --prefix=xrootd-scitokens-1.1.0/ | gzip -7 > /root/rpmbuild/SOURCES/xrootd-scitokens-1.1.0.tar.gz
-RUN rpmbuild -bb rpm/xrootd-scitokens.spec \
-       && yum install -y /root/rpmbuild/RPMS/x86_64/xrootd-scitokens-1.1.0-1.el7.x86_64.rpm
+#RUN git checkout fix_apply_retval \
+#       && mkdir -p /root/rpmbuild/SOURCES \
+#       && git archive fix_apply_retval --prefix=xrootd-scitokens-1.1.0/ | gzip -7 > /root/rpmbuild/SOURCES/xrootd-scitokens-1.1.0.tar.gz
+#RUN rpmbuild -bb rpm/xrootd-scitokens.spec \
+#       && yum install -y /root/rpmbuild/RPMS/x86_64/xrootd-scitokens-1.1.0-1.el7.x86_64.rpm
 
 COPY config/* /etc/xrootd/
 
