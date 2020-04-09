@@ -51,6 +51,8 @@ RUN rpmbuild -bb rpm/xrootd-scitokens.spec \
 
 COPY config/* /etc/xrootd/
 
+COPY  config/client.plugins.d/* /etc/xrootd/client.plugins.d/*
+
 RUN chown -R xrootd: /etc/xrootd/
 
 COPY --from=0 /usr/local/bin/dodas-x509 /usr/local/bin/dodas-x509
@@ -67,6 +69,10 @@ RUN chmod -R +x /xrd/
 
 COPY ca/DODAS.pem /etc/grid-security/certificates/DODAS.pem
 COPY ca/DODAS.key /etc/grid-security/certificates/DODAS.key
+
+COPY ca/DODAS.pem /etc/pki/ca-trust/source/anchors/DODAS.pem
+
+RUN update-ca-trust extract
 
 WORKDIR /xrd
 
