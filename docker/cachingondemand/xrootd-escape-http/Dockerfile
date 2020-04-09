@@ -2,7 +2,7 @@ FROM dodasts/dodas-x509 as GETCERTS
 
 FROM centos:7
 
-ENV XRD_VERSION=4.11.3
+ENV XRD_VERSION=4.11.2
 ENV XRD_HOST=localhost
 
 RUN echo "LC_ALL=C" >> /etc/environment \ 
@@ -19,22 +19,22 @@ RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \
              voms-clients-cpp voms \ 
     && yum clean all 
 
-RUN yum install -y xrootd-server-$XRD_VERSION  
-
 RUN yum -y install https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el7-release-latest.rpm 
+RUN yum install -y xrootd-server-$XRD_VERSION  
 RUN yum install -y xrootd-scitokens scitokens-cpp xrootd-multiuser sudo
 
 RUN yum install -y xrootd-devel-$XRD_VERSION xrootd-server-devel-$XRD_VERSION scitokens-cpp-devel gcc-c++ rpm-build
 
-#RUN git clone https://github.com/bbockelm/xrootd-scitokens /root/xrootd-scitokens
+RUN git clone https://github.com/bbockelm/xrootd-scitokens /root/xrootd-scitokens
 
 WORKDIR /root/xrootd-scitokens
 
-#RUN git checkout fix_apply_retval \
-#       && mkdir -p /root/rpmbuild/SOURCES \
-#       && git archive fix_apply_retval --prefix=xrootd-scitokens-1.1.0/ | gzip -7 > /root/rpmbuild/SOURCES/xrootd-scitokens-1.1.0.tar.gz
-#RUN rpmbuild -bb rpm/xrootd-scitokens.spec \
-#       && yum install -y /root/rpmbuild/RPMS/x86_64/xrootd-scitokens-1.1.0-1.el7.x86_64.rpm
+RUN git checkout fix_apply_retval \
+       && mkdir -p /root/rpmbuild/SOURCES \
+       && git archive fix_apply_retval --prefix=xrootd-scitokens-1.1.0/ | gzip -7 > /root/rpmbuild/SOURCES/xrootd-scitokens-1.1.0.tar.gz
+RUN yum remove -y xrootd-scitokens
+RUN rpmbuild -bb rpm/xrootd-scitokens.spec \
+       && yum install -y /root/rpmbuild/RPMS/x86_64/xrootd-scitokens-1.1.0-1.el7.x86_64.rpm
 
 COPY config/* /etc/xrootd/
 
