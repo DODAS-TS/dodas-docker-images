@@ -2,7 +2,7 @@ FROM dodasts/dodas-x509:test as GETCERTS
 
 FROM centos:7
 
-ENV XRD_VERSION=4.11.2 
+ENV XRD_VERSION=4.11.3 
 ENV XRD_HOST=localhost
 
 RUN echo "LC_ALL=C" >> /etc/environment \ 
