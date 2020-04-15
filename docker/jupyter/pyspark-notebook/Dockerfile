@@ -8,22 +8,22 @@ LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 USER root
 
 # Spark dependencies
-ENV APACHE_SPARK_VERSION 2.4.5
+ENV APACHE_SPARK_VERSION 2.4.4
 ENV HADOOP_VERSION 2.7
 
 RUN apt-get -y update && \
     apt-get install --no-install-recommends -y openjdk-8-jre-headless ca-certificates-java && \
     rm -rf /var/lib/apt/lists/*
 
-RUN cd /tmp && \
-       wget -q https://mirrors.ukfast.co.uk/sites/ftp.apache.org/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz  && \
-       tar xzf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -C /usr/local --owner root --group root --no-same-owner && \
-       rm spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
-#RUN echo "test" && wget https://github.com/DODAS-TS/dodas-docker-images/archive/master.zip \
-#       && unzip master
+#RUN cd /tmp && \
+#       wget -q https://mirrors.ukfast.co.uk/sites/ftp.apache.org/spark/spark-${APACHE_SPARK_VERSION}/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz  && \
+#       tar xzf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -C /usr/local --owner root --group root --no-same-owner && \
+#       rm spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
+RUN echo "test" && wget https://github.com/DODAS-TS/dodas-docker-images/archive/master.zip \
+       && unzip master
 
-#RUN cp -r dodas-docker-images-master/docker/spark/spark_src /usr/local/spark \
-#       && rm -fr dodas-docker-images-master
+RUN cp -r dodas-docker-images-master/docker/spark/spark_src /usr/local/spark \
+       && rm -fr dodas-docker-images-master
 #    tar xzf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -C /usr/local --owner root --group root --no-same-owner && \
 #    rm spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
 
