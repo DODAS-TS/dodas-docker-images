@@ -256,7 +256,7 @@ EOF
     condor_master
     echo "==> Start the webUI on port 48080"
     cd /opt/dodas/htc_config/webapp
-    exec python form.py 
+    exec python form.py
 elif [ "$1" == "flock" ];
 then
     echo "==> Compile configuration file for flock cluster node with env vars"

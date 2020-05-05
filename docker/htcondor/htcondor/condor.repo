@@ -1,0 +1,6 @@
+[htcondor-dev]
+name=HTCondor Testing RPM Repository for Redhat Enterprise Linux 7
+baseurl=https://research.cs.wisc.edu/htcondor/yum/infn/rhel7/
+enabled=1
+gpgcheck=1
+priority=90

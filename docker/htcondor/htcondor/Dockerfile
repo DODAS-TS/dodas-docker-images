@@ -4,23 +4,20 @@ FROM  dodasts/centos7_grid as BASE
 WORKDIR /etc/yum.repos.d
 
 RUN useradd -ms /bin/bash condor \
-    && wget http://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo \
+    && wget https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-testing-rhel7.repo \
     && wget http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor \
     && rpm --import RPM-GPG-KEY-HTCondor \
     && yum --setopt=tsflags=nodocs -y update \
     && yum --setopt=tsflags=nodocs -y install \
-        condor-all-8.8.2-1.el7 \
         gcc \
-        gcc-c++ \
-        make \
-        openssh-clients \
-        openssh-server \
+        #gcc-c++ \
+        #make \
+        #openssh-clients \
+        #openssh-server \
         python-devel \
         python-pip \
-    && yum clean all \
-    && pip install --upgrade pip setuptools \
-    && pip install j2cli paramiko psutil kazoo requests flask Flask-WTF htcondor \
-    && systemctl disable condor
+    && yum clean all 
+
 
 FROM BASE as APP
 
@@ -86,13 +83,27 @@ COPY ./bin/uname /bin/
 
 COPY --from=0 /usr/local/bin/tts-cache /usr/local/bin/tts-cache
 
+RUN yum -y install epel-release httpd mod_wsgi mod_ssl net-tools vim python2-pip git
+#RUN yum -y install https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el7-release-latest.rpm 
+COPY condor.repo /etc/yum.repos.d/condor.repo
+
+RUN yum update -y && yum install -y condor-all &&  systemctl disable condor
+#RUN yum install -y https://research.cs.wisc.edu/htcondor/yum/infn/rhel7/condor-all-8.9.7-0.502311.el7.x86_64.rpm
+# || :
+RUN yum install -y https://github.com/scitokens/scitokens/releases/download/v1.2.0/python2-scitokens-1.2.0-1.el7.noarch.rpm
+RUN yum install -y https://research.cs.wisc.edu/htcondor/yum/infn/rhel7/python2-scitokens-credmon-0.6-0.2.el7.noarch.rpm
+
+#RUN pip install --upgrade pip
+RUN  pip install --upgrade pip setuptools \
+    && pip install j2cli paramiko psutil kazoo requests flask Flask-WTF wtforms
+#RUN pip install git+https://github.com/htcondor/scitokens-credmon
+
+RUN pip install cffi==1.13.0 urltools
+
 ENTRYPOINT ["/usr/local/sbin/dodas_condor"]
 
 FROM APP AS TOKEN
 
-RUN yum -y install epel-release httpd mod_wsgi mod_ssl net-tools vim python2-pip git
-RUN pip install --upgrade pip
-RUN pip install git+https://github.com/htcondor/scitokens-credmon
 
 RUN mkdir -p /var/lib/condor/credentials && \
     chgrp condor /var/lib/condor/credentials && \
@@ -102,5 +113,24 @@ COPY httpd/ssl.conf /etc/httpd/conf.d/ssl.conf
 RUN mkdir -p  /var/www/wsgi-scripts/scitokens-credmon/
 COPY httpd/scitokens-credmon.wsgi /var/www/wsgi-scripts/scitokens-credmon/scitokens-credmon.wsgi
 COPY httpd/scitokens_credmon.conf /etc/httpd/conf.d/scitokens_credmon.conf
+
+RUN  systemctl disable condor
+
+RUN wget https://research.cs.wisc.edu/htcondor/yum/infn/rhel7/ZKM-CUSTOM-00.tar.gz
+
+RUN tar -xzvf ZKM-CUSTOM-00.tar.gz
+
+RUN cp -r release_dir/bin/* /bin/
+
+RUN cp -r release_dir/sbin/* /sbin/
+
+#RUN mkdir /etc/init.d/network
+
+RUN cp -r release_dir/etc/init.d/condor /etc/init.d/condor 
+
+RUN cp -r release_dir/lib/* /lib/
+
+RUN cp -r release_dir/lib64/* /lib64/
+
 
 ENTRYPOINT ["/usr/local/sbin/dodas_condor"]
