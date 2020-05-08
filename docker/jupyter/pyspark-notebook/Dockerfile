@@ -8,36 +8,11 @@ LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 USER root
 
 # Spark dependencies
-ENV APACHE_SPARK_VERSION 2.4.4
+ENV APACHE_SPARK_VERSION 2.4.5
 ENV HADOOP_VERSION 2.7
 
 RUN apt-get -y update && \
     apt-get install --no-install-recommends -y openjdk-8-jre-headless ca-certificates-java && \
-    rm -rf /var/lib/apt/lists/*
-
-#RUN cd /tmp && \
-#       wget -q https://mirrors.ukfast.co.uk/sites/ftp.apache.org/spark/spark-${APACHE_SPARK_VERSION}/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz  && \
-#       tar xzf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -C /usr/local --owner root --group root --no-same-owner && \
-#       rm spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
-RUN echo "test" && wget https://github.com/DODAS-TS/dodas-docker-images/archive/master.zip \
-       && unzip master
-
-RUN cp -r dodas-docker-images-master/docker/spark/spark_src /usr/local/spark \
-       && rm -fr dodas-docker-images-master
-#    tar xzf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -C /usr/local --owner root --group root --no-same-owner && \
-#    rm spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
-
-# Mesos dependencies
-# Install from the Xenial Mesosphere repository since there does not (yet)
-# exist a Bionic repository and the dependencies seem to be compatible for now.
-COPY mesos.key /tmp/
-RUN apt-get -y update && \
-    apt-get install --no-install-recommends -y gnupg && \
-    apt-key add /tmp/mesos.key && \
-    echo "deb http://repos.mesosphere.io/ubuntu xenial main" > /etc/apt/sources.list.d/mesosphere.list && \
-    apt-get -y update && \
-    apt-get --no-install-recommends -y install mesos=1.2\* && \
-    apt-get purge --auto-remove -y gnupg && \
     rm -rf /var/lib/apt/lists/*
 
 # Spark and Mesos config
@@ -54,15 +29,23 @@ RUN conda install --quiet -y 'pyarrow' && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
-#ARG BASE_CONTAINER=jupyter/pyspark-notebook
-#FROM $BASE_CONTAINER
-
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 
 USER root
 
+RUN wget https://mirror.nohup.it/apache/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz
+
+RUN mkdir spark_source && cd spark_source && tar -xzvf ../spark-2.4.5-bin-hadoop2.7.tgz && rm -fr ../spark-2.4.5-bin-hadoop2.7.tgz
+
+RUN mkdir /usr/local/spark && mv spark_source/spark-2.4.5-bin-hadoop2.7/* /usr/local/spark/
+
+RUN sed -ie "s/\/python\/pyspark\/shell.py/\/python\/lib\/pyspark\/shell.py/" /usr/local/spark/bin/pyspark
+
+RUN cd /usr/local/spark/python/lib && unzip -o /usr/local/spark/python/lib/pyspark.zip
+
 RUN cd /usr/local && ln -s spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark
 
+COPY minio_jars/* /usr/local/spark/jars/
 
 # RSpark config
 #ENV R_LIBS_USER $SPARK_HOME/R/lib
@@ -113,23 +96,20 @@ COPY start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/start.sh
 COPY spark-defaults.conf /usr/local/spark/conf/spark-defaults.conf
 
+RUN pip install jupyterlab pyspark
+
+#RUN wget https://deb.nodesource.com/setup_14.x  -O setup_monitor
+#RUN . ./setup_monitor
+
+#RUN apt-get install -y nodejs
+
+#RUN jupyter labextension install jupyterlab_sparkmonitor
+
+#RUN pip install jupyterlab-sparkmonitor
+
+#RUN jupyter serverextension enable --py sparkmonitor
+
 WORKDIR /tmp
-#ENV SPARK_VER=${SPARK_VER:-"2.4.4"}
-#ENV INTEL_SPARK_VER=${INTEL_SPARK_VER:-"2.3.1"}
-#ENV INTEL_SCALA_VER=${INTEL_SCALA_VER:-"2.11.8"}
-#ENV HADOOP_VER=${HADOOP_VER:-"2.7"}
-#ENV BIGDL_VER=${BIGDL_VER:-"0.7.1"}
-#ENV BIGDL_URI=${BIGDL_URI:-"https://repo1.maven.org/maven2/com/intel/analytics/bigdl/dist-spark-${INTEL_SPARK_VER}-scala-${INTEL_SCALA_VER}-all/${BIGDL_VER}/dist-spark-${INTEL_SPARK_VER}-scala-${INTEL_SCALA_VER}-all-${BIGDL_VER}-dist.zip"}
-#ENV PYTHONPATH=${PYTHONPATH}:/usr/local/spark/python/lib/bigdl-${BIGDL_VER}-python-api.zip
-
-#RUN mkdir intel \
-#    && wget ${BIGDL_URI} -O bigdl.zip
-
-#RUN unzip -o bigdl.zip \
-#    && mv lib/*.zip /usr/local/spark/python/lib/ \
-#    && mv lib/*.jar /usr/local/spark/jars/ \
-#    && rm -Rf /tmp/intel
-
 
 RUN chown $NB_UID:$NB_UID /usr/local/spark/conf/spark-defaults.conf
 RUN chown $NB_UID:$NB_UID /home/jovyan/work
@@ -137,10 +117,4 @@ RUN chown $NB_UID:$NB_UID /home/jovyan/work
 USER $NB_UID
 WORKDIR /home/jovyan/work
 
-#ENV SPARK_VER=${SPARK_VER:-"2.4.4"}
-#ENV INTEL_SPARK_VER=${INTEL_SPARK_VER:-"2.3.1"}
-#ENV INTEL_SCALA_VER=${INTEL_SCALA_VER:-"2.11.8"}
-#ENV HADOOP_VER=${HADOOP_VER:-"2.7"}
-#ENV BIGDL_VER=${BIGDL_VER:-"0.7.1"}
-#ENV BIGDL_URI=${BIGDL_URI:-"https://repo1.maven.org/maven2/com/intel/analytics/bigdl/dist-spark-${INTEL_SPARK_VER}-scala-${INTEL_SCALA_VER}-all/${BIGDL_VER}/dist-spark-${INTEL_SPARK_VER}-scala-${INTEL_SCALA_VER}-all-${BIGDL_VER}-dist.zip"}
-#ENV PYTHONPATH=${PYTHONPATH}:/usr/local/spark/python/lib/bigdl-${BIGDL_VER}-python-api.zip
+ENTRYPOINT ['/usr/local/bin/start.sh', '/usr/local/spark/bin/pyspark']

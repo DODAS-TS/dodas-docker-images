@@ -40,20 +40,23 @@ RUN set -ex && \
     echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     chgrp root /etc/passwd && chmod ug+rw /etc/passwd
 
-COPY spark_src/${spark_jars} /opt/spark/jars
-COPY spark_src/bin /opt/spark/bin
-COPY spark_src/sbin /opt/spark/sbin
-COPY entrypoint.sh /opt/
-COPY spark_src/examples /opt/spark/examples
-#COPY spark_src/${k8s_tests} /opt/spark/tests
-COPY spark_src/data /opt/spark/data
+RUN wget https://mirror.nohup.it/apache/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz
 
-COPY minio_jars/* /opt/spark/jars/
+RUN mkdir spark_source && cd spark_source && tar -xzvf ../spark-2.4.5-bin-hadoop2.7.tgz && rm -fr ../spark-2.4.5-bin-hadoop2.7.tgz
+
+RUN mv spark_source/spark-2.4.5-bin-hadoop2.7/*  /opt/spark
+
+RUN sed -ie "s/\/python\/pyspark\/shell.py/\/python\/lib\/pyspark\/shell.py/"  /opt/spark/bin/pyspark
+
+RUN cd  /opt/spark/python/lib && unzip -o  /opt/spark/python/lib/pyspark.zip
+
+RUN cd /usr/local && ln -s spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark
+
+COPY minio_jars/*  /opt/spark/jars/
+COPY entrypoint.sh /opt/
 
 ENV SPARK_HOME /opt/spark
 
 WORKDIR /opt/spark/work-dir
 
 ENTRYPOINT [ "/opt/entrypoint.sh" ]
-
-#ADD https://repo1.maven.org/maven2/io/fabric8/kubernetes-client/4.4.2/kubernetes-client-4.4.2.jar $SPARK_HOME/jars
