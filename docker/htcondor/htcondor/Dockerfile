@@ -1,4 +1,4 @@
-FROM dodasts/tts-cache:v0.1.3-k8s-6 as TTS
+FROM dodasts/tts-cache:v0.1.3-k8s-12 as TTS
 FROM  dodasts/centos7_grid as BASE
 
 WORKDIR /etc/yum.repos.d
