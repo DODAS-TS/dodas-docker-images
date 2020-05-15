@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     netcat \
     pandoc \
     python3-pip \
-    python3.6-dev \
+    python3-dev \
     texlive-fonts-extra \
     texlive-fonts-recommended \
     texlive-generic-recommended \
@@ -33,5 +33,6 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     nano \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+#RUN update-alternatives  --set python /usr/bin/python3.7
 # Switch back to jovyan to avoid accidental container runs as root
 USER $NB_UID

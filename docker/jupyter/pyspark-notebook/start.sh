@@ -4,6 +4,7 @@
 
 set -e
 
+sudo sed -ie 's/spark.driver.host master/spark.driver.host '"$(hostname -i)"'/' /usr/local/spark/conf/spark-defaults.conf
 # Exec the specified command or fall back on bash
 if [ $# -eq 0 ]; then
     cmd=( "bash" )

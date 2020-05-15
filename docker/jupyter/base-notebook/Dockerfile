@@ -63,7 +63,7 @@ RUN echo "auth requisite pam_deny.so" >> /etc/pam.d/su && \
 
 USER $NB_UID
 WORKDIR $HOME
-ARG PYTHON_VERSION=3.6.9
+ARG PYTHON_VERSION=3.7.7
 
 # Setup work directory for backward-compatibility
 RUN mkdir /home/$NB_USER/work && \

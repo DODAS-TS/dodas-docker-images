@@ -83,6 +83,9 @@ elif [ "$PYSPARK_MAJOR_PYTHON_VERSION" == "3" ]; then
     export PYSPARK_DRIVER_PYTHON="python3"
 fi
 
+export SPARK_DAEMON_MEMORY=1g
+export SPARK_WORKER_MEMORY=1g
+
 case "$SPARK_K8S_CMD" in
   driver)
     CMD=(
@@ -109,19 +112,7 @@ case "$SPARK_K8S_CMD" in
     )
     ;;
   executor)
-    CMD=(
-      ${JAVA_HOME}/bin/java
-      "${SPARK_EXECUTOR_JAVA_OPTS[@]}"
-      -Xms$SPARK_EXECUTOR_MEMORY
-      -Xmx$SPARK_EXECUTOR_MEMORY
-      -cp "$SPARK_CLASSPATH"
-      org.apache.spark.executor.CoarseGrainedExecutorBackend
-      --driver-url $SPARK_DRIVER_URL
-      --executor-id $SPARK_EXECUTOR_ID
-      --cores $SPARK_EXECUTOR_CORES
-      --app-id $SPARK_APPLICATION_ID
-      --hostname $SPARK_EXECUTOR_POD_IP
-    )
+      /opt/spark/bin/spark-class  org.apache.spark.deploy.worker.Worker  $SPARK_DRIVER_URL
     ;;
 
   *)
