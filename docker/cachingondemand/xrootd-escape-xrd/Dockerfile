@@ -1,23 +1,19 @@
 FROM dodasts/dodas-x509:test as GETCERTS
 
-FROM centos:7
+FROM opensciencegrid/software-base:fresh
 
-ENV XRD_VERSION=4.11.3 
+ENV XRD_VERSION=4.11.3
 ENV XRD_HOST=localhost
 
-RUN echo "LC_ALL=C" >> /etc/environment \ 
-    && echo "LANGUAGE=C" >> /etc/environment \ 
-    && yum --setopt=tsflags=nodocs -y update \ 
-    && yum --setopt=tsflags=nodocs -y install wget \ 
-    && yum clean all 
+RUN yum  -y install wget
 
-WORKDIR /etc/yum.repos.d 
+WORKDIR /etc/yum.repos.d
 
-RUN wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo 
-RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \ 
-    && yum --setopt=tsflags=nodocs -y install fetch-crl wn sysstat git vim gcc cmake make ca-policy-egi-core ca-policy-lcg \ 
-             voms-clients-cpp voms \ 
-    && yum clean all 
+RUN wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo
+RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \
+    && yum --setopt=tsflags=nodocs -y install fetch-crl wn sysstat git vim gcc cmake make ca-policy-egi-core ca-policy-lcg \
+             voms-clients-cpp voms \
+    && yum clean all
 
 RUN yum install -y xrootd-server-$XRD_VERSION xrootd-devel-$XRD_VERSION gcc-c++ voms-devel sudo
 
