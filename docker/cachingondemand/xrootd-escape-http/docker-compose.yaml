@@ -1,8 +1,7 @@
 version: '3.7'
 services:
   xcache:
-    build: .
-    #image: dciangot/test:latest
+    build: ../xcache-escape-http
     expose:
     - 8443
     environment:
@@ -23,7 +22,7 @@ services:
     links:
     - origin
   origin:
-    build: ../xrootd-escape-http
+    build: .
     environment:
       XRD_HOST: origin
     expose:

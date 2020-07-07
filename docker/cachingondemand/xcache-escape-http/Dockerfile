@@ -1,8 +1,10 @@
 FROM dodasts/dodas-x509 as GETCERTS
 
-FROM centos:7
+#FROM centos:7
+FROM opensciencegrid/software-base:fresh
 
-ENV XRD_VERSION=4.11.2
+
+ENV XRD_VERSION=4.12.3
 ENV XRD_HOST=localhost
 ENV REDIR_HOST=localhost
 ENV REDIR_CMSD_PORT=3113
@@ -18,28 +20,31 @@ ENV BLOCK_SIZE=512k
 ENV N_PREFETCH=0
 ENV CACHE_PATH=/data
 
-RUN echo "LC_ALL=C" >> /etc/environment \ 
-    && echo "LANGUAGE=C" >> /etc/environment \ 
-    && yum --setopt=tsflags=nodocs -y update \ 
-    && yum --setopt=tsflags=nodocs -y install wget \ 
-    && yum clean all 
- 
-WORKDIR /etc/yum.repos.d 
+WORKDIR /etc/yum.repos.d
 
-RUN wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo 
-RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \ 
-    && yum --setopt=tsflags=nodocs -y install fetch-crl wn sysstat git vim gcc cmake make ca-policy-egi-core ca-policy-lcg \ 
-             voms-clients-cpp voms \ 
-    && yum clean all 
+RUN yum install -y wget
+#RUN wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo
+#RUN yum -y install https://repo.opensciencegrid.org/osg/3.5/osg-3.5-el7-release-latest.rpm
+#RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \
+#    && yum --setopt=tsflags=nodocs -y install fetch-crl wn sysstat git vim gcc cmake make ca-policy-egi-core ca-policy-lcg \
+#           voms-clients-cpp voms \
+#   && yum clean all
 
-RUN yum -y install https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el7-release-latest.rpm 
+RUN yum update -y
 
-RUN yum search --show-duplicates xrootd-server
-RUN yum install -y xrootd-server-$XRD_VERSION
+RUN yum remove -y xrootd
+#RUN yum install -y davix-devel gsoap-2 openssl xrdcl-http-$XRD_VERSION xrootd-server-$XRD_VERSION  xrootd-server-devel-$XRD_VERSION xrootd-devel-$XRD_VERSION xrootd-multiuser-$XRD_VERSION
+RUN yum install -y davix-devel gsoap-2 openssl xrdcl-http xrootd-server xrootd-server-devel xrootd-devel xrootd-multiuser
 
-RUN yum install -y xrootd-scitokens-1.1.0 scitokens-cpp xrootd-multiuser sudo
+RUN yum install -y sysstat vim  gcc make cmake gcc-c++ rpm-build git sudo
 
-RUN yum install -y xrootd-devel-$XRD_VERSION xrootd-server-devel-$XRD_VERSION scitokens-cpp-devel gcc-c++ rpm-build xrdcl-http
+#RUN git clone https://github.com/xrootd/xrdcl-http.git /root/xrootd-http-client
+
+WORKDIR /root/xrootd-http-client
+#RUN ./packaging/makesrpm.sh && ls -altrh .
+
+RUN yum install -y https://kojipkgs.fedoraproject.org//packages/scitokens-cpp/0.5.1/1.el7/x86_64/scitokens-cpp-0.5.1-1.el7.x86_64.rpm
+RUN yum install -y https://kojipkgs.fedoraproject.org//packages/scitokens-cpp/0.5.1/1.el7/x86_64/scitokens-cpp-devel-0.5.1-1.el7.x86_64.rpm
 
 RUN git clone https://github.com/bbockelm/xrootd-scitokens /root/xrootd-scitokens
 
@@ -56,7 +61,8 @@ COPY config/* /etc/xrootd/
 
 COPY  config/client.plugins.d/* /etc/xrootd/client.plugins.d/
 
-RUN chown -R xrootd: /etc/xrootd/
+RUN chown -R xrootd:xrootd /etc/xrootd/
+
 
 COPY --from=0 /usr/local/bin/dodas-x509 /usr/local/bin/dodas-x509
 
