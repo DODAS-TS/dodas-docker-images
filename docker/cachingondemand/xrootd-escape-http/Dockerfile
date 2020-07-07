@@ -4,7 +4,7 @@ FROM dodasts/dodas-x509 as GETCERTS
 
 FROM opensciencegrid/software-base:fresh
 
-ENV XRD_VERSION=4.11.2
+ENV XRD_VERSION=4.12.3
 ENV XRD_HOST=localhost
 
 
@@ -24,7 +24,6 @@ RUN yum install -y openssl xrootd-server-$XRD_VERSION  xrootd-server-devel-$XRD_
 
 RUN yum install -y sysstat vim  gcc make cmake gcc-c++ rpm-build git sudo
 
-RUN git clone https://github.com/xrootd/xrdcl-http.git /root/xrootd-http-client
 
 WORKDIR /root/xrootd-http-client
 #RUN ./packaging/makesrpm.sh && ls -altrh .

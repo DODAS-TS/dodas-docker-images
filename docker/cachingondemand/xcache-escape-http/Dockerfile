@@ -33,12 +33,10 @@ RUN yum install -y wget
 RUN yum update -y
 
 RUN yum remove -y xrootd
-#RUN yum install -y davix-devel gsoap-2 openssl xrdcl-http-$XRD_VERSION xrootd-server-$XRD_VERSION  xrootd-server-devel-$XRD_VERSION xrootd-devel-$XRD_VERSION xrootd-multiuser-$XRD_VERSION
-RUN yum install -y davix-devel gsoap-2 openssl xrdcl-http xrootd-server xrootd-server-devel xrootd-devel xrootd-multiuser
+RUN yum install -y davix-devel gsoap-2 openssl xrdcl-http xrootd-server-$XRD_VERSION  xrootd-server-devel-$XRD_VERSION xrootd-devel-$XRD_VERSION
 
 RUN yum install -y sysstat vim  gcc make cmake gcc-c++ rpm-build git sudo
 
-#RUN git clone https://github.com/xrootd/xrdcl-http.git /root/xrootd-http-client
 
 WORKDIR /root/xrootd-http-client
 #RUN ./packaging/makesrpm.sh && ls -altrh .
