@@ -2,7 +2,7 @@ FROM dodasts/dodas-x509:test as GETCERTS
 
 FROM opensciencegrid/software-base:fresh
 
-ENV XRD_VERSION=4.11.3
+ENV XRD_VERSION=4.12.3
 ENV XRD_HOST=localhost
 
 RUN yum  -y install wget
