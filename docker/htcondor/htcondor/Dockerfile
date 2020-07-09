@@ -1,10 +1,11 @@
 FROM dodasts/tts-cache:v0.1.3-k8s-12 as TTS
-FROM  dodasts/centos7_grid as BASE
+FROM  htcondor/base:8.9.7-el7 as BASE
 
 WORKDIR /etc/yum.repos.d
 
-RUN useradd -ms /bin/bash condor \
-    && wget https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-testing-rhel7.repo \
+RUN yum install -y wget
+
+RUN wget https://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-testing-rhel7.repo \
     && wget http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor \
     && rpm --import RPM-GPG-KEY-HTCondor \
     && yum --setopt=tsflags=nodocs -y update \
@@ -94,7 +95,7 @@ RUN yum install -y https://github.com/scitokens/scitokens/releases/download/v1.2
 RUN yum install -y https://research.cs.wisc.edu/htcondor/yum/infn/rhel7/python2-scitokens-credmon-0.6-0.2.el7.noarch.rpm
 
 #RUN pip install --upgrade pip
-RUN  pip install --upgrade pip setuptools \
+RUN  pip install --upgrade pip \
     && pip install j2cli paramiko psutil kazoo requests flask Flask-WTF wtforms
 #RUN pip install git+https://github.com/htcondor/scitokens-credmon
 
