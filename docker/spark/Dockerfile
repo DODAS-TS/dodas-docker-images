@@ -21,8 +21,6 @@ ARG spark_jars=jars
 ARG img_path=resource-managers/kubernetes/dockerfiles
 ARG k8s_tests=resource-managers/kubernetes/tests
 
-# Before building the docker image, first build and make a Spark distribution following
-# the instructions in http://spark.apache.org/docs/latest/building-spark.html.
 # If this docker file is being used in the context of building your images from a Spark
 # distribution, the docker build command should be invoked from the top level directory
 # of the Spark distribution. E.g.:
