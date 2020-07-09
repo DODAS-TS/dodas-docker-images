@@ -40,7 +40,7 @@ RUN set -ex && \
     echo "auth required pam_wheel.so use_uid" >> /etc/pam.d/su && \
     chgrp root /etc/passwd && chmod ug+rw /etc/passwd
 
-RUN wget https://mirror.nohup.it/apache/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz
+RUN wget --no-check-certificate https://mirror.nohup.it/apache/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz
 
 RUN mkdir spark_source && cd spark_source && tar -xzvf ../spark-2.4.5-bin-hadoop2.7.tgz && rm -fr ../spark-2.4.5-bin-hadoop2.7.tgz
 
