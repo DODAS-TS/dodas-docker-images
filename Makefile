@@ -38,6 +38,6 @@ build-all: $(foreach I,$(IMAGES),build/$(I) )
 push/%: DARGS?=
 
 push/%:
-	./scripts/travis-publish.sh  $(OWNER)/$(notdir docker/$@) $(OWNER)/$(notdir docker/$@):$(VERSION)
+	./scripts/travis-publish.sh  $(OWNER)/$(notdir docker/$@) $(OWNER)/$(notdir docker/$@):$(VERSION) docker/$(strip $(subst $(PREFIX), ,$@))
 
 push-all:  $(foreach I,$(IMAGES),push/$(I) )
