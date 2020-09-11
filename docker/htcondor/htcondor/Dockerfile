@@ -133,5 +133,6 @@ RUN cp -r release_dir/lib/* /lib/
 
 RUN cp -r release_dir/lib64/* /lib64/
 
+# TODO: fix user_info in OAUTH_MON.py
 
 ENTRYPOINT ["/usr/local/sbin/dodas_condor"]
