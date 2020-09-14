@@ -1,0 +1,76 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: default-pyspark
+  namespace: default
+subjects:
+- kind: User
+  name: system:serviceaccount:default:default
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: edit
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spark2-webui
+  labels:
+    heritage: "Helm"
+    release: "spark2"
+    chart: "spark-1.0.3"
+    component: "spark2-spark-master"
+spec:
+  ports:
+    - port: 8888
+      targetPort: 8888
+      nodePort: 30888
+  selector:
+    component: "spark2-spark-master"
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark2-master
+  labels:
+    heritage: "Helm"
+    release: "spark2"
+    chart: "spark-1.0.3"
+    component: "spark2-spark-master"
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: "spark2-spark-master"
+  template:
+    metadata:
+      labels:
+        heritage: "Helm"
+        release: "spark2"
+        chart: "spark-1.0.3"
+        component: "spark2-spark-master"
+    spec:
+      containers:
+        - name: jupyter
+          imagePullPolicy: Always
+          command: ["jupyterhub", "--port", "8888", "--config", ".init/jupyterhub_config.py"]
+          env:
+            - name: JUPYTER_TOKEN
+              value: "..."
+            - name: OAUTH_CALLBACK_URL
+              value: "http://<testme>:30888/hub/oauth_callback"
+          image: "dciangot/hub:v2.4.5-rc25"
+          ports:
+          - containerPort: 8888
+          volumeMounts:
+          - mountPath: /home/jovyan/work
+            name: jupyter-data
+      volumes:
+      - name: jupyter-data
+        hostPath:
+          path: /tmp

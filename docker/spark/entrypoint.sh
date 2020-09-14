@@ -27,6 +27,8 @@ set +e
 uidentry=$(getent passwd $myuid)
 set -e
 
+sed -ie 's/spark.driver.host master/spark.driver.host '"$(hostname -i)"'/'  /usr/local/spark/conf/spark-defaults.conf
+
 # If there is no passwd entry for the container UID, attempt to create one
 if [ -z "$uidentry" ] ; then
     if [ -w /etc/passwd ] ; then
@@ -45,7 +47,7 @@ case "$SPARK_K8S_CMD" in
       ;;
     *)
       echo "Non-spark-on-k8s command provided, proceeding in pass-through mode..."
-      exec /sbin/tini -s -- "$@"
+      exec /bin/bash -c "$@"
       ;;
 esac
 
@@ -112,7 +114,8 @@ case "$SPARK_K8S_CMD" in
     )
     ;;
   executor)
-      /opt/spark/bin/spark-class  org.apache.spark.deploy.worker.Worker  $SPARK_DRIVER_URL
+      #/usr/local/spark/bin/spark-class  org.apache.spark.deploy.worker.Worker  $SPARK_DRIVER_URL
+      /usr/bin/java "${SPARK_EXECUTOR_JAVA_OPTS[@]}" -Xms$SPARK_EXECUTOR_MEMORY -Xmx$SPARK_EXECUTOR_MEMORY -cp "$SPARK_CLASSPATH" org.apache.spark.executor.CoarseGrainedExecutorBackend --driver-url $SPARK_DRIVER_URL --executor-id $SPARK_EXECUTOR_ID --cores $SPARK_EXECUTOR_CORES --app-id $SPARK_APPLICATION_ID --hostname $SPARK_EXECUTOR_POD_IP
     ;;
 
   *)
@@ -121,4 +124,4 @@ case "$SPARK_K8S_CMD" in
 esac
 
 # Execute the container CMD under tini for better hygiene
-exec /sbin/tini -s -- "${CMD[@]}"
+exec ${CMD[@]}

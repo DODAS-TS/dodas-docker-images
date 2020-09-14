@@ -1,6 +1,6 @@
 ## docker build -t gitlab-registry.cern.ch/swan/docker-images/dev-jupyter .
 ## docker push gitlab-registry.cern.ch/swan/docker-images/dev-jupyter
-FROM dciangot/dodas-iam-client-rec as REGISTRATION
+FROM dciangot/dodas-iam-client-rec:test5 as REGISTRATION
 
 FROM jupyter/minimal-notebook
 
@@ -34,7 +34,7 @@ RUN mkdir /home/$NB_USER/SWAN_projects && \
 
 RUN apt-get install -y  fuse
 
-COPY ./jupyterhub-singleuser /opt/conda/bin/jupyterhub-singleuser
+COPY jupyterhub-singleuser /opt/conda/bin/jupyterhub-singleuser
 
 RUN chmod +x /opt/conda/bin/jupyterhub-singleuser
 

@@ -6,20 +6,35 @@ import socket
 from oauthenticator.oauth2 import OAuthenticator
 from oauthenticator.generic import GenericOAuthenticator
 from tornado import gen
+import subprocess
 import warnings
 
 import os
 
 from subprocess import check_call
 
+c.JupyterHub.tornado_settings = {'max_body_size': 1048576000, 'max_buffer_size': 1048576000}
+c.JupyterHub.log_level = 30
+
 # 'http://141d9792-dee7-454e-93ef-89ae9ff07adc.k8s.civo.com:8888/hub/oauth_callback'
 callback = os.environ["OAUTH_CALLBACK_URL"]
+os.environ["OAUTH_CALLBACK"] = callback
 iam_server = os.environ["OAUTH_ENDPOINT"]
 
+server_host = socket.gethostbyname(socket.getfqdn())
 # TODO: run self registration then
 #./.init/dodas-IAMClientRec
-client_id = os.environ["OAUTH_CLIENT_ID"]
-client_secret = os.environ["OAUTH_CLIENT_SECRET"]
+os.environ["IAM_INSTANCE"] = iam_server
+
+myenv = os.environ.copy()
+
+response = subprocess.check_output(['./.init/dodas-IAMClientRec', server_host], env=myenv)
+response_list = response.decode('utf-8').split("\n")
+client_id = response_list[len(response_list)-3]
+client_secret = response_list[len(response_list)-2]
+
+warnings.warn(response_list[len(response_list)-3])
+warnings.warn(response_list[len(response_list)-2])
 
 class EnvAuthenticator(GenericOAuthenticator):
 
@@ -59,7 +74,7 @@ if 'JUPYTERHUB_CRYPT_KEY' not in os.environ:
 
 c.JupyterHub.spawner_class = 'kubespawner.KubeSpawner'
 c.KubeSpawner.cmd = ['jupyterhub-singleuser', '--allow-root']
-c.KubeSpawner.image = 'dciangot/hub:v2.4.5-rc31'
+c.KubeSpawner.image = 'dciangot/spark:good2'
 
 # TODO: PUT ENV
 
@@ -95,6 +110,12 @@ c.KubeSpawner.profile_list = [
             }
 ]
 
+c.KubeSpawner.privileged = True
+
+c.KubeSpawner.extra_pod_config = {
+    "automountServiceAccountToken": True,
+         }
+
 c.KubeSpawner.extra_container_config = {
     "securityContext": {
             "privileged": True,
@@ -103,8 +124,8 @@ c.KubeSpawner.extra_container_config = {
                     }
         }
 }
-c.KubeSpawner.http_timeout = 300
-c.KubeSpawner.start_timeout = 300
+c.KubeSpawner.http_timeout = 600
+c.KubeSpawner.start_timeout = 600
 
 #  This is the address on which the proxy will bind. Sets protocol, ip, base_url
 c.JupyterHub.bind_url = 'http://:8888'
