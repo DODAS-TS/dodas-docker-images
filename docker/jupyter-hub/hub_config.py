@@ -14,9 +14,12 @@ from subprocess import check_call
 
 # 'http://141d9792-dee7-454e-93ef-89ae9ff07adc.k8s.civo.com:8888/hub/oauth_callback'
 callback = os.environ["OAUTH_CALLBACK_URL"]
+iam_server = os.environ["OAUTH_ENDPOINT"]
+
+# TODO: run self registration then
+#./.init/dodas-IAMClientRec
 client_id = os.environ["OAUTH_CLIENT_ID"]
 client_secret = os.environ["OAUTH_CLIENT_SECRET"]
-iam_server = os.environ["OAUTH_ENDPOINT"]
 
 class EnvAuthenticator(GenericOAuthenticator):
 
@@ -57,6 +60,8 @@ if 'JUPYTERHUB_CRYPT_KEY' not in os.environ:
 c.JupyterHub.spawner_class = 'kubespawner.KubeSpawner'
 c.KubeSpawner.cmd = ['jupyterhub-singleuser', '--allow-root']
 c.KubeSpawner.image = 'dciangot/hub:v2.4.5-rc31'
+
+# TODO: PUT ENV
 
 c.KubeSpawner.profile_list = [
     {

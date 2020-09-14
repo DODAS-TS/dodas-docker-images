@@ -1,11 +1,19 @@
 ## docker build -t gitlab-registry.cern.ch/swan/docker-images/dev-jupyter .
 ## docker push gitlab-registry.cern.ch/swan/docker-images/dev-jupyter
+FROM dciangot/dodas-iam-client-rec as REGISTRATION
 
 FROM jupyter/minimal-notebook
 
 
 MAINTAINER Diogo Castro <diogo.castro@cern.ch>
 MAINTAINER Piotr Mrowczynski <piotr.mrowczynski@cern.ch>
+
+# callback = os.environ["OAUTH_CALLBACK_URL"]
+# iam_server = os.environ["OAUTH_ENDPOINT"]
+# IAM_ENABLED
+# PASSWD
+# S3_HOST
+# S3_ENABLED
 
 USER root
 
@@ -37,7 +45,13 @@ RUN pip install jupyterhub-kubespawner oauthenticator
 WORKDIR /home/$NB_USER/SWAN_projects
 RUN mkdir -p .init
 COPY hub_config.py ./.init/jupyterhub_config.py
+
+# TODO: copy from official docker image sts-wire
 COPY ./sts-wire ./.init/sts-wire
+
+# COPY self registration da docker
+COPY --from=REGISTRATION /usr/local/bin/dodas-IAMClientRec ./.init/dodas-IAMClientRec
+
 COPY ./spawn.sh ./.init/spawn.sh
 RUN sudo chown -R $NB_USER .init
 
