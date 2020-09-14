@@ -14,6 +14,9 @@ from subprocess import check_call
 
 # 'http://141d9792-dee7-454e-93ef-89ae9ff07adc.k8s.civo.com:8888/hub/oauth_callback'
 callback = os.environ["OAUTH_CALLBACK_URL"]
+client_id = os.environ["OAUTH_CLIENT_ID"]
+client_secret = os.environ["OAUTH_CLIENT_SECRET"]
+iam_server = os.environ["OAUTH_ENDPOINT"]
 
 class EnvAuthenticator(GenericOAuthenticator):
 
@@ -35,11 +38,11 @@ c.JupyterHub.authenticator_class = EnvAuthenticator
 c.GenericOAuthenticator.oauth_callback_url = callback
 
 # PUT IN SECRET
-c.GenericOAuthenticator.client_id = '8bed0f49-168f-4c0d-8862-b11af06f2916'
-c.GenericOAuthenticator.client_secret = 'G7yrGjR_qGcLWS44MadMUMj5xA9_bV1yRcFSdicUx9D0SeJVsGFfk0v5R0MPNT28gQWZ1QStwDe1r_8_xkeyDg'
-c.GenericOAuthenticator.authorize_url = 'https://iam-demo.cloud.cnaf.infn.it/authorize'
-c.GenericOAuthenticator.token_url = 'https://iam-demo.cloud.cnaf.infn.it/token'
-c.GenericOAuthenticator.userdata_url = 'https://iam-demo.cloud.cnaf.infn.it/userinfo'
+c.GenericOAuthenticator.client_id = client_id
+c.GenericOAuthenticator.client_secret = client_secret 
+c.GenericOAuthenticator.authorize_url = iam_server.strip('/') + '/authorize'
+c.GenericOAuthenticator.token_url = iam_server.strip('/') + '/token'
+c.GenericOAuthenticator.userdata_url = iam_server.strip('/') + '/userinfo'
 c.GenericOAuthenticator.scope = ['openid', 'profile', 'email', 'address', 'offline_access']
 c.GenericOAuthenticator.username_key = "preferred_username"
 
