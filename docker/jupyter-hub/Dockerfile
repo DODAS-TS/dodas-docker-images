@@ -4,6 +4,7 @@ FROM jupyter/minimal-notebook:612aa5710bf9
 
 MAINTAINER Diego Ciangottini <diego.ciangottini@cern.ch>
 
+# jupyter HUB for python 3.8
 
 # callback = os.environ["OAUTH_CALLBACK_URL"]
 # iam_server = os.environ["OAUTH_ENDPOINT"]

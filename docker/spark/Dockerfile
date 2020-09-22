@@ -3,6 +3,8 @@ FROM jupyter/minimal-notebook:612aa5710bf9
 
 MAINTAINER Diego Ciangottini <diego.ciangottini@cern.ch>
 
+# spark/jupyter for python 3.8
+
 USER root
 
 RUN apt-get update
