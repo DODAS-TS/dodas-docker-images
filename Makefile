@@ -12,7 +12,7 @@ IMAGES:= centos7_grid \
 				htcondor/cms \
 				htcondor/ams \
 				htcondor/fermi \
-				jupyter/pyspark-notebook \
+				jupyter-hub \
 				spark
 
 .PHONY: init build push publish-doc

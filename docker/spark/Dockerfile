@@ -1,5 +1,3 @@
-## docker build -t gitlab-registry.cern.ch/swan/docker-images/dev-jupyter .
-## docker push gitlab-registry.cern.ch/swan/docker-images/dev-jupyter
 
 FROM jupyter/minimal-notebook:612aa5710bf9
 
