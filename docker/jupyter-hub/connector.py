@@ -87,7 +87,7 @@ class SparkConfiguration(object):
          .set("spark.kubernetes.authenticate.driver.serviceAccountName","default")\
          .set("spark.submit.deployMode", "client")\
          .set('spark.extraListeners', 'sparkmonitor.listener.JupyterSparkMonitorListener')\
-         .set('spark.driver.extraClassPath', '/opt/conda/lib/python3.7/site-packages/sparkmonitor/listener.jar')\
+         .set('spark.driver.extraClassPath', '/opt/conda/lib/python3.8/site-packages/sparkmonitor/listener.jar')\
          .set('spark.driver.host', socket.gethostbyname(socket.getfqdn()))\
          .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")\
          .set("spark.hadoop.fs.s3a.path.style.access", "true")\

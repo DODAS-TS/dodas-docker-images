@@ -42,9 +42,9 @@ ARG SWAN_COMMON_BRANCH=qa
 
 ## Get latest - not necessarily tagged - version of the css files and compile them
 RUN git clone -b $SWAN_COMMON_BRANCH https://gitlab.cern.ch/swan/common.git /tmp/custom && \
-    cp -r /tmp/custom/images/* /opt/conda/lib/python3.7/site-packages/notebook/static/custom/
+    cp -r /tmp/custom/images/* /opt/conda/lib/python3.8/site-packages/notebook/static/custom/
 
-COPY ./custom.css /opt/conda/lib/python3.7/site-packages/notebook/static/custom/
+COPY ./custom.css /opt/conda/lib/python3.8/site-packages/notebook/static/custom/
 
 # Install our extensions just like in prod (but also enable sparkconnector and hdfsbrowser)
 RUN mkdir /tmp/jupyter_extensions && \
@@ -94,7 +94,7 @@ RUN printf "import os \
 # Adjust Permissions to be able to overwrite the files
 RUN chmod g+w -R /usr/local/share/jupyter/nbextensions && \
     chown -R root:users /usr/local/share/jupyter/nbextensions && \
-    chmod g+w -R /opt/conda/lib/python3.7/site-packages
+    chmod g+w -R /opt/conda/lib/python3.8/site-packages
 
 # Add projects folder and fix permissions
 RUN mkdir /home/$NB_USER/SWAN_projects && \
@@ -116,10 +116,10 @@ RUN echo -e "#!/bin/bash \
 
 RUN chmod +x /usr/bin/start.sh
 
-RUN cat /opt/conda/lib/python3.7/site-packages/sparkconnector/configuration.py
+RUN cat /opt/conda/lib/python3.8/site-packages/sparkconnector/configuration.py
 
-COPY ./connector.py /opt/conda/lib/python3.7/site-packages/sparkconnector/configuration.py
-COPY ./portallocator.py /opt/conda/lib/python3.7/site-packages/sparkconnector/portallocator.py
+COPY ./connector.py /opt/conda/lib/python3.8/site-packages/sparkconnector/configuration.py
+COPY ./portallocator.py /opt/conda/lib/python3.8/site-packages/sparkconnector/portallocator.py
 
 RUN apt-get install -y  fuse
 
@@ -147,6 +147,6 @@ COPY ./entrypoint.sh ./entrypoint.sh
 
 RUN sudo chmod +x entrypoint.sh
 
-COPY listener.jar /opt/conda/lib/python3.7/site-packages/sparkmonitor/listener.jar
+COPY listener.jar /opt/conda/lib/python3.8/site-packages/sparkmonitor/listener.jar
 
 ENTRYPOINT ["./entrypoint.sh"]
