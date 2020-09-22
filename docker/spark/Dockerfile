@@ -1,7 +1,7 @@
 ## docker build -t gitlab-registry.cern.ch/swan/docker-images/dev-jupyter .
 ## docker push gitlab-registry.cern.ch/swan/docker-images/dev-jupyter
 
-FROM jupyter/minimal-notebook:63d0df23b673
+FROM jupyter/minimal-notebook:612aa5710bf9
 
 
 MAINTAINER Diogo Castro <diogo.castro@cern.ch>
