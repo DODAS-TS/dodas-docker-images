@@ -1,9 +1,7 @@
 
 FROM jupyter/minimal-notebook:612aa5710bf9
 
-
-MAINTAINER Diogo Castro <diogo.castro@cern.ch>
-MAINTAINER Piotr Mrowczynski <piotr.mrowczynski@cern.ch>
+MAINTAINER Diego Ciangottini <diego.ciangottini@cern.ch>
 
 USER root
 
