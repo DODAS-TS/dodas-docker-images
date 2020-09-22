@@ -3,9 +3,6 @@ FROM dciangot/dodas-iam-client-rec:test5 as REGISTRATION
 FROM jupyter/minimal-notebook:612aa5710bf9
 
 
-MAINTAINER Diogo Castro <diogo.castro@cern.ch>
-MAINTAINER Piotr Mrowczynski <piotr.mrowczynski@cern.ch>
-
 # callback = os.environ["OAUTH_CALLBACK_URL"]
 # iam_server = os.environ["OAUTH_ENDPOINT"]
 # IAM_ENABLED
