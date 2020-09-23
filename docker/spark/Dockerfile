@@ -71,17 +71,12 @@ RUN mkdir /tmp/jupyter_extensions && \
     # Force nbextension_configurator systemwide to prevent users disabling it
     jupyter nbextensions_configurator enable --system && \
     # Clean
-    rm -rf /tmp/jupyter_extensions
-
-
-# Enable Kernel extensions
-RUN mkdir -p /home/$NB_USER/.ipython/profile_default/ && \
+    rm -rf /tmp/jupyter_extensions && \
+    mkdir -p /home/$NB_USER/.ipython/profile_default/ && \
     printf "c.InteractiveShellApp.extensions.append('sparkmonitor.kernelextension') \
 \nc.InteractiveShellApp.extensions.append('sparkconnector.connector') \
-" > /home/$NB_USER/.ipython/profile_default/ipython_kernel_config.py
-
-# Set Jupyter configurations
-RUN printf "import os \
+" > /home/$NB_USER/.ipython/profile_default/ipython_kernel_config.py && \
+    printf "import os \
 \nc = get_config() \
 \nc.NotebookApp.ip = '0.0.0.0' \
 \nc.NotebookApp.port = 8888 \
@@ -90,18 +85,13 @@ RUN printf "import os \
 \nc.InteractiveShellApp.extensions.append('sparkconnector.kernelextension') \
 \nif \"JUPYTER_TOKEN\" in os.environ: \
 \n    c.NotebookApp.token = os.environ[\"JUPYTER_TOKEN\"] \
-" > /home/$NB_USER/.jupyter/jupyter_notebook_config.py
-
-# Adjust Permissions to be able to overwrite the files
-RUN chmod g+w -R /usr/local/share/jupyter/nbextensions && \
+" > /home/$NB_USER/.jupyter/jupyter_notebook_config.py && \
+    chmod g+w -R /usr/local/share/jupyter/nbextensions && \
     chown -R root:users /usr/local/share/jupyter/nbextensions && \
-    chmod g+w -R /opt/conda/lib/python3.8/site-packages
-
-# Add projects folder and fix permissions
-RUN mkdir /home/$NB_USER/SWAN_projects && \
-    fix-permissions /home/$NB_USER
-
-RUN cd /usr/local/ && wget https://downloads.apache.org/spark/spark-3.0.1/spark-3.0.1-bin-hadoop3.2.tgz && \
+    chmod g+w -R /opt/conda/lib/python3.8/site-packages && \
+    mkdir /home/$NB_USER/SWAN_projects && \
+    fix-permissions /home/$NB_USER && \
+    cd /usr/local/ && wget https://downloads.apache.org/spark/spark-3.0.1/spark-3.0.1-bin-hadoop3.2.tgz && \
         tar -xzvf spark-3.0.1-bin-hadoop3.2.tgz && \
         mv spark-3.0.1-bin-hadoop3.2 spark && \
         rm -f spark-3.0.1-bin-hadoop3.2.tgz
@@ -115,14 +105,11 @@ ADD https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.5.12/h
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.11.865/aws-java-sdk-s3-1.11.865.jar /usr/local/spark/jars/
 
 COPY spark-defaults.conf /usr/local/spark/conf/spark-defaults.conf
-RUN chown $NB_UID:$NB_UID /usr/local/spark/conf/spark-defaults.conf
-
-RUN echo -e "#!/bin/bash \
-\nsudo sed -ie 's/spark.driver.host master/spark.driver.host '$(hostname -i)'/' /usr/local/spark/conf/spark-defaults.conf\n$1" > /usr/bin/start.sh
-
-RUN chmod +x /usr/bin/start.sh
-
-RUN cat /opt/conda/lib/python3.8/site-packages/sparkconnector/configuration.py
+RUN chown $NB_UID:$NB_UID /usr/local/spark/conf/spark-defaults.conf && \
+       echo -e "#!/bin/bash \
+\nsudo sed -ie 's/spark.driver.host master/spark.driver.host '$(hostname -i)'/' /usr/local/spark/conf/spark-defaults.conf\n$1" > /usr/bin/start.sh && \
+       chmod +x /usr/bin/start.sh && \
+       cat /opt/conda/lib/python3.8/site-packages/sparkconnector/configuration.py
 
 COPY ./connector.py /opt/conda/lib/python3.8/site-packages/sparkconnector/configuration.py
 COPY ./portallocator.py /opt/conda/lib/python3.8/site-packages/sparkconnector/portallocator.py
@@ -131,11 +118,8 @@ RUN apt-get install -y  fuse
 
 COPY ./jupyterhub-singleuser /opt/conda/bin/jupyterhub-singleuser
 
-RUN chmod +x /opt/conda/bin/jupyterhub-singleuser
-
-RUN pip install jupyterhub-kubespawner oauthenticator
-
-RUN apt-get clean
+RUN chmod +x /opt/conda/bin/jupyterhub-singleuser && \
+       pip install jupyterhub-kubespawner oauthenticator
 
 USER $NB_UID
 
