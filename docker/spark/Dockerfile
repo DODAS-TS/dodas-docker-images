@@ -101,7 +101,6 @@ RUN chmod g+w -R /usr/local/share/jupyter/nbextensions && \
 RUN mkdir /home/$NB_USER/SWAN_projects && \
     fix-permissions /home/$NB_USER
 
-#COPY ./dist  /usr/local/spark
 RUN cd /usr/local/ && wget https://downloads.apache.org/spark/spark-3.0.1/spark-3.0.1-bin-hadoop3.2.tgz && \
         tar -xzvf spark-3.0.1-bin-hadoop3.2.tgz && \
         mv spark-3.0.1-bin-hadoop3.2 spark && \
