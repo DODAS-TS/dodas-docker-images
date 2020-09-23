@@ -14,6 +14,7 @@ RUN apt-get update && apt-get -y install vim sudo git curl openjdk-8-jdk groovy
 
 RUN echo "jovyan ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
+USER jovyan
 # Install required python packages for all the extensions
 # Force lab version 2, since we're targeting development to that version
 RUN pip install \
@@ -26,10 +27,12 @@ RUN pip install \
         kubernetes==9.0.0 \
         'jupyterlab>=2.0.0rc2'
 
+USER root
+
 # Install less and yarn in case one wants to build JavaScript inside the docker entrypoint
-RUN npm install less@2.7.1 -g && \
-    npm install -g less-plugin-clean-css && \
-    npm install -g yarn
+#RUN npm install less@2.7.1 -g && \
+#    npm install -g less-plugin-clean-css && \
+#    npm install -g yarn
 
 # Use bash instead of dash
 RUN rm /bin/sh && \
@@ -104,7 +107,13 @@ RUN cd /usr/local/ && wget https://downloads.apache.org/spark/spark-3.0.1/spark-
         mv spark-3.0.1-bin-hadoop3.2 spark && \
         rm -f spark-3.0.1-bin-hadoop3.2.tgz
 
-COPY ./minio_jars/* /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.11.865/aws-java-sdk-1.11.865.jar  /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.0/hadoop-aws-3.3.0.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/joda-time/joda-time/2.10.6/joda-time-2.10.6.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-kms/1.11.865/aws-java-sdk-kms-1.11.865.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.11.865/aws-java-sdk-core-1.11.865.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.5.12/httpclient-4.5.12.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.11.865/aws-java-sdk-s3-1.11.865.jar /usr/local/spark/jars/
 
 COPY spark-defaults.conf /usr/local/spark/conf/spark-defaults.conf
 RUN chown $NB_UID:$NB_UID /usr/local/spark/conf/spark-defaults.conf
@@ -125,9 +134,11 @@ COPY ./jupyterhub-singleuser /opt/conda/bin/jupyterhub-singleuser
 
 RUN chmod +x /opt/conda/bin/jupyterhub-singleuser
 
-USER $NB_UID
-
 RUN pip install jupyterhub-kubespawner oauthenticator
+
+RUN apt-get clean
+
+USER $NB_UID
 
 WORKDIR /home/$NB_USER/SWAN_projects
 RUN mkdir -p .init
@@ -146,5 +157,6 @@ COPY ./entrypoint.sh ./entrypoint.sh
 RUN sudo chmod +x entrypoint.sh
 
 COPY listener.jar /opt/conda/lib/python3.8/site-packages/sparkmonitor/listener.jar
+
 
 ENTRYPOINT ["./entrypoint.sh"]
