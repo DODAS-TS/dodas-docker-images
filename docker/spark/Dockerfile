@@ -96,7 +96,8 @@ RUN mkdir /tmp/jupyter_extensions && \
         rm -f spark-3.0.1-bin-hadoop3.2.tgz
 
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.11.865/aws-java-sdk-1.11.865.jar  /usr/local/spark/jars/
-ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.0/hadoop-aws-3.3.0.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.865/aws-java-sdk-bundle-1.11.865.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.1/hadoop-aws-3.2.1.jar /usr/local/spark/jars/
 ADD https://repo1.maven.org/maven2/joda-time/joda-time/2.10.6/joda-time-2.10.6.jar /usr/local/spark/jars/
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-kms/1.11.865/aws-java-sdk-kms-1.11.865.jar /usr/local/spark/jars/
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.11.865/aws-java-sdk-core-1.11.865.jar /usr/local/spark/jars/
@@ -117,8 +118,7 @@ RUN apt-get install -y  fuse
 
 COPY ./jupyterhub-singleuser /opt/conda/bin/jupyterhub-singleuser
 
-RUN chmod +x /opt/conda/bin/jupyterhub-singleuser && \
-       pip install jupyterhub-kubespawner oauthenticator
+RUN chmod +x /opt/conda/bin/jupyterhub-singleuser
 
 USER $NB_UID
 
@@ -134,7 +134,7 @@ ENV SPARK_HOME /usr/local/spark
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip:$PYTHONPATH
 ENV SPARK_OPTS --driver-java-options=-Xms1024M --driver-java-options=-Xmx1024M --driver-java-options=-Dlog4j.logLevel=debug
 
-COPY ./entrypoint.sh ./entrypoint.sh 
+COPY ./entrypoint.sh ./entrypoint.sh
 
 RUN sudo chmod +x entrypoint.sh
 
