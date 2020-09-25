@@ -28,11 +28,6 @@ RUN pip install \
 
 USER root
 
-# Install less and yarn in case one wants to build JavaScript inside the docker entrypoint
-#RUN npm install less@2.7.1 -g && \
-#    npm install -g less-plugin-clean-css && \
-#    npm install -g yarn
-
 # Use bash instead of dash
 RUN rm /bin/sh && \
     ln -s /bin/bash /bin/sh
