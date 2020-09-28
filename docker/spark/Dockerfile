@@ -17,7 +17,7 @@ USER jovyan
 # Install required python packages for all the extensions
 # Force lab version 2, since we're targeting development to that version
 RUN pip install \
-        pyspark \
+        pyspark==3.0.1 \
         jupyter_nbextensions_configurator \
         widgetsnbextension \
         itkwidgets \
@@ -90,14 +90,19 @@ RUN mkdir /tmp/jupyter_extensions && \
         mv spark-3.0.1-bin-hadoop3.2 spark && \
         rm -f spark-3.0.1-bin-hadoop3.2.tgz
 
-ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.11.865/aws-java-sdk-1.11.865.jar  /usr/local/spark/jars/
-ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.865/aws-java-sdk-bundle-1.11.865.jar /usr/local/spark/jars/
-ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.1/hadoop-aws-3.2.1.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.11.490/aws-java-sdk-1.11.490.jar  /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.490/aws-java-sdk-bundle-1.11.490.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.0/hadoop-aws-3.2.0.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client/3.2.0/hadoop-client-3.2.0.jar /usr/local/spark/jars/
 ADD https://repo1.maven.org/maven2/joda-time/joda-time/2.10.6/joda-time-2.10.6.jar /usr/local/spark/jars/
-ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-kms/1.11.865/aws-java-sdk-kms-1.11.865.jar /usr/local/spark/jars/
-ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.11.865/aws-java-sdk-core-1.11.865.jar /usr/local/spark/jars/
-ADD https://repo1.maven.org/maven2/org/apache/httpcomponents/httpclient/4.5.12/httpclient-4.5.12.jar /usr/local/spark/jars/
-ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.11.865/aws-java-sdk-s3-1.11.865.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-kms/1.11.490/aws-java-sdk-kms-1.11.490.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-core/1.11.490/aws-java-sdk-core-1.11.490.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-s3/1.11.490/aws-java-sdk-s3-1.11.490.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-dynamodb/1.11.490/aws-java-sdk-dynamodb-1.11.490.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-cloud-storage/3.2.0/hadoop-cloud-storage-3.2.0.jar /usr/local/spark/jars/
+ADD https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/spark/spark-hadoop-cloud_2.11/2.4.0-cdh6.3.3/spark-hadoop-cloud_2.11-2.4.0-cdh6.3.3.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/google/api-client/google-api-client/1.30.10/google-api-client-1.30.10.jar /usr/local/spark/jars/
+ADD https://repo1.maven.org/maven2/com/google/appengine/appengine-api-1.0-sdk/1.9.82/appengine-api-1.0-sdk-1.9.82.jar /usr/local/spark/jars/
 
 COPY spark-defaults.conf /usr/local/spark/conf/spark-defaults.conf
 RUN chown $NB_UID:$NB_UID /usr/local/spark/conf/spark-defaults.conf && \
