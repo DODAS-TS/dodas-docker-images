@@ -90,6 +90,7 @@ RUN mkdir /tmp/jupyter_extensions && \
         mv spark-3.0.1-bin-hadoop3.2 spark && \
         rm -f spark-3.0.1-bin-hadoop3.2.tgz
 
+# Check if everything is needed
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk/1.11.490/aws-java-sdk-1.11.490.jar  /usr/local/spark/jars/
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.490/aws-java-sdk-bundle-1.11.490.jar /usr/local/spark/jars/
 ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.0/hadoop-aws-3.2.0.jar /usr/local/spark/jars/
