@@ -98,6 +98,13 @@ class SparkConfiguration(object):
          #.set("spark.hadoop.fs.s3a.fast.upload", "true")
          #.set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") 
 
+        options = self._parse_options(opts)
+
+        # Add options to the default conf
+        for name, value in options.items():
+            conf.set(name, value)
+
+
         return conf
 
 
