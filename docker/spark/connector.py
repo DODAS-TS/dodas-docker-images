@@ -100,7 +100,6 @@ class SparkConfiguration(object):
 
         options = self._parse_options(opts)
 
-        # Add options to the default conf
         for name, value in options.items():
             conf.set(name, value)
 
