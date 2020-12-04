@@ -114,7 +114,6 @@ USER $NB_UID
 WORKDIR /home/$NB_USER/SWAN_projects
 RUN mkdir -p .init
 RUN wget https://github.com/dciangot/sts-wire/releases/download/v0.0.10/sts-wire -O ./.init/sts-wire && chmod +x ./.init/sts-wire
-COPY hub_config.py ./.init/jupyterhub_config.py
 COPY ./spawn.sh ./.init/spawn.sh
 RUN sudo chown -R $NB_USER .init
 
@@ -123,11 +122,11 @@ ENV SPARK_HOME /usr/local/spark
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip:$PYTHONPATH
 ENV SPARK_OPTS --driver-java-options=-Xms1024M --driver-java-options=-Xmx1024M --driver-java-options=-Dlog4j.logLevel=debug
 
-COPY ./entrypoint.sh ./entrypoint.sh
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 
-RUN sudo chmod +x entrypoint.sh
+RUN sudo chmod +x /usr/local/bin/entrypoint.sh
 
 COPY listener.jar /opt/conda/lib/python3.8/site-packages/sparkmonitor/listener.jar
 
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
