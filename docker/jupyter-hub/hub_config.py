@@ -54,6 +54,8 @@ class EnvAuthenticator(GenericOAuthenticator):
         spawner.environment['REFRESH_TOKEN'] = auth_state['refresh_token']
         spawner.environment['USERNAME'] = auth_state['oauth_user']['preferred_username']
         spawner.environment['IAM_SERVER'] = iam_server
+        spawner.environment['IAM_CLIENT_ID'] = client_id   
+        spawner.environment['IAM_CLIENT_SECRET'] = client_secret
         spawner.environment['S3_BUCKET'] = s3_bucket
         spawner.environment['S3_ENDPOINT'] = s3_endpoint
 
