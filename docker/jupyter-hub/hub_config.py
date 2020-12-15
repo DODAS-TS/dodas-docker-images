@@ -21,7 +21,7 @@ callback = os.environ["OAUTH_CALLBACK_URL"]
 os.environ["OAUTH_CALLBACK"] = callback
 iam_server = os.environ["OAUTH_ENDPOINT"]
 
-s3_buckets = os.environ["S3_BUCKETS"]
+s3_buckets = os.environ["S3_BUCKET"]
 s3_endpoint = os.environ["S3_ENDPOINT"]
 
 server_host = socket.gethostbyname(socket.getfqdn())
