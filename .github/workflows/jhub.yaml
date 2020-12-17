@@ -3,10 +3,10 @@ name: ci
 on:
   push:
     tags: 
-    - "*"
+    - "*-jhub"
 
 jobs:
-  path-context:
+  jhub:
     runs-on: ubuntu-latest
     steps:
       -
