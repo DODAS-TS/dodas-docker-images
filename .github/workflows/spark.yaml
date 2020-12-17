@@ -6,7 +6,7 @@ on:
     - "*-spark"
 
 jobs:
-  jhub:
+  spark:
     runs-on: ubuntu-latest
     steps:
       -
