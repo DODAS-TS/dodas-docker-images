@@ -21,6 +21,9 @@ callback = os.environ["OAUTH_CALLBACK_URL"]
 os.environ["OAUTH_CALLBACK"] = callback
 iam_server = os.environ["OAUTH_ENDPOINT"]
 
+s3_buckets = os.environ["S3_BUCKET"]
+s3_endpoint = os.environ["S3_ENDPOINT"]
+
 server_host = socket.gethostbyname(socket.getfqdn())
 # TODO: run self registration then
 #./.init/dodas-IAMClientRec
@@ -50,6 +53,11 @@ class EnvAuthenticator(GenericOAuthenticator):
         spawner.environment['ACCESS_TOKEN'] = auth_state['access_token']
         spawner.environment['REFRESH_TOKEN'] = auth_state['refresh_token']
         spawner.environment['USERNAME'] = auth_state['oauth_user']['preferred_username']
+        spawner.environment['IAM_SERVER'] = iam_server
+        spawner.environment['IAM_CLIENT_ID'] = client_id   
+        spawner.environment['IAM_CLIENT_SECRET'] = client_secret
+        spawner.environment['S3_BUCKETS'] = s3_buckets
+        spawner.environment['S3_ENDPOINT'] = s3_endpoint
 
 #c.JupyterHub.authenticator_class = GitHubEnvAuthenticator
 c.JupyterHub.authenticator_class = EnvAuthenticator
