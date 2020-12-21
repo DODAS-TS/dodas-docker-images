@@ -103,7 +103,11 @@ RUN chown $NB_UID:$NB_UID /usr/local/spark/conf/spark-defaults.conf && \
 COPY ./connector.py /opt/conda/lib/python3.8/site-packages/sparkconnector/configuration.py
 COPY ./portallocator.py /opt/conda/lib/python3.8/site-packages/sparkconnector/portallocator.py
 
-RUN apt-get install -y  fuse
+RUN apt-get update && apt-get install -y software-properties-common gnupg xvfb \
+ && apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87 \
+ && add-apt-repository "deb http://repo.data.kit.edu/ubuntu/bionic ./" \
+ && apt-get update \
+ && apt-get install -y oidc-agent fuse
 
 COPY ./jupyterhub-singleuser /opt/conda/bin/jupyterhub-singleuser
 
