@@ -83,7 +83,7 @@ class SparkConfiguration(object):
          .setAppName("Notebook")\
          .set("spark.executor.memory", "1g")\
          .set("spark.executor.instances", "1")\
-         .set("spark.kubernetes.container.image", "dodasts/spark:v3.0.0")\
+         .set("spark.kubernetes.container.image", "dodasts/spark:v3.0.1")\
          .set("spark.kubernetes.authenticate.driver.serviceAccountName","default")\
          .set("spark.submit.deployMode", "client")\
          .set('spark.extraListeners', 'sparkmonitor.listener.JupyterSparkMonitorListener')\
