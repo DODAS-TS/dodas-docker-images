@@ -8,3 +8,14 @@ if [ ${S3_BUCKETS%% *} ] && [ $S3_ENDPOINT ]; then
 else
     echo "S3 disabled."
 fi
+# Configure oidc-agent for user token management
+echo "eval \`oidc-keychain\`" >> ~/.bashrc
+eval `oidc-keychain`
+oidc-gen dodas --issuer $IAM_SERVER \
+ --client-id $IAM_CLIENT_ID \
+ --client-secret $IAM_CLIENT_SECRET \
+ --rt $REFRESH_TOKEN \
+ --confirm-yes \
+ --scope "openid profile email" \
+ --redirect-uri http://dummy:8843 \
+ --pw-cmd "echo \"DUMMY PWD\""
