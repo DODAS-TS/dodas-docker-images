@@ -113,7 +113,7 @@ USER $NB_UID
 
 WORKDIR /home/$NB_USER/SWAN_projects
 RUN mkdir -p .init
-RUN wget https://github.com/dciangot/sts-wire/releases/download/v0.0.10/sts-wire -O ./.init/sts-wire && chmod +x ./.init/sts-wire
+RUN wget https://github.com/dciangot/sts-wire/releases/download/v0.0.11/sts-wire_linux -O ./.init/sts-wire && chmod +x ./.init/sts-wire
 COPY ./spawn.sh ./.init/spawn.sh
 RUN sudo chown -R $NB_USER .init
 
