@@ -17,5 +17,5 @@ oidc-gen dodas --issuer $IAM_SERVER \
  --rt $REFRESH_TOKEN \
  --confirm-yes \
  --scope "openid profile email" \
- --redirect-uri http://dummy:8843 \
+ --redirect-uri http://localhost:8843 \
  --pw-cmd "echo \"DUMMY PWD\""
