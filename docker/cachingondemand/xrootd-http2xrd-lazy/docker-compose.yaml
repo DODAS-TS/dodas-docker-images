@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  server:
+    build: .
+    command:
+      - sh
+      - -c
+      - /tmp/scripts/start.sh /etc/xrootd/xrootd-http.cfg     
+    ports:
+      - 8443:8443
+    volumes:
+      - ./config:/etc/xrootd
+      - ./scripts:/tmp/scripts
+      - ./ca:/etc/grid-security/certificates
+      - ./data:/data
+    environment:
+      - XRD_HOST=__PUBLIC_HOST_HERE__
