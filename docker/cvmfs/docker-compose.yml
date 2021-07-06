@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  cvmfs:
+    image: .
+    privileged: true
+    volumes:
+      - type: bind
+        source: /cvmfs
+        target: /cvmfs
+        bind:
+          propagation: rshared
+    environment:
+      - REPO_LIST=list of repositories
