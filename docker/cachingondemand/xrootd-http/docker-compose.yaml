@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  server:
+    build: .
+    command:
+      - sh
+      - -c
+      - /tmp/scripts/start.sh /etc/xrootd/xrootd-http.cfg     
+    volumes:
+      - ./config:/etc/xrootd
+      - ./scripts:/tmp/scripts
+      - ./ca:/etc/grid-security/certificates
+    environment:
+      - XRD_HOST=192.168.16.3
+  redirector:
+    build: .
+    command:
+      - sh
+      - -c
+      - /tmp/scripts/start.sh /etc/xrootd/xrootd-http-redirector.cfg     
+    volumes:
+      - ./config:/etc/xrootd
+      - ./scripts:/tmp/scripts
+      - ./ca:/etc/grid-security/certificates
+    environment:
+      - XRD_HOST=redirector
+
+  #  environment:
+  #    XRD_HOST: server
