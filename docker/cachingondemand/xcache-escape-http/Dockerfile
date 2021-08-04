@@ -25,7 +25,7 @@ WORKDIR /etc/yum.repos.d
 RUN yum install -y wget
 #RUN wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo
 #RUN yum -y install https://repo.opensciencegrid.org/osg/3.5/osg-3.5-el7-release-latest.rpm
-#RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \
+RUN yum --setopt=tsflags=nodocs -y install epel-release
 #    && yum --setopt=tsflags=nodocs -y install fetch-crl wn sysstat git vim gcc cmake make ca-policy-egi-core ca-policy-lcg \
 #           voms-clients-cpp voms \
 #   && yum clean all
@@ -33,7 +33,7 @@ RUN yum install -y wget
 RUN yum update -y
 
 RUN yum remove -y xrootd
-RUN yum install -y davix-devel gsoap-2 openssl xrdcl-http xrootd-server-$XRD_VERSION  xrootd-server-devel-$XRD_VERSION xrootd-devel-$XRD_VERSION
+RUN yum install -y davix-devel gsoap-2 openssl xrdcl-http-$XRD_VERSION xrootd-server-$XRD_VERSION  xrootd-server-devel-$XRD_VERSION xrootd-devel-$XRD_VERSION
 
 RUN yum install -y sysstat vim  gcc make cmake gcc-c++ rpm-build git sudo
 
