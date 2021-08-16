@@ -1,6 +1,6 @@
 FROM mircot/htcondordask:v5
 
-RUN pip3 install dask-remote-jobqueue==v0.4.2
+RUN pip3 install dask-remote-jobqueue==v0.4.3
 
 COPY labextension.yaml /usr/local/lib/python3.6/site-packages/dask_labextension/labextension.yaml
 COPY spawn.sh /.init/spawn.sh
