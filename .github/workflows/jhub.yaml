@@ -1,4 +1,4 @@
-name: ci
+name: jhub build
 
 on:
   push:

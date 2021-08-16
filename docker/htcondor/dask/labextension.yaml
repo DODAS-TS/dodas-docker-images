@@ -1,0 +1,9 @@
+labextension:
+  factory:
+    module: 'dask_remote_jobqueue'
+    class: 'RemoteHTCondor'
+    args: []
+    kwargs: {}
+  default: {}
+  initial:
+     - name: "Initial Cluster"

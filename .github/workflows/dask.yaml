@@ -1,12 +1,12 @@
-name: spark builld
+name: dask build
 
 on:
   push:
     tags: 
-    - "*-spark"
+    - "*-dask"
 
 jobs:
-  spark:
+  dask:
     runs-on: ubuntu-latest
     steps:
       -
@@ -17,7 +17,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: dodasts/spark # list of Docker images to use as base name for tags
+          images: dodasts/jhub # list of Docker images to use as base name for tags
           tag-sha: true # add git short SHA as Docker tag
       -
         name: Set up QEMU
@@ -35,8 +35,8 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./docker/spark
-          file: ./docker/spark/Dockerfile
+          context: ./docker/htcondor/dask
+          file: ./docker/htcondor/dask/Dockerfile
           platforms: linux/amd64,linux/arm64,linux/386
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
