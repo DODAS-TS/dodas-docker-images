@@ -17,7 +17,7 @@ USER jovyan
 # Install required python packages for all the extensions
 # Force lab version 2, since we're targeting development to that version
 RUN pip install \
-        pyspark==3.1.2 \
+        pyspark==3.0.3 \
         jupyter_nbextensions_configurator \
         widgetsnbextension \
         itkwidgets \
@@ -85,10 +85,10 @@ RUN mkdir /tmp/jupyter_extensions && \
     chmod g+w -R /opt/conda/lib/python3.9/site-packages && \
     mkdir /home/$NB_USER/SWAN_projects && \
     fix-permissions /home/$NB_USER && \
-    cd /usr/local/ && wget https://downloads.apache.org/spark/spark-3.1.2/spark-3.1.2-bin-hadoop3.2.tgz && \
-        tar -xzvf spark-3.1.2-bin-hadoop3.2.tgz && \
-        mv spark-3.1.2-bin-hadoop3.2 spark && \
-        rm -f spark-3.1.2-bin-hadoop3.2.tgz
+    cd /usr/local/ && wget https://downloads.apache.org/spark/spark-3.0.3/spark-3.0.3-bin-hadoop3.2.tgz && \
+        tar -xzvf spark-3.0.3-bin-hadoop3.2.tgz && \
+        mv spark-3.0.3-bin-hadoop3.2 spark && \
+        rm -f spark-3.0.3-bin-hadoop3.2.tgz
 
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.872/aws-java-sdk-bundle-1.11.872.jar /usr/local/spark/jars/
 ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.2.0/hadoop-aws-3.2.0.jar /usr/local/spark/jars/
