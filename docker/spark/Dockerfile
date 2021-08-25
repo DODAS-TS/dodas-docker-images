@@ -1,5 +1,5 @@
 
-FROM jupyter/minimal-notebook:612aa5710bf9
+FROM jupyter/minimal-notebook:lab-3.1.7
 
 MAINTAINER Diego Ciangottini <diego.ciangottini@cern.ch>
 
@@ -23,8 +23,7 @@ RUN pip install \
         itkwidgets \
         plotly \
         bs4 \
-        kubernetes==9.0.0 \
-        'jupyterlab>=2.0.0rc2'
+        kubernetes==9.0.0
 
 USER root
 
