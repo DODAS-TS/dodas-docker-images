@@ -1,6 +1,6 @@
 FROM dciangot/dodas-iam-client-rec:test5 as REGISTRATION
 
-FROM jupyter/minimal-notebook:612aa5710bf9
+FROM jupyter/minimal-notebook:lab-3.1.7
 
 MAINTAINER Diego Ciangottini <diego.ciangottini@cern.ch>
 
