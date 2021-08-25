@@ -37,6 +37,6 @@ jobs:
         with:
           context: ./docker/spark
           file: ./docker/spark/Dockerfile
-          platforms: linux/amd64,linux/arm64,linux/386
+          platforms: linux/amd64
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
