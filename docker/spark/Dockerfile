@@ -1,5 +1,5 @@
 
-FROM jupyter/minimal-notebook:notebook-6.4.3
+FROM jupyter/minimal-notebook:lab-3.1.6
 
 MAINTAINER Diego Ciangottini <diego.ciangottini@cern.ch>
 
