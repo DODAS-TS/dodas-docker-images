@@ -86,7 +86,7 @@ RUN mkdir /tmp/jupyter_extensions && \
     fix-permissions /home/$NB_USER && \
     cd /usr/local/ && wget https://downloads.apache.org/spark/spark-3.1.2/spark-3.1.2-bin-hadoop3.2.tgz && \
         tar -xzvf spark-3.1.2-bin-hadoop3.2.tgz && \
-        mv spark-3.1.2-bin-hadoop3.2.tgz spark && \
+        mv spark-3.1.2-bin-hadoop3.2 spark && \
         rm -f spark-3.1.2-bin-hadoop3.2.tgz
 
 ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.872/aws-java-sdk-bundle-1.11.872.jar /usr/local/spark/jars/
