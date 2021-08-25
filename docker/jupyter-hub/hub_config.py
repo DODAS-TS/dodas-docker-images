@@ -82,7 +82,7 @@ if 'JUPYTERHUB_CRYPT_KEY' not in os.environ:
 
 c.JupyterHub.spawner_class = 'kubespawner.KubeSpawner'
 c.KubeSpawner.cmd = ['jupyterhub-singleuser', '--allow-root']
-c.KubeSpawner.image = 'dodasts/spark:v3.0.1'
+c.KubeSpawner.image = 'dodasts/spark:v0.0.10-spark'
 
 # TODO: PUT ENV
 
