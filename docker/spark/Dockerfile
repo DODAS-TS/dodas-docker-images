@@ -1,5 +1,5 @@
 
-FROM jupyter/minimal-notebook:lab-3.1.6
+FROM jupyter/minimal-notebook:lab-3.1.7
 
 MAINTAINER Diego Ciangottini <diego.ciangottini@cern.ch>
 
@@ -36,9 +36,9 @@ ARG SWAN_COMMON_BRANCH=qa
 
 ## Get latest - not necessarily tagged - version of the css files and compile them
 RUN git clone -b $SWAN_COMMON_BRANCH https://gitlab.cern.ch/swan/common.git /tmp/custom && \
-    cp -r /tmp/custom/images/* /opt/conda/lib/python3.8/site-packages/notebook/static/custom/
+    cp -r /tmp/custom/images/* /opt/conda/lib/python3.9/site-packages/notebook/static/custom/
 
-COPY ./custom.css /opt/conda/lib/python3.8/site-packages/notebook/static/custom/
+COPY ./custom.css /opt/conda/lib/python3.9/site-packages/notebook/static/custom/
 
 # Install our extensions just like in prod (but also enable sparkconnector and hdfsbrowser)
 RUN mkdir /tmp/jupyter_extensions && \
@@ -81,7 +81,7 @@ RUN mkdir /tmp/jupyter_extensions && \
 " > /home/$NB_USER/.jupyter/jupyter_notebook_config.py && \
     chmod g+w -R /usr/local/share/jupyter/nbextensions && \
     chown -R root:users /usr/local/share/jupyter/nbextensions && \
-    chmod g+w -R /opt/conda/lib/python3.8/site-packages && \
+    chmod g+w -R /opt/conda/lib/python3.9/site-packages && \
     mkdir /home/$NB_USER/SWAN_projects && \
     fix-permissions /home/$NB_USER && \
     cd /usr/local/ && wget https://downloads.apache.org/spark/spark-3.0.1/spark-3.0.1-bin-hadoop3.2.tgz && \
@@ -97,10 +97,10 @@ RUN chown $NB_UID:$NB_UID /usr/local/spark/conf/spark-defaults.conf && \
        echo -e "#!/bin/bash \
 \nsudo sed -ie 's/spark.driver.host master/spark.driver.host '$(hostname -i)'/' /usr/local/spark/conf/spark-defaults.conf\n$1" > /usr/bin/start.sh && \
        chmod +x /usr/bin/start.sh && \
-       cat /opt/conda/lib/python3.8/site-packages/sparkconnector/configuration.py
+       cat /opt/conda/lib/python3.9/site-packages/sparkconnector/configuration.py
 
-COPY ./connector.py /opt/conda/lib/python3.8/site-packages/sparkconnector/configuration.py
-COPY ./portallocator.py /opt/conda/lib/python3.8/site-packages/sparkconnector/portallocator.py
+COPY ./connector.py /opt/conda/lib/python3.9/site-packages/sparkconnector/configuration.py
+COPY ./portallocator.py /opt/conda/lib/python3.9/site-packages/sparkconnector/portallocator.py
 
 RUN apt-get update && apt-get install -y software-properties-common gnupg xvfb \
  && apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87 \
@@ -129,7 +129,7 @@ COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN sudo chmod +x /usr/local/bin/entrypoint.sh
 
-COPY listener.jar /opt/conda/lib/python3.8/site-packages/sparkmonitor/listener.jar
+COPY listener.jar /opt/conda/lib/python3.9/site-packages/sparkmonitor/listener.jar
 
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
