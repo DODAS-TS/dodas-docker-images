@@ -17,13 +17,14 @@ USER jovyan
 # Install required python packages for all the extensions
 # Force lab version 2, since we're targeting development to that version
 RUN pip install \
-        pyspark==3.0.1 \
+        pyspark==3.1.2 \
         jupyter_nbextensions_configurator \
         widgetsnbextension \
         itkwidgets \
         plotly \
         bs4 \
-        kubernetes==9.0.0
+        kubernetes
+        #==9.0.0
 
 USER root
 
