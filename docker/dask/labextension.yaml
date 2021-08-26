@@ -1,0 +1,15 @@
+labextension:
+  factory:
+    module: 'dask_remote_jobqueue'
+    class: 'RemoteHTCondor'
+    args: []
+    kwargs: {}
+  default:
+    workers: null
+    adapt:
+      null
+      # minimum: 0
+      # maximum: 10
+  initial:
+    []
+
