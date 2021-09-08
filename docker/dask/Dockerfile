@@ -14,9 +14,9 @@ RUN yum install -y sqlite-devel \
     binutils \
     bzip2-devel \
     clang \
-    clang-devel
+    clang-devel \
 # cmake \ # Too old: 2.8 | min required 3.9
-emacs \
+    emacs \
     gcc \
     gcc-c++ \
     gcc-gfortran \
@@ -49,15 +49,15 @@ emacs \
     vim \
     wget \
     which \
-    zlib-devel &&
-    yum clean all &&
+    zlib-devel && \
+    yum clean all && \
     rm -rf /var/cache/yum
 
 # Install cmake
 WORKDIR /usr/local/share
 
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.1/cmake-3.21.1.tar.gz &&
-    tar xzvf cmake-3.21.1.tar.gz && cd cmake-3.21.1 &&
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.1/cmake-3.21.1.tar.gz && \
+    tar xzvf cmake-3.21.1.tar.gz && cd cmake-3.21.1 && \
     ./bootstrap && make && make install
 
 # Install root6 with dask
@@ -77,9 +77,9 @@ WORKDIR /usr/local/share
 
 # Install jupyterhub stuff
 RUN curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
-RUN yum update -y &&
-    yum install -y nodejs &&
-    yum clean all &&
+RUN yum update -y && \
+    yum install -y nodejs && \
+    yum clean all && \
     rm -rf /var/cache/yum
 RUN npm install -g configurable-http-proxy
 
@@ -101,16 +101,16 @@ RUN python3 -m pip install "dask[dataframe]"
 RUN rm -r /root/.cache
 
 # Install oidc-agent
-RUN yum update -y &&
+RUN yum update -y && \
     yum install -y jq \
         yad \
         libmicrohttpd \
         libseccomp \
         libsecret \
-        libsodium &&
-    yum clean all &&
+        libsodium && \
+    yum clean all && \
     rm -rf /var/cache/yum
-RUN wget https://github.com/indigo-dc/oidc-agent/releases/download/v4.1.1/oidc-agent-4.1.1-1.el7.x86_64.rpm &&
+RUN wget https://github.com/indigo-dc/oidc-agent/releases/download/v4.1.1/oidc-agent-4.1.1-1.el7.x86_64.rpm && \
     rpm -i oidc-agent-4.1.1-1.el7.x86_64.rpm
 
 ARG JUPYTER_ROOT=/workarea
@@ -119,20 +119,20 @@ WORKDIR ${JUPYTER_ROOT}
 
 COPY jupyterhub-singleuser /usr/local/bin/jupyterhub-singleuser
 
-RUN yum update -y &&
-    yum install -y fuse &&
-    yum clean all &&
+RUN yum update -y && \
+    yum install -y fuse && \
+    yum clean all && \
     rm -rf /var/cache/yum
 RUN chmod +x /usr/local/bin/jupyterhub-singleuser
 
 # Install sts-wire
-RUN mkdir -p .init &&
-    wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /.init/sts-wire &&
+RUN mkdir -p .init && \
+    wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /.init/sts-wire && \
     chmod +x /.init/sts-wire
 
 # RUN mkdir ${JUPYTER_ROOT}
-RUN ln -s /s3 ${JUPYTER_ROOT}/cloud-storage &&
-    ln -s /opt/user_data ${JUPYTER_ROOT}/local &&
+RUN ln -s /s3 ${JUPYTER_ROOT}/cloud-storage && \
+    ln -s /opt/user_data ${JUPYTER_ROOT}/local && \
     ln -s ${JUPYTER_ROOT} /root/workarea
 
 # ----- HTCondor -----
@@ -159,9 +159,9 @@ RUN pip3 install dask-remote-jobqueue==v0.4.7
 # Old approach
 # RUN python3 -m pip install dask-labextension "dask[dataframe]"
 # COPY labextension.yaml /usr/local/lib/python3.6/site-packages/dask_labextension/labextension.yaml
-RUN git clone --branch custom_clusters https://github.com/DODAS-TS/dask-labextension.git &&
-    cd dask-labextension &&
-    python3 setup.py install
+RUN git clone --branch custom_clusters https://github.com/DODAS-TS/dask-labextension.git \
+    && cd dask-labextension \
+    && python3 setup.py install
 
 COPY spawn.sh /.init/spawn.sh
 
