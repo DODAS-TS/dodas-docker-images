@@ -99,7 +99,7 @@ RUN python3 -m pip install dask \
     notebook \
     jupyter-server-proxy \
     ipywidgets
-RUN python3 -m pip install dask-labextension "dask[dataframe]"
+RUN python3 -m pip install "dask[dataframe]"
 RUN rm -r /root/.cache
 
 # Install oidc-agent
@@ -158,7 +158,13 @@ COPY htc.rc .
 # Install DASK jobqueue
 RUN pip3 install dask-remote-jobqueue==v0.4.7
 
-COPY labextension.yaml /usr/local/lib/python3.6/site-packages/dask_labextension/labextension.yaml
+# Old approach
+# RUN python3 -m pip install dask-labextension "dask[dataframe]"
+# COPY labextension.yaml /usr/local/lib/python3.6/site-packages/dask_labextension/labextension.yaml
+RUN git clone --branch custom_clusters https://github.com/DODAS-TS/dask-labextension.git \
+    && cd dask-labextension \
+    && python3 setup.py install
+
 COPY spawn.sh /.init/spawn.sh
 
 RUN chmod +x /.init/spawn.sh
