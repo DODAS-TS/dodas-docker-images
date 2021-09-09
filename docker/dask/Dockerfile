@@ -14,17 +14,25 @@ RUN yum install -y sqlite-devel \
     automake \
     binutils \
     bzip2-devel \
+    cfitsio-devel \
     clang \
     clang-devel \
 # cmake \ # Too old: 2.8 | min required 3.9
     # Install gcc7 with devtoolset-7
+    chromium \
     devtoolset-7 \
     emacs \
+    fftw3-devel \
     gcc \
     gcc-c++ \
     gcc-gfortran \
     git \
     graphviz-devel \
+    giflib-devel \
+    gsl-devel \
+    glew-devel \
+    libtiff-devel \
+    libjpeg-devel \
     libpng-devel \
     libSM-devel \
     libX11-devel \
@@ -34,12 +42,14 @@ RUN yum install -y sqlite-devel \
     libXpm-devel \
     libXrender-devel \
     libXt-devel \
+    libxml2-devel \
     make \
     mesa-libGL-devel \
     ncurses-devel \
     openssl-devel \
     patch \
     perl \
+    pcre-devel \
     perl-ExtUtils-MakeMaker \
     python3 \
     python3-devel \
@@ -52,6 +62,7 @@ RUN yum install -y sqlite-devel \
     vim \
     wget \
     which \
+    xorg-x11-server-devel \
     zlib-devel && \
     yum clean all && \
     rm -rf /var/cache/yum
@@ -62,6 +73,10 @@ WORKDIR /usr/local/share
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.1/cmake-3.21.1.tar.gz && \
     tar xzvf cmake-3.21.1.tar.gz && cd cmake-3.21.1 && \
     ./bootstrap && make && make install
+
+# Install vdt
+RUN git clone https://github.com/dpiparo/vdt.git && cd vdt \
+    cmake . && make && make install
 
 # Install root6 with dask
 RUN mkdir root6build root6
