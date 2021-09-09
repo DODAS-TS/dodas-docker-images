@@ -8,6 +8,7 @@ ENV LC_ALL en_US.UTF-8
 RUN localedef -i en_US -c -f UTF-8 en_US.UTF-8
 
 RUN yum update -y
+RUN yum install -y centos-release-scl
 RUN yum install -y sqlite-devel \
     autoconf \
     automake \
@@ -16,6 +17,8 @@ RUN yum install -y sqlite-devel \
     clang \
     clang-devel \
 # cmake \ # Too old: 2.8 | min required 3.9
+    # Install gcc7 with devtoolset-7
+    devtoolset-7 \
     emacs \
     gcc \
     gcc-c++ \
@@ -68,7 +71,19 @@ WORKDIR /usr/local/share/root6source
 
 WORKDIR /usr/local/share/root6build
 
-RUN cmake -DCMAKE_INSTALL_PREFIX=/usr/local/share/root6 -DPython3_EXECUTABLE=/usr/bin/python3 /usr/local/share/root6source
+# Use root compiler
+# RUN cmake \
+#         -DCMAKE_INSTALL_PREFIX=/usr/local/share/root6 \
+#         -DPython3_EXECUTABLE=/usr/bin/python3 /usr/local/share/root6source
+
+# Use devtoolset-7 compiler
+RUN cmake \
+        -DCMAKE_C_COMPILER=/opt/rh/devtoolset-7/root/usr/bin/gcc \
+        -DCMAKE_CXX_COMPILER=/opt/rh/devtoolset-7/root/usr/bin/g++ \
+        -DCMAKE_INSTALL_PREFIX=/usr/local/share/root6 \
+        -DPython3_EXECUTABLE=/usr/bin/python3 \
+        /usr/local/share/root6source
+# Compile root
 RUN cmake --build . --target install -- -j8
 
 ENV PYTHONPATH=/usr/local/share/root6/lib
