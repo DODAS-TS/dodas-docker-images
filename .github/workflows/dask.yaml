@@ -35,8 +35,8 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./docker/htcondor/dask
-          file: ./docker/htcondor/dask/Dockerfile
+          context: ./docker/dask
+          file: ./docker/dask/Dockerfile
           platforms: linux/amd64,linux/arm64,linux/386
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
