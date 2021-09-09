@@ -76,7 +76,7 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.21.1/cmake-3.21.1
 
 # Install vdt
 RUN git clone https://github.com/dpiparo/vdt.git && cd vdt \
-    cmake . && make && make install
+    && cmake . && make && make install
 
 # Install root6 with dask
 RUN mkdir root6build root6
