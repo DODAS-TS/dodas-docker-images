@@ -1,6 +1,6 @@
 FROM mircot/htcondordask:v5
 
-RUN pip3 install dask-remote-jobqueue==v0.4.7
+RUN pip3 install dask-remote-jobqueue==v0.4.8
 
 RUN pip3 install jupyter-packaging
 RUN git clone --branch custom_clusters https://github.com/DODAS-TS/dask-labextension.git \

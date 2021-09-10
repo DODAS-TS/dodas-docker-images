@@ -184,7 +184,7 @@ WORKDIR /root
 COPY htc.rc .
 
 # Install DASK jobqueue
-RUN pip3 install dask-remote-jobqueue==v0.4.7
+RUN pip3 install dask-remote-jobqueue==v0.4.8
 
 # Old approach
 # RUN python3 -m pip install dask-labextension "dask[dataframe]"
