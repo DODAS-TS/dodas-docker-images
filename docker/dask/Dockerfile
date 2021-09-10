@@ -156,7 +156,7 @@ RUN yum update -y && \
 RUN chmod +x /usr/local/bin/jupyterhub-singleuser
 
 # Install sts-wire
-RUN mkdir -p .init && \
+RUN mkdir -p /.init && \
     wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /.init/sts-wire && \
     chmod +x /.init/sts-wire
 
@@ -192,7 +192,7 @@ RUN pip3 install dask-remote-jobqueue==v0.4.7
 RUN python3 -m pip install jupyter-packaging \
     && git clone --branch custom_clusters https://github.com/DODAS-TS/dask-labextension.git \
     && cd dask-labextension \
-    && python3 setup.py install
+    && python3 -m pip install .
 
 COPY spawn.sh /.init/spawn.sh
 
