@@ -189,7 +189,8 @@ RUN pip3 install dask-remote-jobqueue==v0.4.7
 # Old approach
 # RUN python3 -m pip install dask-labextension "dask[dataframe]"
 # COPY labextension.yaml /usr/local/lib/python3.6/site-packages/dask_labextension/labextension.yaml
-RUN git clone --branch custom_clusters https://github.com/DODAS-TS/dask-labextension.git \
+RUN python3 -m pip install jupyter-packaging \
+    && git clone --branch custom_clusters https://github.com/DODAS-TS/dask-labextension.git \
     && cd dask-labextension \
     && python3 setup.py install
 
