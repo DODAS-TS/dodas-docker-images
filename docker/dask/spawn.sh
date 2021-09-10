@@ -12,6 +12,9 @@ oidc-gen dodas --issuer $IAM_SERVER \
     --redirect-uri http://localhost:8843 \
     --pw-cmd "echo \"DUMMY PWD\""
 
-oidc-token dodas >~/.token
+while true; do
+    oidc-token dodas --time 1200 >~/.token
+    sleep 600
+done &
 
 source ~/htc.rc
