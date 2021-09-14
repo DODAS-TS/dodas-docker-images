@@ -1,4 +1,4 @@
-# Image name: dodasts/base_jlabcollaborative:v1
+# Image name: dodasts/base_jlabcollaborative
 FROM ubuntu:20.04
 
 EXPOSE 8000
@@ -30,9 +30,9 @@ COPY jupyterhub_config.py /etc/jupyterhub/
 
 WORKDIR /usr/local/share/dodasts
 
-RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git \
-    && cd jupyterlab-collaborative-util-extension \
-    && jupyter labextension install
+RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git &&
+    cd jupyterlab-collaborative-util-extension &&
+    jupyter labextension install
 
 WORKDIR /usr/share/workspace
 
