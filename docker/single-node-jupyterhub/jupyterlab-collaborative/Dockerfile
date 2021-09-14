@@ -18,14 +18,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y curl libcurl4-openssl-dev 
 RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 idna importlib-metadata
 RUN python3 -m pip install --no-cache-dir jupyterlab-link-share
 
-WORKDIR /usr/local/share/dodasts
-
-RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git \
-    && cd jupyterlab-collaborative-util-extension \
-    && jupyter labextension install
-
-WORKDIR /
-
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
 # RUN /bin/bash -c "jupyter lab build"
@@ -35,6 +27,12 @@ RUN npm install -g configurable-http-proxy
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 
 COPY jupyterhub_config.py /etc/jupyterhub/
+
+WORKDIR /usr/local/share/dodasts
+
+RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git \
+    && cd jupyterlab-collaborative-util-extension \
+    && jupyter labextension install
 
 WORKDIR /usr/share/workspace
 
