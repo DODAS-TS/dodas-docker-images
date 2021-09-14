@@ -2,7 +2,7 @@
 
 FROM dciangot/dodas-iam-client-rec:test5 as REGISTRATION
 
-FROM jupyterhub/jupyterhub:1.3
+FROM jupyterhub/jupyterhub:1.4.2
 
 ARG DEBIAN_FRONTEND noninteractive
 
