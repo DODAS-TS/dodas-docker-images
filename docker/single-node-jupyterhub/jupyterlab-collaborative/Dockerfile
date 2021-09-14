@@ -1,25 +1,27 @@
-# Image name: dodasts/base-jlabcollaborative
+# Image name: dodasts/snj-base-jlabc
 FROM ubuntu:20.04
+
+ARG DEBIAN_FRONTEND noninteractive
 
 EXPOSE 8000
 EXPOSE 8888
 
-RUN DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y && apt install -y git
+RUN apt update && apt upgrade -y && apt install -y git
 
 WORKDIR /
 
-RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev python3-pip libargon2-0-dev \
+RUN apt install -y build-essential python3-dev python3-pip libargon2-0-dev \
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
     libczmq-dev
 
 RUN python3 -m pip install -U pip setuptools
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y curl libcurl4-openssl-dev libssl-dev
+RUN apt-get install -y curl libcurl4-openssl-dev libssl-dev
 
 RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 idna importlib-metadata
 RUN python3 -m pip install --no-cache-dir jupyterlab-link-share
 
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs
+RUN apt-get install -y nodejs
 # RUN /bin/bash -c "jupyter lab build"
 
 RUN python3 -m pip install --no-cache-dir jupyterhub pycurl
