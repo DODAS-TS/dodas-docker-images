@@ -1,4 +1,4 @@
-# Image name: dodasts/base_jlabcollaborative
+# Image name: dodasts/base-jlabcollaborative
 FROM ubuntu:20.04
 
 EXPOSE 8000
