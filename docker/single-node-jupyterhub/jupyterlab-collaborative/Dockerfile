@@ -20,9 +20,9 @@ RUN python3 -m pip install --no-cache-dir jupyterlab-link-share
 
 WORKDIR /usr/local/share/dodasts
 
-RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git &&
-    cd jupyterlab-collaborative-util-extension &&
-    jupyter labextension install
+RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git \
+    && cd jupyterlab-collaborative-util-extension \
+    && jupyter labextension install
 
 WORKDIR /
 
