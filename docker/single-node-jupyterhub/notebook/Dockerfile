@@ -4,7 +4,7 @@ FROM ubuntu:20.04
 EXPOSE 8000
 EXPOSE 8888
 
-RUN apt update && apt upgrade -y && DEBIAN_FRONTEND=noninteractive apt install -y git
+RUN DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y && apt install -y git
 
 WORKDIR /
 
@@ -13,14 +13,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev py
     libczmq-dev
 
 RUN python3 -m pip install -U pip setuptools
-RUN apt-get install -y curl libcurl4-openssl-dev libssl-dev
+RUN DEBIAN_FRONTEND=noninteractive apt install -y curl libcurl4-openssl-dev libssl-dev
 
 RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 idna importlib-metadata
 RUN python3 -m pip install --no-cache-dir notebook==6.4.1
 RUN python3 -m pip install --no-cache-dir ipywidgets
 
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
+RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 # RUN /bin/bash -c "jupyter lab build"
 
 RUN python3 -m pip install --no-cache-dir jupyterhub pycurl

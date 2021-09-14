@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 
 EXPOSE 8099
 
-RUN apt update && apt upgrade -y && DEBIAN_FRONTEND=noninteractive apt install -y python3 python3-pip
+RUN DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y && apt install -y python3 python3-pip
 
 WORKDIR /usr/share/collab_proxy
 

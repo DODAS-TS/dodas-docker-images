@@ -15,7 +15,7 @@ RUN python3 -m pip install --no-cache-dir jupyterhub-idle-culler
 # RUN useradd test -p "$(openssl passwd -1 test)"
 # RUN mkdir /home/test && chown test: /home/test
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y wget
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y wget
 
 RUN wget "https://crt.sh/?d=2475254782" -O /usr/local/share/ca-certificates/ca.crt && update-ca-certificates
 
