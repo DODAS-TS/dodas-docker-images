@@ -20,6 +20,9 @@ RUN apt-get install -y curl libcurl4-openssl-dev libssl-dev
 RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 idna importlib-metadata
 RUN python3 -m pip install --no-cache-dir notebook==6.4.1
 RUN python3 -m pip install --no-cache-dir ipywidgets
+RUN python3 -m pip install --no-cache-dir dockerspawner
+RUN python3 -m pip install --no-cache-dir oauthenticator==0.13.0
+RUN python3 -m pip install --no-cache-dir jupyterhub-idle-culler
 
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get install -y nodejs
