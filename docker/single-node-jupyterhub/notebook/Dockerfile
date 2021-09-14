@@ -1,16 +1,14 @@
 # Image name: dodasts/snj-base-notebook
 FROM ubuntu:20.04
 
-ARG DEBIAN_FRONTEND noninteractive
-
 EXPOSE 8000
 EXPOSE 8888
 
-RUN apt update && apt upgrade -y && apt install -y git
+RUN apt update && apt upgrade -y && DEBIAN_FRONTEND=noninteractive apt install -y git
 
 WORKDIR /
 
-RUN apt install -y build-essential python3-dev python3-pip libargon2-0-dev \
+RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev python3-pip libargon2-0-dev \
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
     libczmq-dev
 
