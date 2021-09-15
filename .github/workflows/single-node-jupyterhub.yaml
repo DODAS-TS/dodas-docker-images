@@ -3,7 +3,7 @@ name: single-node-jupyterhub build
 on:
   push:
     tags:
-      - "*-single-node-jupyterhub"
+      - "*-snj"
 
 jobs:
   notebook:
