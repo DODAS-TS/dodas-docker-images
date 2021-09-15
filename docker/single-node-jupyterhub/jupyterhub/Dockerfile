@@ -8,7 +8,7 @@ WORKDIR /
 
 RUN python3 -m pip install -U pip
 RUN python3 -m pip install --no-cache-dir dockerspawner
-RUN python3 -m pip install --no-cache-dir oauthenticator==0.13.0
+RUN python3 -m pip install --no-cache-dir oauthenticator
 RUN python3 -m pip install --no-cache-dir jupyterhub-idle-culler
 
 # Test user
