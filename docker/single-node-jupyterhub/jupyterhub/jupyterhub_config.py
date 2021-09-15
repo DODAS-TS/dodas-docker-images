@@ -158,7 +158,9 @@ class EnvAuthenticator(GenericOAuthenticator):
 c.JupyterHub.authenticator_class = EnvAuthenticator
 c.GenericOAuthenticator.oauth_callback_url = callback
 
-c.JupyterHub.db_url = "sqlite:///db/jupyterhub.sqlite"
+c.JupyterHub.db_url = (
+    "sqlite:///usr/local/share/dodasts/jupyterhub/db/jupyterhub.sqlite"
+)
 
 # PUT IN SECRET
 c.GenericOAuthenticator.client_id = client_id
@@ -185,7 +187,9 @@ if "JUPYTERHUB_CRYPT_KEY" not in os.environ:
 
 c.JupyterHub.log_level = 30
 
-c.JupyterHub.cookie_secret_file = "/srv/jupyterhub/cookies/jupyterhub_cookie_secret"
+c.JupyterHub.cookie_secret_file = (
+    "/usr/local/share/dodasts/jupyterhub/cookies/jupyterhub_cookie_secret"
+)
 
 c.ConfigurableHTTPProxy.debug = True
 c.JupyterHub.cleanup_servers = False

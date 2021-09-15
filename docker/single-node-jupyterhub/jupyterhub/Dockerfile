@@ -21,7 +21,7 @@ RUN wget "https://crt.sh/?d=2475254782" -O /usr/local/share/ca-certificates/ca.c
 
 RUN mkdir -p .init
 
-COPY jupyterhub_config.py /srv/jupyterhub/jupyterhub_config.py
+COPY jupyterhub_config.py /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
 
 # COPY self registration da docker
 COPY --from=REGISTRATION /usr/local/bin/dodas-IAMClientRec ./.init/dodas-IAMClientRec
