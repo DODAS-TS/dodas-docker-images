@@ -6,7 +6,7 @@ on:
       - "*-snj"
 
 jobs:
-  notebook:
+  snj-base-notebook:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,7 +36,7 @@ jobs:
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
 
-  jupyterhub:
+  snj-base-jhub:
     runs-on: ubuntu-latest
     # needs: notebook
     steps:
@@ -67,7 +67,7 @@ jobs:
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
 
-  jlabcollaborative:
+  snj-base-jlabc:
     runs-on: ubuntu-latest
     # needs: jupyterhub
     steps:
@@ -98,7 +98,7 @@ jobs:
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
 
-  jlabcollaborative-proxy:
+  snj-base-jlabc-proxy:
     runs-on: ubuntu-latest
     # needs: jlabcollaborative
     steps:
