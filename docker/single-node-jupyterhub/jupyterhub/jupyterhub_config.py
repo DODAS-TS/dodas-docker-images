@@ -102,10 +102,9 @@ class EnvAuthenticator(GenericOAuthenticator):
             )
             raise Exception("OAuth user not in the allowed groups %s" % allowed_groups)
 
+    # https://github.com/jupyterhub/oauthenticator/blob/master/oauthenticator/generic.py#L157
     async def authenticate(self, handler, data=None):
         code = handler.get_argument("code")
-        # TODO: Configure the curl_httpclient for tornado
-        http_client = self.http_client()
 
         params = dict(
             redirect_uri=self.get_callback_url(handler),
@@ -116,9 +115,9 @@ class EnvAuthenticator(GenericOAuthenticator):
 
         headers = self._get_headers()
 
-        token_resp_json = await self._get_token(http_client, headers, params)
+        token_resp_json = await self._get_token(headers, params)
 
-        user_data_resp_json = await self._get_user_data(http_client, token_resp_json)
+        user_data_resp_json = await self._get_user_data(token_resp_json)
 
         if callable(self.username_key):
             name = self.username_key(user_data_resp_json)
