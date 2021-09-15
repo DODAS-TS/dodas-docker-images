@@ -42,7 +42,7 @@ os.environ["IAM_INSTANCE"] = iam_server
 
 myenv = os.environ.copy()
 
-cache_file = "/srv/jupyterhub/cookies/iam_secret"
+cache_file = "/usr/local/share/dodasts/jupyterhub/cookies/iam_secret"
 
 if os.path.isfile(cache_file):
     with open(cache_file) as f:
