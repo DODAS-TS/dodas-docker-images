@@ -17,4 +17,7 @@ while true; do
     sleep 600
 done &
 
+. /cvmfs/cms.dodas.infn.it/miniconda3/etc/profile.d/conda.sh
+export LD_LIBRARY_PATH=/cvmfs/cms.dodas.infn.it/miniconda3/envs/cms-dodas/lib/:$LD_LIBRARY_PATH
+conda activate cms-dodas
 source ~/htc.rc
