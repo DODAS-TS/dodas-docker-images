@@ -11,7 +11,7 @@ RUN localedef -i en_US -c -f UTF-8 en_US.UTF-8
 WORKDIR /usr/local/share
 
 # Install jupyterhub stuff
-RUN curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
+RUN curl -sL https://rpm.nodesource.com/setup_14.x | bash -
 RUN yum update -y && \
     yum install -y nodejs && \
     yum clean all && \
