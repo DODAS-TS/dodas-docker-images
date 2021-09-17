@@ -1,7 +1,7 @@
 {
  "argv": [
   "bash", "-c",
-  "source ~/htc.rc; source /usr/local/share/root6/bin/thisroot.sh; python3 -m ipykernel_launcher -f {connection_file}"
+  ". /cvmfs/cms.dodas.infn.it/miniconda3/etc/profile.d/conda.sh  &&   export LD_LIBRARY_PATH=/cvmfs/cms.dodas.infn.it/miniconda3/envs/cms-dodas/lib/:$LD_LIBRARY_PATH   && conda activate cms-dodas && source /cvmfs/cms.dodas.infn.it/miniconda3/envs/cms-dodas/bin/thisroot.sh && python3 -m ipykernel_launcher -f {connection_file}"
  ],
  "display_name": "Python 3",
  "language": "python"

@@ -71,8 +71,8 @@ WORKDIR /root
 
 COPY htc.rc .
 
-COPY spawn.sh /.init/spawn.sh
+COPY spawn.py /.init/spawn.py
 
-RUN chmod +x /.init/spawn.sh
+RUN chmod +x /.init/spawn.py
 RUN echo "source ~/htc.rc" >>~/.bashrc
 COPY kernel.json /usr/local/share/jupyter/kernels/python3/kernel.json
