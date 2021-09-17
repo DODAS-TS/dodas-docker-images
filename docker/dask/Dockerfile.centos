@@ -1,40 +1,35 @@
-FROM ubuntu:20.04
-
-RUN DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y && apt install -y git
-
-WORKDIR /
-
-RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev python3-pip libargon2-0-dev \
-    libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
-    libczmq-dev
-
-RUN python3 -m pip install -U pip setuptools
-RUN DEBIAN_FRONTEND=noninteractive apt install -y curl libcurl4-openssl-dev libssl-dev
-
-RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 idna importlib-metadata
-RUN python3 -m pip install --no-cache-dir notebook==6.4.1
-RUN python3 -m pip install --no-cache-dir ipywidgets
-
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
-# RUN /bin/bash -c "jupyter lab build"
-
-RUN python3 -m pip install --no-cache-dir jupyterhub pycurl
-RUN npm install -g configurable-http-proxy
+FROM htcondor/execute:8.9.9-el7
 
 COPY environment /etc
+
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
+RUN localedef -i en_US -c -f UTF-8 en_US.UTF-8
 
 
 WORKDIR /usr/local/share
 
-# Install oidc-agent
-RUN   apt-get update \
-    && apt-get install -y  gnupg2 software-properties-common fuse
+# Install jupyterhub stuff
+RUN curl -sL https://rpm.nodesource.com/setup_14.x | bash -
+RUN yum update -y && \
+    yum install -y nodejs && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+RUN npm install -g configurable-http-proxy
 
-RUN apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87 \
-    && add-apt-repository "deb http://repo.data.kit.edu/ubuntu/bionic ./" 
-    
-RUN apt-get install -y oidc-agent
+# Install oidc-agent
+RUN yum update -y && \
+    yum install -y jq \
+        yad \
+        libmicrohttpd \
+        libseccomp \
+        libsecret \
+        libsodium && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+RUN wget https://github.com/indigo-dc/oidc-agent/releases/download/v4.1.1/oidc-agent-4.1.1-1.el7.x86_64.rpm && \
+    rpm -i oidc-agent-4.1.1-1.el7.x86_64.rpm
 
 ARG JUPYTER_ROOT=/workarea
 
@@ -42,9 +37,12 @@ WORKDIR ${JUPYTER_ROOT}
 
 COPY jupyterhub-singleuser /usr/local/bin/jupyterhub-singleuser
 
+RUN yum update -y && \
+    yum install -y fuse && \
+    yum clean all && \
+    rm -rf /var/cache/yum
 RUN chmod +x /usr/local/bin/jupyterhub-singleuser
 
-RUN apt-get install -y wget
 # Install sts-wire
 RUN mkdir -p /.init && \
     wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /.init/sts-wire && \
