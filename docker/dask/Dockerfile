@@ -74,5 +74,5 @@ COPY htc.rc .
 COPY spawn.py /.init/spawn.py
 
 RUN chmod +x /.init/spawn.py
-RUN echo "source ~/htc.rc" >>~/.bashrc
+RUN echo ". /cvmfs/cms.dodas.infn.it/miniconda3/etc/profile.d/conda.sh && export LD_LIBRARY_PATH=/cvmfs/cms.dodas.infn.it/miniconda3/envs/cms-dodas/lib/:$LD_LIBRARY_PATH && conda activate cms-dodas && source ~/htc.rc" >>~/.bashrc
 COPY kernel.json /usr/local/share/jupyter/kernels/python3/kernel.json

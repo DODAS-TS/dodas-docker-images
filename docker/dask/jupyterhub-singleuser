@@ -22,4 +22,4 @@ export LD_LIBRARY_PATH=/cvmfs/cms.dodas.infn.it/miniconda3/envs/cms-dodas/lib/:$
 conda activate cms-dodas
 source ~/htc.rc
 
-python3 spawn.py "$@"
+python3 /.init/spawn.py "$@"
