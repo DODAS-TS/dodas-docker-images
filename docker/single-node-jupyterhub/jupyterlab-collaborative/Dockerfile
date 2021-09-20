@@ -17,6 +17,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y curl libcurl4-openssl-dev libs
 
 RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 idna importlib-metadata
 RUN python3 -m pip install --no-cache-dir jupyterlab-link-share
+RUN python3 -m pip install --no-cache-dir jedi-language-server
 
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
