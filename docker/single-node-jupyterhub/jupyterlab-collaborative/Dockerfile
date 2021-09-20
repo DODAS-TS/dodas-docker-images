@@ -37,6 +37,7 @@ RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extensio
 WORKDIR /usr/share/workspace
 
 CMD ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--debug", \
+    "--no-browser", \
     "--LabApp.collaborative=True", \
     "--ServerApp.allow_password_change=False", \
     "--ServerApp.keyfile=/usr/local/share/dodasts/certs/jupyter/hostcert.key", \
