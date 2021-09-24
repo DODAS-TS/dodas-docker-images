@@ -4,6 +4,17 @@ RUN python3 -m pip install -U pip setuptools
 
 RUN pip3 install dask-remote-jobqueue==v0.4.15.dev0
 
+RUN yum update -y && \
+    yum install -y jq \
+        yad \
+        libmicrohttpd \
+        libseccomp \
+        libsecret \
+        libsodium && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+RUN wget https://github.com/indigo-dc/oidc-agent/releases/download/v4.1.1/oidc-agent-4.1.1-1.el7.x86_64.rpm && \
+    rpm -i oidc-agent-4.1.1-1.el7.x86_64.rpm
 # RUN pip3 install jupyter-packaging
 # RUN git clone --branch custom_clusters https://github.com/DODAS-TS/dask-labextension.git \
 #     && cd dask-labextension \
