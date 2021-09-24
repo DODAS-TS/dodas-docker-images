@@ -2,7 +2,17 @@ FROM htcondor/execute:8.9.9-el7
 
 RUN python3 -m pip install -U pip setuptools
 
-RUN pip3 install dask-remote-jobqueue==v0.4.16.dev0
+RUN pip3 install dask-remote-jobqueue==v0.4.16.dev0 jupyter-server-proxy dask \
+    dask_jobqueue \
+    click==7.1.2 \
+    numpy \
+    bokeh \
+    ipython \
+    jupyterhub \
+    jupyterlab \
+    notebook \
+    jupyter-server-proxy \
+    ipywidgets
 
 RUN yum update -y && \
     yum install -y jq \
