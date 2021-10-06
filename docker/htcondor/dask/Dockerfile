@@ -20,7 +20,7 @@ RUN yum update -y && \
         libmicrohttpd \
         libseccomp \
         libsecret \
-        libsodium && \
+        libsodium \
         git make cmake3 gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel && \
     yum clean all && \
     rm -rf /var/cache/yum
