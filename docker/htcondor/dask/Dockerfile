@@ -21,6 +21,7 @@ RUN yum update -y && \
         libseccomp \
         libsecret \
         libsodium && \
+        git make cmake3 gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel && \
     yum clean all && \
     rm -rf /var/cache/yum
 RUN wget https://github.com/indigo-dc/oidc-agent/releases/download/v4.1.1/oidc-agent-4.1.1-1.el7.x86_64.rpm && \
