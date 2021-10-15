@@ -3,7 +3,5 @@ FROM htcondor/submit:8.9.9-el7
 RUN curl -k "https://crt.sh/?d=2475254782" -o /etc/pki/ca-trust/source/anchors/ca.crt
 RUN update-ca-trust
 
-COPY start.sh /usr/bin/start.sh
-RUN chmod +x /usr/bin/start.sh
-
-ENTRYPOINT [ "/usr/bin/start.sh" ]
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
