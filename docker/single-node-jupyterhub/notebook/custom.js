@@ -76,7 +76,7 @@
 var li = document.createElement('li');
 
 var a = document.createElement('a');
-var linkText = document.createTextNode("Collaborative Python 3");
+var linkText = document.createTextNode("Collaborative Python 3 (Beta)");
 a.appendChild(linkText);
 a.title = "Jupyter collaborative";
 a.href = "/services/Collaborative-Jupyter/";
@@ -85,10 +85,10 @@ a.target = "_blank";
 li.appendChild(a);
 
 var menu_new = document.getElementById("new-menu");
-var dropHeader = menu_new.children[0]
-var python3 = menu_new.children[1]
+var dropHeader = menu_new.children[0];
+var python3 = menu_new.children[1];
 menu_new.prepend(li);
-menu_new.removeChild(dropHeader)
-menu_new.removeChild(python3)
-menu_new.prepend(python3)
-menu_new.prepend(dropHeader)
+menu_new.removeChild(dropHeader);
+menu_new.removeChild(python3);
+menu_new.prepend(python3);
+menu_new.prepend(dropHeader);
