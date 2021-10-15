@@ -364,8 +364,8 @@ c.DockerSpawner.volumes = {
     # notebook_mount_dir
     # + "/{username}/": {"bind": notebook_dir + "/private", "mode": "rw"},
     # Mount point for collaboration jupyter lab
-    "/usr/local/share/collabspace": {
-        "bind": "/usr/share/workspace/collabspace",
+    "/usr/local/share/collaborativefolder": {
+        "bind": "/usr/share/workspace/collaborativefolder",
         "mode": "rw",
     },
     cvmfs_mount_dir: notebook_dir + "/cvmfs",
