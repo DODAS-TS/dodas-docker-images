@@ -10,7 +10,7 @@ WORKDIR /
 
 RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev python3-pip libargon2-0-dev \
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
-    libczmq-dev wget
+    libczmq-dev wget fuse
 
 RUN python3 -m pip install -U pip setuptools
 RUN DEBIAN_FRONTEND=noninteractive apt install -y curl libcurl4-openssl-dev libssl-dev
