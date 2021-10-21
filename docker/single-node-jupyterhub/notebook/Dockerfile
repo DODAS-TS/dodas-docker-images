@@ -4,21 +4,33 @@ FROM ubuntu:20.04
 EXPOSE 8000
 EXPOSE 8888
 
-RUN DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y && apt install -y git
+RUN DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y && apt install -y git software-properties-common wget fuse
 
 WORKDIR /
 
 RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev python3-pip libargon2-0-dev \
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
-    libczmq-dev wget fuse
+    libczmq-dev
 
 RUN python3 -m pip install -U pip setuptools
 RUN DEBIAN_FRONTEND=noninteractive apt install -y curl libcurl4-openssl-dev libssl-dev
 
+# Install sts-wire
+RUN mkdir -p /usr/local/share/dodasts && \
+    wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /usr/local/share/dodasts/sts-wire && \
+    chmod +x /usr/local/share/dodasts/sts-wire && \
+    ln -s /usr/local/share/dodasts/sts-wire /usr/local/bin/sts-wire
+
+# Install oidc-agent
+RUN apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87 && \
+    add-apt-repository "deb https://repo.data.kit.edu/ubuntu/20.04 ./"
+RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y oidc-agent
+
+# Install jupyterlab
 RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 idna importlib-metadata
-RUN python3 -m pip install --no-cache-dir notebook==6.4.1
 RUN python3 -m pip install --no-cache-dir ipywidgets
 RUN python3 -m pip install --no-cache-dir jedi-language-server
+RUN python3 -m pip install --no-cache-dir notebook==6.4.1
 
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
@@ -30,11 +42,5 @@ RUN npm install -g configurable-http-proxy
 # Add custom js for collaborative button in notebooks
 COPY custom.js /tmp
 RUN cp /tmp/custom.js $(python3 -c "import site; print(site.getsitepackages()[0])")/notebook/static/custom/
-
-# Install sts-wire
-RUN mkdir -p /usr/local/share/dodasts && \
-    wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /usr/local/share/dodasts/sts-wire && \
-    chmod +x /usr/local/share/dodasts/sts-wire && \
-    ln -s /usr/local/share/dodasts/sts-wire /usr/local/bin/sts-wire
 
 WORKDIR /usr/share/workspace
