@@ -35,13 +35,11 @@ RUN python3 -m pip install --no-cache-dir jupyterlab-link-share
 
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
-# RUN /bin/bash -c "jupyter lab build"
 
 RUN python3 -m pip install --no-cache-dir jupyterhub pycurl
 RUN npm install -g configurable-http-proxy
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 
-COPY jupyterhub_config.py /etc/jupyterhub/
 
 WORKDIR /usr/local/share/dodasts
 
@@ -49,12 +47,14 @@ RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extensio
     && cd jupyterlab-collaborative-util-extension \
     && jupyter labextension install
 
+COPY jupyter_lab_config.py /usr/local/share/dodasts/jupyter_configs/
+
 WORKDIR /usr/share/workspace
 
-CMD ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--debug", \
-    "--no-browser", \
-    "--LabApp.collaborative=True", \
-    "--ServerApp.allow_password_change=False", \
+RUN /bin/bash -c "jupyter lab build"
+
+CMD ["jupyter", "lab", "--debug", \
+    "--JupyterApp.config_file=/usr/local/share/dodasts/jupyter_configs/jupyter_lab_config.py", \
     "--ServerApp.keyfile=/usr/local/share/dodasts/certs/jupyter/hostcert.key", \
     "--ServerApp.certfile=/usr/local/share/dodasts/certs/jupyter/hostcert.pem", \
     "--MappingKernelManager.cull_idle_timeout=10800", \
