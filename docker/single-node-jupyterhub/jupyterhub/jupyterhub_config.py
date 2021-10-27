@@ -322,10 +322,15 @@ class CustomSpawner(dockerspawner.DockerSpawner):
 
 c.JupyterHub.spawner_class = CustomSpawner
 
-# Default spawn to jupyterLab
+# Default spawn to jupyter noteook
+# spawn_cmd = os.environ.get(
+#     "DOCKER_SPAWN_CMD",
+#     "jupyterhub-singleuser --port 8889 --ip 0.0.0.0 --allow-root --debug --no-browser",
+# )
+# Default spawn to jupyter lab
 spawn_cmd = os.environ.get(
     "DOCKER_SPAWN_CMD",
-    "jupyterhub-singleuser --port 8889 --ip 0.0.0.0 --allow-root --debug --SingleUserNotebookApp.base_url='/lab'",
+    "jupyter-labhub --port 8889 --ip 0.0.0.0 --allow-root --debug --no-browser",
 )
 # uncomment to start a jupyter NB instead of jupyterlab
 # spawn_cmd = os.environ.get('DOCKER_SPAWN_CMD', "jupyterhub-singleuser --port 8889 --ip 0.0.0.0 --allow-root --debug")
