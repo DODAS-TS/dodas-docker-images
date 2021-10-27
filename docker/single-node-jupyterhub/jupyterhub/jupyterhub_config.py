@@ -319,8 +319,7 @@ if default_spawner.upper() == "LAB":
 # uncomment to start a jupyter NB instead of jupyterlab
 # spawn_cmd = os.environ.get('DOCKER_SPAWN_CMD', "jupyterhub-singleuser --port 8889 --ip 0.0.0.0 --allow-root --debug")
 
-c.DockerSpawner.cmd = spawn_cmd
-# c.DockerSpawner.extra_create_kwargs.update({"command": spawn_cmd})
+c.DockerSpawner.extra_create_kwargs.update({"command": spawn_cmd})
 # c.DockerSpawner.post_start_cmd = "something that could be useful..."
 
 c.DockerSpawner.network_name = "jupyterhub"
