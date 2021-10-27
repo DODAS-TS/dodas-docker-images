@@ -322,7 +322,7 @@ class CustomSpawner(dockerspawner.DockerSpawner):
 
 c.JupyterHub.spawner_class = CustomSpawner
 
-default_spawner = os.getenv("DEFAULT_SPAWNER", "LAB") 
+default_spawner = os.getenv("DEFAULT_SPAWNER", "LAB")
 # Default spawn to jupyter noteook
 if default_spawner.upper() == "NOTEBOOK":
     spawn_cmd = os.environ.get(
@@ -361,15 +361,17 @@ c.DockerSpawner.http_timeout = 600
 # c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
 
 notebook_dir = os.environ.get("DOCKER_NOTEBOOK_DIR", "/jupyter-workspace")
-notebook_mount_dir = os.environ.get("DOCKER_NOTEBOOK_MOUNT_DIR", "/jupyter-mounts") 
+notebook_mount_dir = os.environ.get("DOCKER_NOTEBOOK_MOUNT_DIR", "/jupyter-mounts")
 
 c.DockerSpawner.volumes = {
     # Mount point for shared folder
-    notebook_mount_dir+ "/shared": {
+    notebook_mount_dir
+    + "/shared": {
         "bind": notebook_dir + "/shared",
         "mode": "ro",
     },
-    notebook_mount_dir+ "/shared/{username}": {
+    notebook_mount_dir
+    + "/shared/{username}": {
         "bind": notebook_dir + "/shared/{username}",
         "mode": "rw",
     },
@@ -377,20 +379,25 @@ c.DockerSpawner.volumes = {
     notebook_mount_dir
     + "users/{username}/": {"bind": notebook_dir + "/private", "mode": "rw"},
     # Mount point for collaboration jupyter lab
-    notebook_mount_dir+ "/collaborativefolder": {
+    notebook_mount_dir
+    + "/collaborativefolder": {
         "bind": notebook_dir + "/collaborativefolder",
         "mode": "rw",
     },
-    notebook_mount_dir+ "/collaborativefolder/{username}": {
+    notebook_mount_dir
+    + "/collaborativefolder/{username}": {
         "bind": notebook_dir + "/collaborativefolder/{username}",
         "mode": "rw",
     },
 }
 
 use_cvmfs: bool = os.getenv("JUPYTER_WITH_CVMFS", "False") in ["True", "true", "T", "t"]
-if use_cvmfs {
-    c.DockerSpawner.volumes["/cvmfs/"] = f"{notebook_dir}/cvmfs"
-}
+if use_cvmfs:
+    c.DockerSpawner.volumes["/cvmfs/"] = {
+        "bind": f"{notebook_dir}/cvmfs",
+        "mode": "rw",
+    }
+
 
 # volume_driver is no longer a keyword argument to create_container()
 # c.DockerSpawner.extra_create_kwargs.update({ 'volume_driver': 'local' })
