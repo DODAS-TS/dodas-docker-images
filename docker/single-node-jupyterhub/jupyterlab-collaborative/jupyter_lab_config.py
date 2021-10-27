@@ -533,8 +533,8 @@ c.LabApp.collaborative = True
 # c.LabApp.tree_url = ''
 
 ## The directory for user settings.
-#  Default: '/Users/mircotracolli/.jupyter/lab/user-settings'
-# c.LabApp.user_settings_dir = '/Users/mircotracolli/.jupyter/lab/user-settings'
+#  Default: '/Users/user/.jupyter/lab/user-settings'
+# c.LabApp.user_settings_dir = '/Users/user/.jupyter/lab/user-settings'
 
 ## Whether to serve the app in watch mode
 #  Default: False
@@ -549,8 +549,8 @@ c.LabApp.collaborative = True
 # c.LabApp.workspaces_api_url = ''
 
 ## The directory for workspaces
-#  Default: '/Users/mircotracolli/.jupyter/lab/workspaces'
-# c.LabApp.workspaces_dir = '/Users/mircotracolli/.jupyter/lab/workspaces'
+#  Default: '/Users/user/.jupyter/lab/workspaces'
+# c.LabApp.workspaces_dir = '/Users/user/.jupyter/lab/workspaces'
 
 # ------------------------------------------------------------------------------
 # ServerApp(JupyterApp) configuration

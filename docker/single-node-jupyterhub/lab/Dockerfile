@@ -38,5 +38,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 
 RUN python3 -m pip install --no-cache-dir jupyterhub pycurl
 RUN npm install -g configurable-http-proxy
+RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 
 WORKDIR /jupyter-workspace
