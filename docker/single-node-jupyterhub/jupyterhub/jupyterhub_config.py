@@ -325,13 +325,13 @@ c.JupyterHub.spawner_class = CustomSpawner
 # Default spawn to jupyterLab
 spawn_cmd = os.environ.get(
     "DOCKER_SPAWN_CMD",
-    "jupyterhub-singleuser --port 8889 --ip 0.0.0.0 --allow-root --debug",
+    "jupyterhub-singleuser --port 8889 --ip 0.0.0.0 --allow-root --debug --SingleUserNotebookApp.base_url='/lab'",
 )
 # uncomment to start a jupyter NB instead of jupyterlab
 # spawn_cmd = os.environ.get('DOCKER_SPAWN_CMD', "jupyterhub-singleuser --port 8889 --ip 0.0.0.0 --allow-root --debug")
 
-c.DockerSpawner.port = 8889
-c.DockerSpawner.extra_create_kwargs.update({"command": spawn_cmd})
+c.DockerSpawner.cmd = spawn_cmd
+# c.DockerSpawner.extra_create_kwargs.update({"command": spawn_cmd})
 # c.DockerSpawner.post_start_cmd = "something that could be useful..."
 
 c.DockerSpawner.network_name = "jupyterhub"
@@ -344,31 +344,42 @@ c.DockerSpawner.http_timeout = 600
 # We follow the same convention.
 # notebook_dir = os.environ.get('DOCKER_NOTEBOOK_DIR') or '/home/jovyan/work'
 # c.DockerSpawner.notebook_dir = notebook_dir
-
-cvmfs_mount_dir = (
-    "/cvmfs/"  # os.environ.get('DOCKER_NOTEBOOK_DIR') or '/home/jovyan/work'
-)
-
-notebook_mount_dir = "/jupyter-users"  # /{username}/"#os.environ.get('DOCKER_NOTEBOOK_DIR') or '/home/jovyan/work'
 # notebook_dir = "$PWD/persistent-area/{username}/"#os.environ.get('DOCKER_NOTEBOOK_DIR') or '/home/jovyan/work'
-notebook_dir = os.environ.get("DOCKER_NOTEBOOK_DIR") or "/"
 # c.DockerSpawner.notebook_dir = notebook_dir
 # Mount the real user's Docker volume on the host to the notebook user's
 # notebook directory in the container
 # c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
+
+notebook_dir = os.environ.get("DOCKER_NOTEBOOK_DIR", "/jupyter-workspace")
+notebook_mount_dir = os.environ.get("DOCKER_NOTEBOOK_MOUNT_DIR", "/jupyter-mounts") 
+
 c.DockerSpawner.volumes = {
-    # notebook_mount_dir + "/Backup": {"bind": notebook_dir + "/Backup", "mode": "ro"},
-    # notebook_mount_dir + "/shared": {"bind": notebook_dir + "/shared", "mode": "rw"},
-    # notebook_mount_dir
-    # + "/shared/backup": {"bind": notebook_dir + "/shared/backup", "mode": "ro"},
-    # notebook_mount_dir
-    # + "/{username}/": {"bind": notebook_dir + "/private", "mode": "rw"},
-    # Mount point for collaboration jupyter lab
-    "/usr/local/share/collaborativefolder": {
-        "bind": "/usr/share/workspace/collaborativefolder",
+    # Mount point for shared folder
+    notebook_mount_dir+ "/shared": {
+        "bind": notebook_dir + "/shared",
+        "mode": "ro",
+    },
+    notebook_mount_dir+ "/shared/{username}": {
+        "bind": notebook_dir + "/shared/{username}",
         "mode": "rw",
     },
-    cvmfs_mount_dir: notebook_dir + "/cvmfs",
+    # Mount point for private stuff
+    notebook_mount_dir
+    + "users/{username}/": {"bind": notebook_dir + "/private", "mode": "rw"},
+    # Mount point for collaboration jupyter lab
+    notebook_mount_dir+ "/collaborativefolder": {
+        "bind": notebook_dir + "/collaborativefolder",
+        "mode": "rw",
+    },
+    notebook_mount_dir+ "/collaborativefolder/{username}": {
+        "bind": notebook_dir + "/collaborativefolder/{username}",
+        "mode": "rw",
+    },
+}
+
+use_cvmfs: bool = os.getenv("JUPYTER_WITH_CVMFS", "False") in ["True", "true", "T", "t"]
+if use_cvmfs {
+    c.DockerSpawner.volumes["/cvmfs/"] = f"{notebook_dir}/cvmfs"
 }
 
 # volume_driver is no longer a keyword argument to create_container()
