@@ -1,9 +1,6 @@
 # Image name: dodasts/snj-base-lab
 FROM ubuntu:20.04
 
-EXPOSE 8000
-EXPOSE 8888
-
 RUN apt update && DEBIAN_FRONTEND=noninteractive apt upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt install -y git software-properties-common wget fuse
 
