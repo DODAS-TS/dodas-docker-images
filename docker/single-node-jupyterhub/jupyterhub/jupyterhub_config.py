@@ -1,28 +1,15 @@
 # Configuration file for JupyterHub
-import os
-import socket
-import dockerspawner
-import subprocess
-import warnings
-from tornado import gen
-from oauthenticator.oauth2 import OAuthenticator
-from oauthenticator.generic import GenericOAuthenticator
 import json
 import os
-import base64
-import urllib
+import pprint
+import socket
+import subprocess
 import sys
+import warnings
 
-from tornado.auth import OAuth2Mixin
-from tornado import web
-
-from tornado.httputil import url_concat
-from tornado.httpclient import HTTPRequest, AsyncHTTPClient
-
-from jupyterhub.auth import LocalAuthenticator
-
-from traitlets import Unicode, Dict, Bool, Union, default, observe
-
+import dockerspawner
+from oauthenticator.generic import GenericOAuthenticator
+from tornado import gen
 
 c = get_config()
 
@@ -67,7 +54,6 @@ class EnvAuthenticator(GenericOAuthenticator):
     @gen.coroutine
     def pre_spawn_start(self, user, spawner):
         auth_state = yield user.get_auth_state()
-        import pprint
 
         pprint.pprint(auth_state)
         if not auth_state:
@@ -84,6 +70,7 @@ class EnvAuthenticator(GenericOAuthenticator):
         spawner.environment["JUPYTERHUB_ACTIVITY_INTERVAL"] = "15"
 
         amIAllowed = False
+        allowed_groups = ""
 
         if os.environ.get("OAUTH_GROUPS"):
             spawner.environment["GROUPS"] = " ".join(auth_state["oauth_user"]["groups"])
@@ -100,7 +87,9 @@ class EnvAuthenticator(GenericOAuthenticator):
                 "OAuth user contains not in group the allowed groups %s"
                 % allowed_groups
             )
-            raise Exception("OAuth user not in the allowed groups %s" % allowed_groups)
+            raise Exception(
+                "OAuth user not in the allowed groups '%s'" % allowed_groups
+            )
 
     # https://github.com/jupyterhub/oauthenticator/blob/master/oauthenticator/generic.py#L157
     async def authenticate(self, handler, data=None):
@@ -259,7 +248,7 @@ class CustomSpawner(dockerspawner.DockerSpawner):
         memory = "".join(formdata["mem"])
         self.mem_limit = memory
         options["gpu"] = formdata["gpu"]
-        use_gpu = True if "".join(formdata["gpu"]) == "Y" else False
+        use_gpu = "".join(formdata["gpu"]) == "Y"
         device_request = {}
         if use_gpu:
             device_request = {
