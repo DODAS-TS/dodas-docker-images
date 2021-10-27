@@ -31,10 +31,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y oidc-agent
 RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 idna importlib-metadata
 RUN python3 -m pip install --no-cache-dir ipywidgets
 RUN python3 -m pip install --no-cache-dir jedi-language-server
+RUN python3 -m pip install --no-cache-dir notebook==6.4.1
 
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
-# RUN /bin/bash -c "jupyter lab build"
+RUN /bin/bash -c "jupyter lab build"
 
 RUN python3 -m pip install --no-cache-dir jupyterhub pycurl
 RUN npm install -g configurable-http-proxy
