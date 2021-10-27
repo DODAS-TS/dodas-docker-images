@@ -21,5 +21,5 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y wget
 
 RUN wget "https://crt.sh/?d=2475254782" -O /usr/local/share/ca-certificates/ca.crt && update-ca-certificates
 
-COPY jupyterhub_config.py /usr/local/share/dodasts/jupyterhub/jupyterhub_config.py
+COPY jupyterhub_config.py .
 
