@@ -44,4 +44,4 @@ RUN npm install -g configurable-http-proxy
 COPY custom.js /tmp
 RUN cp /tmp/custom.js $(python3 -c "import site; print(site.getsitepackages()[0])")/notebook/static/custom/
 
-WORKDIR /usr/share/workspace
+WORKDIR /jupyter-workspace
