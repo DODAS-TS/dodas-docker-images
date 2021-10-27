@@ -669,7 +669,7 @@ from notebook.services.contents.filecheckpoints import GenericFileCheckpoints
 
 
 class CustomCheckpointFolder(GenericFileCheckpoints):
-    checkpoint_dir = "/usr/local/share/dodasts/jupyter_checkpoints"
+    checkpoint_dir = "/jupyter-checkpoints"
 
     # Ref: https://github.com/jupyter/notebook/blob/2cfff07a39fa486a3f05c26b400fa26e1802a053/notebook/services/contents/filecheckpoints.py#L104
     def checkpoint_path(self, checkpoint_id, path):
