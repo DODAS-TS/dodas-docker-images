@@ -49,7 +49,7 @@ RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extensio
 
 COPY jupyter_lab_config.py /usr/local/share/dodasts/jupyter_configs/
 
-WORKDIR /usr/share/workspace
+WORKDIR /jupyter-workspace
 
 RUN /bin/bash -c "jupyter lab build"
 
