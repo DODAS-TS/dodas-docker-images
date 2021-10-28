@@ -1,0 +1,48 @@
+# Image name: dodasts/snj-base-lab-cc7
+ARG BASE_IMAGE="cern/cc7-base"
+FROM ${BASE_IMAGE}
+
+COPY cc7/packages packages
+
+RUN yum update -y \
+    && yum upgrade -y \
+    && yum install -y epel-release \
+    && yum install -y $(cat packages) \
+    && yum clean all \
+    && localedef -i en_US -f UTF-8 en_US.UTF-8 \
+    && rm -f packages
+
+WORKDIR /
+
+RUN /usr/bin/python3 -m pip install --upgrade pip
+RUN python3 -m pip install -U pip setuptools
+
+# Install sts-wire
+RUN mkdir -p /usr/local/share/dodasts && \
+    wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /usr/local/share/dodasts/sts-wire && \
+    chmod +x /usr/local/share/dodasts/sts-wire && \
+    ln -s /usr/local/share/dodasts/sts-wire /usr/local/bin/sts-wire
+
+# Install oidc-agent
+RUN cd /etc/yum.repos.d && wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
+RUN yum install -y oidc-agent
+
+# Install jupyterlab
+RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11
+RUN python3 -m pip install --no-cache-dir ipywidgets
+RUN python3 -m pip install --no-cache-dir jedi-language-server
+RUN python3 -m pip install --no-cache-dir notebook==6.4.1
+RUN python3 -m pip install --no-cache-dir pycurl idna importlib-metadata
+RUN python3 -m pip install --no-cache-dir jupyter_http_over_ws
+
+RUN jupyter serverextension enable --py jupyter_http_over_ws
+
+RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
+RUN yum install -y nodejs
+RUN /bin/bash -c "jupyter lab build"
+
+RUN python3 -m pip install --no-cache-dir jupyterhub
+RUN npm install -g configurable-http-proxy
+RUN jupyter serverextension enable --py jupyterlab --sys-prefix
+
+WORKDIR /jupyter-workspace
