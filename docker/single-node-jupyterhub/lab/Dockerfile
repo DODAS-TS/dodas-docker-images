@@ -43,6 +43,8 @@ RUN python3 -m pip install --no-cache-dir jupyterhub
 RUN npm install -g configurable-http-proxy
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 
+COPY jupyter_lab_config.py /usr/etc/jupyter/
+
 RUN /bin/bash -c "jupyter lab build"
 
 WORKDIR /jupyter-workspace
