@@ -31,7 +31,7 @@ RUN python3 -m pip install --no-cache-dir jedi-language-server
 RUN python3 -m pip install --no-cache-dir notebook==6.4.1
 RUN python3 -m pip install --no-cache-dir pycurl idna importlib-metadata
 
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 # RUN /bin/bash -c "jupyter lab build"
 

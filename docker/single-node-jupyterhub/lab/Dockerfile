@@ -4,17 +4,16 @@ ARG BASE_IMAGE="ubuntu:20.04"
 FROM ${BASE_IMAGE}
 
 RUN apt update && DEBIAN_FRONTEND=noninteractive apt upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt install -y git software-properties-common wget fuse
+RUN DEBIAN_FRONTEND=noninteractive apt install -y git software-properties-common wget fuse curl
 
 WORKDIR /
 
 RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev python3-pip libargon2-0-dev \
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
-    libczmq-dev
+    libczmq-dev libcurl4-openssl-dev libssl-dev
 
 RUN /usr/bin/python3 -m pip install --upgrade pip
-RUN python3 -m pip install -U pip setuptools
-RUN DEBIAN_FRONTEND=noninteractive apt install -y curl libcurl4-openssl-dev libssl-dev
+RUN python3 -m pip install -U setuptools
 
 # Install sts-wire
 RUN mkdir -p /usr/local/share/dodasts && \
@@ -37,12 +36,13 @@ RUN python3 -m pip install --no-cache-dir jupyter_http_over_ws
 
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
-RUN /bin/bash -c "jupyter lab build"
 
 RUN python3 -m pip install --no-cache-dir jupyterhub
 RUN npm install -g configurable-http-proxy
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
+
+RUN /bin/bash -c "jupyter lab build"
 
 WORKDIR /jupyter-workspace
