@@ -13,6 +13,7 @@ giflib-devel
 git
 graphviz-devel
 libargon2-devel
+libcurl-devel
 libcurl-openssl-devel
 libffi-devel
 libjpeg-turbo-devel
