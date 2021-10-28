@@ -1,5 +1,7 @@
 # Image name: dodasts/snj-base-jlabc
-FROM ubuntu:20.04
+# Image name: dodasts/snj-base-jlabc-gpu -> based on tensorflow/tensorflow:2.7.0rc1-gpu (with ubuntu 20:04)
+ARG BASE_IMAGE="ubuntu:20.04"
+FROM ${BASE_IMAGE}
 
 RUN apt update && DEBIAN_FRONTEND=noninteractive apt upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt install -y git software-properties-common wget fuse
@@ -10,6 +12,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev py
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
     libczmq-dev
 
+RUN /usr/bin/python3 -m pip install --upgrade pip
 RUN python3 -m pip install -U pip setuptools
 RUN DEBIAN_FRONTEND=noninteractive apt install -y curl libcurl4-openssl-dev libssl-dev
 
@@ -25,15 +28,19 @@ RUN apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87
 RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y oidc-agent
 
 # Install jupyterlab
-RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 idna importlib-metadata
+RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11
 RUN python3 -m pip install --no-cache-dir ipywidgets
 RUN python3 -m pip install --no-cache-dir jedi-language-server
-RUN python3 -m pip install --no-cache-dir jupyterlab-link-share
+RUN python3 -m pip install --no-cache-dir notebook==6.4.1
+RUN python3 -m pip install --no-cache-dir pycurl idna importlib-metadata
+RUN python3 -m pip install --no-cache-dir jupyter_http_over_ws
+
+RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 
-RUN python3 -m pip install --no-cache-dir jupyterhub pycurl
+RUN python3 -m pip install --no-cache-dir jupyterhub
 RUN npm install -g configurable-http-proxy
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 

@@ -25,10 +25,11 @@ RUN apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87
 RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y oidc-agent
 
 # Install jupyterlab
-RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 idna importlib-metadata
+RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11
 RUN python3 -m pip install --no-cache-dir ipywidgets
 RUN python3 -m pip install --no-cache-dir jedi-language-server
 RUN python3 -m pip install --no-cache-dir notebook==6.4.1
+RUN python3 -m pip install --no-cache-dir pycurl idna importlib-metadata
 
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
