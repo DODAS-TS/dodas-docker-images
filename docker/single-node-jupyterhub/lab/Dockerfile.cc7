@@ -25,7 +25,7 @@ RUN mkdir -p /usr/local/share/dodasts && \
 
 # Install oidc-agent
 RUN cd /etc/yum.repos.d && wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
-RUN yum install -y oidc-agent
+RUN yum update -y && yum install -y oidc-agent
 
 # Install jupyterlab
 RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11
