@@ -8,6 +8,13 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y git software-properties-common
 
 WORKDIR /
 
+# Make dodasts folder
+RUN mkdir -p /usr/local/share/dodasts
+# Make script folder
+RUN mkdir -p /usr/local/share/dodasts/script
+# Make bin folder
+RUN mkdir -p /usr/local/share/dodasts/bin
+
 RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev python3-pip libargon2-0-dev \
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
     libczmq-dev libcurl4-openssl-dev libssl-dev
@@ -16,10 +23,9 @@ RUN /usr/bin/python3 -m pip install --upgrade pip
 RUN python3 -m pip install -U setuptools
 
 # Install sts-wire
-RUN mkdir -p /usr/local/share/dodasts && \
-    wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /usr/local/share/dodasts/sts-wire && \
-    chmod +x /usr/local/share/dodasts/sts-wire && \
-    ln -s /usr/local/share/dodasts/sts-wire /usr/local/bin/sts-wire
+RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /usr/local/share/dodasts/bin/sts-wire && \
+    chmod +x /usr/local/share/dodasts/bin/sts-wire && \
+    ln -s /usr/local/share/dodasts/bin/sts-wire /usr/local/bin/sts-wire
 
 # Install oidc-agent
 RUN apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87 && \

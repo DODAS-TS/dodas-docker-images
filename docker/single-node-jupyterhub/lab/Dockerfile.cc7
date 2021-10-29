@@ -14,14 +14,20 @@ RUN yum update -y \
 
 WORKDIR /
 
+# Make dodasts folder
+RUN mkdir -p /usr/local/share/dodasts
+# Make script folder
+RUN mkdir -p /usr/local/share/dodasts/script
+# Make bin folder
+RUN mkdir -p /usr/local/share/dodasts/bin
+
 RUN /usr/bin/python3 -m pip install --upgrade pip
 RUN python3 -m pip install -U pip setuptools
 
 # Install sts-wire
-RUN mkdir -p /usr/local/share/dodasts && \
-    wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /usr/local/share/dodasts/sts-wire && \
-    chmod +x /usr/local/share/dodasts/sts-wire && \
-    ln -s /usr/local/share/dodasts/sts-wire /usr/local/bin/sts-wire
+RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /usr/local/share/dodasts/bin/sts-wire && \
+    chmod +x /usr/local/share/dodasts/bin/sts-wire && \
+    ln -s /usr/local/share/dodasts/bin/sts-wire /usr/local/bin/sts-wire
 
 # Install oidc-agent
 RUN cd /etc/yum.repos.d && wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
