@@ -1,7 +1,12 @@
 # Image name: dodasts/cygno-lab
 FROM dodasts/snj-base-lab-cc7
 
+ARG JUPYTER_ROOT=/jupyter-workspace
+
 COPY packages packages
+
+COPY post_script.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
 
 RUN yum update -y \
     && yum upgrade -y \
@@ -44,5 +49,20 @@ RUN git clone https://gitlab.cern.ch/garfield/garfieldpp.git ${GARFIELD_HOME} \
     && cmake3 ${GARFIELD_HOME} \
     && make -j 4 \
     && make install 
+
+# Install boto
+RUN pip3 install -U git+https://github.com/DODAS-TS/boto3sts
+
+# Install ca
+RUN wget "https://crt.sh/?d=2475254782" -O /etc/pki/ca-trust/source/anchors/ca.crt \
+    && update-ca-trust \
+    && update-ca-trust force-enable
+
+# Link folders
+RUN mkdir -p ${JUPYTER_ROOT} \
+    && ln -s /s3 ${JUPYTER_ROOT}/cloud-storage \
+    && ln -s /shared ${JUPYTER_ROOT}/shared \
+    && ln -s /private ${JUPYTER_ROOT}/private
+
 
 WORKDIR /jupyter-workspace
