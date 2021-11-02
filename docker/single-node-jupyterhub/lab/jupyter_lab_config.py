@@ -35,3 +35,5 @@ class CustomFileManager(LargeFileManager):
 
 
 c.ServerApp.contents_manager_class = CustomFileManager
+
+c.ServerApp.terminado_settings = {"shell_command": ["/usr/bin/bash"]}
