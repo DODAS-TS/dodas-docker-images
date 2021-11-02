@@ -8,10 +8,7 @@ COPY packages packages
 COPY post_script.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
 
-RUN yum update -y \
-    && yum upgrade -y \
-    && yum install -y epel-release \
-    && yum install -y $(cat packages) \
+RUN yum install -y $(cat packages) \
     && yum clean all \
     && rm -f packages
 
