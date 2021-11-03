@@ -38,8 +38,12 @@ RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11
 RUN python3 -m pip install --no-cache-dir ipywidgets
 RUN python3 -m pip install --no-cache-dir jedi-language-server
 RUN python3 -m pip install --no-cache-dir notebook==6.4.1
+RUN python3 -m pip install --no-cache-dir nbdime
 RUN python3 -m pip install --no-cache-dir pycurl idna importlib-metadata
+RUN python3 -m pip install --no-cache-dir ipympl
 RUN python3 -m pip install --no-cache-dir jupyter_http_over_ws
+RUN python3 -m pip install --no-cache-dir jupyterlab-git
+RUN python3 -m pip install --no-cache-dir jupyterlab-system-monitor
 
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
