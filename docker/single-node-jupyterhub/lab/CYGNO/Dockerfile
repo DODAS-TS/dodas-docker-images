@@ -8,8 +8,12 @@ COPY packages packages
 COPY post_script.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
 
-RUN yum install -y $(cat packages) \
-    && yum clean all \
+# clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
+RUN yum -y clean metadata \
+    && yum -y update \
+    && yum -y upgrade \
+    && yum -y install $(cat packages) \
+    && yum -y clean all \
     && rm -f packages
 
 # Install Geant4

@@ -4,11 +4,13 @@ FROM ${BASE_IMAGE}
 
 COPY cc7/packages packages
 
-RUN yum update -y \
-    && yum upgrade -y \
-    && yum install -y epel-release \
-    && yum install -y $(cat packages) \
-    && yum clean all \
+# clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
+RUN yum -y clean metadata \
+    && yum -y update \
+    && yum -y upgrade \
+    && yum -y install epel-release \
+    && yum -y install $(cat packages) \
+    && yum -y clean all \
     && localedef -i en_US -f UTF-8 en_US.UTF-8 \
     && rm -f packages
 
