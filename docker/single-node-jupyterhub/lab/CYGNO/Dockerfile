@@ -16,6 +16,8 @@ RUN yum -y update \
     && yum -y clean all \
     && rm -f packages
 
+RUN jupyter labextension uninstall @jlab_collaborative_ext/context-menu
+
 # Install Geant4
 WORKDIR /tmp/
 RUN wget http://cern.ch/geant4-data/releases/geant4.10.05.p01.tar.gz \
