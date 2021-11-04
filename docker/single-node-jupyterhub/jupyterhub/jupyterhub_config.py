@@ -219,7 +219,7 @@ class CustomSpawner(dockerspawner.DockerSpawner):
         ram_options = [f'<option value="{ram}">{ram}B</option>' for ram in rams]
 
         # Get GPU
-        use_gpu = os.environ.get("WITH_GPU", "false").lower() == "true"
+        use_gpu: bool = os.environ.get("WITH_GPU", "false").lower() == "true"
         gpu_option = '<option value="N">Not Available</option>'
         if use_gpu:
             gpu_option = '<option value="Y">Yes</option>\n'
@@ -346,10 +346,15 @@ c.DockerSpawner.http_timeout = 600
 # notebook directory in the container
 # c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
 
-notebook_dir = os.environ.get("DOCKER_NOTEBOOK_DIR", "/jupyter-workspace")
-notebook_mount_dir = os.environ.get("DOCKER_NOTEBOOK_MOUNT_DIR", "/jupyter-mounts")
+notebook_dir: str = os.environ.get("DOCKER_NOTEBOOK_DIR", "/jupyter-workspace")
+notebook_mount_dir: str = os.environ.get("DOCKER_NOTEBOOK_MOUNT_DIR", "/jupyter-mounts")
+collaborative_service: bool = os.getenv("JUPYTER_COLLAB_SERVICE", "False").lower() in [
+    "true",
+    "t",
+    "yes",
+]
 
-c.DockerSpawner.volumes = {
+volumes = {
     # Mount point for shared folder
     notebook_mount_dir
     + "/shared": {
@@ -364,6 +369,9 @@ c.DockerSpawner.volumes = {
     # Mount point for private stuff
     notebook_mount_dir
     + "users/{username}/": {"bind": notebook_dir + "/private", "mode": "rw"},
+}
+
+volumes_collab = {
     # Mount point for collaboration jupyter lab
     notebook_mount_dir
     + "/collaborativefolder": {
@@ -376,8 +384,16 @@ c.DockerSpawner.volumes = {
         "mode": "rw",
     },
 }
+if collaborative_service:
+    c.DockerSpawner.volumes = {**volumes, **volumes_collab}
+else:
+    c.DockerSpawner.volumes = volumes
 
-use_cvmfs: bool = os.getenv("JUPYTER_WITH_CVMFS", "False") in ["True", "true", "T", "t"]
+use_cvmfs: bool = os.getenv("JUPYTER_WITH_CVMFS", "False").lower() in [
+    "true",
+    "t",
+    "yes",
+]
 if use_cvmfs:
     c.DockerSpawner.volumes["/cvmfs/"] = {
         "bind": f"{notebook_dir}/cvmfs",
@@ -399,15 +415,20 @@ c.JupyterHub.admin_access = True
 
 # c.Authenticator.allowed_users = {'test'}
 
-c.JupyterHub.services = [
+services = [
     {
         "name": "idle-culler",
         "admin": True,
         "command": [sys.executable, "-m", "jupyterhub_idle_culler", "--timeout=7200"],
     },
-    {
-        "url": "http://collab_proxy:8099",
-        "name": "Collaborative-Jupyter",
-        "api_token": os.environ.get("JUPYTERHUB_API_TOKEN", "API_TOKEN_EXAMPLE"),
-    },
 ]
+if collaborative_service:
+    services.append(
+        {
+            "url": "http://collab_proxy:8099",
+            "name": "Collaborative-Jupyter",
+            "api_token": os.environ.get("JUPYTERHUB_API_TOKEN", "API_TOKEN_EXAMPLE"),
+        }
+    )
+
+c.JupyterHub.services = services
