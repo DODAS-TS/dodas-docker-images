@@ -33,7 +33,7 @@ RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_
 
 # Install oidc-agent
 RUN cd /etc/yum.repos.d && wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
-RUN yum update -y && yum install -y oidc-agent
+RUN yum install -y oidc-agent
 
 # Install jupyterlab
 RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11
@@ -50,7 +50,7 @@ RUN python3 -m pip install --no-cache-dir jupyterlab-system-monitor
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
-RUN yum -y update && yum -y install nodejs
+RUN yum -y install nodejs
 
 RUN python3 -m pip install --no-cache-dir jupyterhub
 RUN npm install -g configurable-http-proxy
