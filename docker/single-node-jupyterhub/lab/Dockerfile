@@ -53,6 +53,11 @@ RUN python3 -m pip install --no-cache-dir jupyterhub
 RUN npm install -g configurable-http-proxy
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 
+WORKDIR /usr/local/share/dodasts
+RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git \
+    && cd jupyterlab-collaborative-util-extension \
+    && jupyter labextension install
+
 COPY jupyter_lab_config.py /usr/etc/jupyter/
 
 RUN /bin/bash -c "jupyter lab build"
