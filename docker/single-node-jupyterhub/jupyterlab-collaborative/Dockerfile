@@ -13,6 +13,8 @@ COPY jupyter_lab_config.py /usr/local/share/dodasts/jupyter_configs/
 
 RUN /bin/bash -c "jupyter lab build"
 
+WORKDIR /jupyter-workspace
+
 CMD ["jupyter", "lab", "--debug", \
     "--JupyterApp.config_file=/usr/local/share/dodasts/jupyter_configs/jupyter_lab_config.py", \
     "--ServerApp.keyfile=/usr/local/share/dodasts/certs/jupyter/hostcert.key", \
