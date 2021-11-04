@@ -3,12 +3,6 @@
 ARG BASE_IMAGE="dodasts/snj-base-lab"
 FROM ${BASE_IMAGE}
 
-WORKDIR /usr/local/share/dodasts
-
-RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git \
-    && cd jupyterlab-collaborative-util-extension \
-    && jupyter labextension install
-
 COPY jupyter_lab_config.py /usr/local/share/dodasts/jupyter_configs/
 
 RUN /bin/bash -c "jupyter lab build"
