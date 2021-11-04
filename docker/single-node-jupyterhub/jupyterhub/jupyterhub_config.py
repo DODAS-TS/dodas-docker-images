@@ -316,9 +316,9 @@ spawn_cmd = os.environ.get(
 c.DockerSpawner.port = 8889
 
 if default_spawner.upper() == "LAB":
-    spawn_cmd += (
-        ' --SingleUserNotebookApp.default_url="/lab" --NotebookApp.default_url="/lab"'
-    )
+    spawn_cmd += ' --SingleUserNotebookApp.default_url="/lab"'
+    spawn_cmd += ' --NotebookApp.default_url="/lab"'
+    spawn_cmd += ' --JupyterApp.config_file="/usr/etc/jupyter/jupyter_lab_config.py"'
     c.DockerSpawner.default_url = "/lab"
 
 # uncomment to start a jupyter NB instead of jupyterlab
