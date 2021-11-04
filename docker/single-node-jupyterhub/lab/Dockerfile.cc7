@@ -5,8 +5,8 @@ FROM ${BASE_IMAGE}
 COPY cc7/packages packages
 
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
-RUN yum -y clean metadata \
-    && yum -y update \
+RUN yum -y clean metadata
+RUN yum -y update \
     && yum -y upgrade \
     && yum -y install epel-release \
     && yum -y install $(cat packages) \
@@ -50,7 +50,8 @@ RUN python3 -m pip install --no-cache-dir jupyterlab-system-monitor
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
-RUN yum update -y && yum install -y nodejs
+RUN yum -y --enablerepo=nodesource clean metadata
+RUN yum -y update && yum -y install nodejs
 
 RUN python3 -m pip install --no-cache-dir jupyterhub
 RUN npm install -g configurable-http-proxy
