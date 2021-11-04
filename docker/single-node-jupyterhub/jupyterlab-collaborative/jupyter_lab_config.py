@@ -121,7 +121,7 @@
 #          module, unless it is overridden using the --browser
 #          (ServerApp.browser) configuration option.
 #  Default: False
-c.ExtensionApp.open_browser = False
+# c.ExtensionApp.open_browser = False
 
 ## Settings that will passed to the server.
 #  Default: {}
@@ -459,7 +459,7 @@ c.LabApp.collaborative = True
 
 ## Whether to open in a browser after starting.
 #  See also: ExtensionApp.open_browser
-# c.LabApp.open_browser = False
+c.LabApp.open_browser = False
 
 ## The override url for static lab assets, typically a CDN.
 #  Default: ''
@@ -885,7 +885,7 @@ c.ServerApp.ip = "0.0.0.0"
 #                          module, unless it is overridden using the --browser
 #                          (ServerApp.browser) configuration option.
 #  Default: False
-# c.ServerApp.open_browser = False
+c.ServerApp.open_browser = False
 
 ## Hashed password to use for web authentication.
 #
@@ -1059,3 +1059,7 @@ c.ServerApp.terminado_settings = {"shell_command": ["/usr/bin/bash"]}
 
 ## Notebook extras
 c.FileManagerMixin.use_atomic_writing = False
+
+c.ServerApp.terminado_settings = {"shell_command": ["/usr/bin/bash"]}
+
+c.ResourceUseDisplay.track_cpu_percent = True
