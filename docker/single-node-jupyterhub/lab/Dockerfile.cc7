@@ -50,7 +50,11 @@ RUN python3 -m pip install --no-cache-dir jupyterlab-system-monitor
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
-RUN yum -y install nodejs
+RUN yum -y install nodejs-16.13.0-1nodesource
+
+RUN curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
+# Fix issue: https://github.com/nodesource/distributions/issues/1290
+RUN yum -y install yarn-1.22.15-1.noarch
 
 RUN python3 -m pip install --no-cache-dir jupyterhub
 RUN npm install -g configurable-http-proxy
