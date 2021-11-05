@@ -19,8 +19,7 @@ WORKDIR /
 # Make dodasts, script and bin folders
 RUN mkdir -p /usr/local/share/dodasts /usr/local/share/dodasts/script /usr/local/share/dodasts/bin
 
-RUN /usr/bin/python3 -m pip install --upgrade pip
-RUN python3 -m pip install -U pip setuptools
+RUN python3 -m pip install -U pip setuptools wheel
 
 # Install sts-wire
 RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /usr/local/share/dodasts/bin/sts-wire && \
