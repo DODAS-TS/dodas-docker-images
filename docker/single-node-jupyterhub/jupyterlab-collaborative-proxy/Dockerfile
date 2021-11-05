@@ -5,6 +5,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y && apt install -
 
 WORKDIR /usr/share/collab_proxy
 
+RUN python3 -m pip install -U pip setuptools wheel
 RUN pip3 install flask==2.0.2 \
     jupyterhub==1.5.0
 

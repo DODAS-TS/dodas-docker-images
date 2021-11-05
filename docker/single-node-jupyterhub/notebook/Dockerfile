@@ -17,7 +17,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev py
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
     libczmq-dev
 
-RUN python3 -m pip install -U pip setuptools
+RUN python3 -m pip install -U pip setuptools wheel
 RUN DEBIAN_FRONTEND=noninteractive apt install -y curl libcurl4-openssl-dev libssl-dev
 
 # Install sts-wire

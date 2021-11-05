@@ -8,7 +8,7 @@ FROM jupyterhub/jupyterhub:1.5.0
 RUN mkdir -p /.init
 COPY --from=REGISTRATION /usr/local/bin/dodas-IAMClientRec /.init/dodas-IAMClientRec
 
-RUN python3 -m pip install -U pip
+RUN python3 -m pip install -U pip setuptools wheel
 RUN python3 -m pip install --no-cache-dir dockerspawner==12.1.0 \
     oauthenticator==14.2.0 \
     jupyterhub-idle-culler==1.2.1

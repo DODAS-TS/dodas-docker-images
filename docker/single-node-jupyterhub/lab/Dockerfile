@@ -15,8 +15,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev py
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
     libczmq-dev libcurl4-openssl-dev libssl-dev
 
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install -U setuptools
+RUN python3 -m pip install -U pip setuptools wheel
 
 # Install sts-wire
 RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /usr/local/share/dodasts/bin/sts-wire && \
