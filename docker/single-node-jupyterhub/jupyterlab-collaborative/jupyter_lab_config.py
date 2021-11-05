@@ -697,7 +697,7 @@ class CustomFileManager(LargeFileManager):
     checkpoints_class = CustomCheckpointFolder
 
 
-c.ServerApp.contents_manager_class = CustomFileManager
+# c.ServerApp.contents_manager_class = CustomFileManager # TODO: bench test
 
 ## Extra keyword arguments to pass to `set_secure_cookie`. See tornado's
 #  set_secure_cookie docs for details.

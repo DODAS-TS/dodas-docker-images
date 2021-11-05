@@ -34,7 +34,7 @@ class CustomFileManager(LargeFileManager):
     checkpoints_class = CustomCheckpointFolder
 
 
-c.ServerApp.contents_manager_class = CustomFileManager
+# c.ServerApp.contents_manager_class = CustomFileManager # TODO: bench test
 
 c.ServerApp.terminado_settings = {"shell_command": ["/usr/bin/bash"]}
 
