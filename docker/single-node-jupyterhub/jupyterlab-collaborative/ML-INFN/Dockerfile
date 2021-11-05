@@ -8,5 +8,15 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y subversion graphviz libgl1 \
     && apt clean
 
 # Install python packages
-RUN python3 -m pip install --no-cache-dir uproot keras matplotlib \
-    sklearn torch pydot graphviz gwdama scikit-image opencv-python pandoc
+RUN python3 -m pip install --no-cache-dir \
+    uproot==4.1.7 \
+    keras==2.7.0 \
+    matplotlib==3.4.3 \
+    scikit-learn==1.0.1 \
+    torch==1.10.0 \
+    pydot==1.4.2 \
+    graphviz==0.17 \
+    gwdama==0.5.3 \
+    scikit-image==0.18.3 \
+    opencv-python==4.5.4.58 \
+    pandoc==1.1.0

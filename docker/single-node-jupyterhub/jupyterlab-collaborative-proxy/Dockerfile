@@ -5,8 +5,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y && apt install -
 
 WORKDIR /usr/share/collab_proxy
 
-RUN pip3 install flask
-RUN pip3 install jupyterhub
+RUN pip3 install flask==2.0.2 \
+    jupyterhub==1.5.0
 
 RUN DEBIAN_FRONTEND=noninteractive apt install -y libcurl4-openssl-dev libssl-dev
 

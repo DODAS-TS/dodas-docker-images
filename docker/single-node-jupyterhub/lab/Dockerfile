@@ -8,18 +8,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y git software-properties-common
 
 WORKDIR /
 
-# Make dodasts folder
-RUN mkdir -p /usr/local/share/dodasts
-# Make script folder
-RUN mkdir -p /usr/local/share/dodasts/script
-# Make bin folder
-RUN mkdir -p /usr/local/share/dodasts/bin
+# Make dodasts, script and bin folders
+RUN mkdir -p /usr/local/share/dodasts /usr/local/share/dodasts/script /usr/local/share/dodasts/bin
 
 RUN DEBIAN_FRONTEND=noninteractive apt install -y build-essential python3-dev python3-pip libargon2-0-dev \
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
     libczmq-dev libcurl4-openssl-dev libssl-dev
 
-RUN /usr/bin/python3 -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install -U setuptools
 
 # Install sts-wire
@@ -33,23 +29,25 @@ RUN apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87
 RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y oidc-agent
 
 # Install jupyterlab
-RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11
-RUN python3 -m pip install --no-cache-dir ipywidgets
-RUN python3 -m pip install --no-cache-dir jedi-language-server
-RUN python3 -m pip install --no-cache-dir notebook==6.4.1
-RUN python3 -m pip install --no-cache-dir nbdime
-RUN python3 -m pip install --no-cache-dir pycurl idna importlib-metadata
-RUN python3 -m pip install --no-cache-dir ipympl
-RUN python3 -m pip install --no-cache-dir jupyter_http_over_ws
-RUN python3 -m pip install --no-cache-dir jupyterlab-git
-RUN python3 -m pip install --no-cache-dir jupyterlab-system-monitor
+RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 \
+    ipywidgets==7.6.5 \
+    jedi-language-server==0.34.8 \
+    notebook==6.4.1 \
+    nbdime==nbdime==3.1.1 \
+    pycurl==7.44.1 \
+    idna==2.8 \
+    importlib-metadata==4.8.1 \
+    ipympl==0.8.2 \
+    jupyter_http_over_ws==0.0.8 \
+    jupyterlab-git==0.33.0 \
+    jupyterlab-system-monitor==0.8.0
 
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
 
-RUN python3 -m pip install --no-cache-dir jupyterhub
+RUN python3 -m pip install --no-cache-dir jupyterhub==1.5.0
 RUN npm install -g configurable-http-proxy
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 

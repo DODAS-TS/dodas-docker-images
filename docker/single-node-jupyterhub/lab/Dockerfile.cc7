@@ -16,12 +16,8 @@ RUN yum -y update \
 
 WORKDIR /
 
-# Make dodasts folder
-RUN mkdir -p /usr/local/share/dodasts
-# Make script folder
-RUN mkdir -p /usr/local/share/dodasts/script
-# Make bin folder
-RUN mkdir -p /usr/local/share/dodasts/bin
+# Make dodasts, script and bin folders
+RUN mkdir -p /usr/local/share/dodasts /usr/local/share/dodasts/script /usr/local/share/dodasts/bin
 
 RUN /usr/bin/python3 -m pip install --upgrade pip
 RUN python3 -m pip install -U pip setuptools
@@ -36,16 +32,18 @@ RUN cd /etc/yum.repos.d && wget https://repo.data.kit.edu/data-kit-edu-centos7.r
 RUN yum install -y oidc-agent
 
 # Install jupyterlab
-RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11
-RUN python3 -m pip install --no-cache-dir ipywidgets
-RUN python3 -m pip install --no-cache-dir jedi-language-server
-RUN python3 -m pip install --no-cache-dir notebook==6.4.1
-RUN python3 -m pip install --no-cache-dir nbdime
-RUN python3 -m pip install --no-cache-dir pycurl idna importlib-metadata
-RUN python3 -m pip install --no-cache-dir ipympl
-RUN python3 -m pip install --no-cache-dir jupyter_http_over_ws
-RUN python3 -m pip install --no-cache-dir jupyterlab-git
-RUN python3 -m pip install --no-cache-dir jupyterlab-system-monitor
+RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 \
+    ipywidgets==7.6.5 \
+    jedi-language-server==0.34.8 \
+    notebook==6.4.1 \
+    nbdime==nbdime==3.1.1 \
+    pycurl==7.44.1 \
+    idna==2.8 \
+    importlib-metadata==4.8.1 \
+    ipympl==0.8.2 \
+    jupyter_http_over_ws==0.0.8 \
+    jupyterlab-git==0.33.0 \
+    jupyterlab-system-monitor==0.8.0
 
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
@@ -56,7 +54,7 @@ RUN curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.re
 # Fix issue: https://github.com/nodesource/distributions/issues/1290
 RUN yum -y install yarn-1.22.15-1.noarch
 
-RUN python3 -m pip install --no-cache-dir jupyterhub
+RUN python3 -m pip install --no-cache-dir jupyterhub==1.5.0
 RUN npm install -g configurable-http-proxy
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 
