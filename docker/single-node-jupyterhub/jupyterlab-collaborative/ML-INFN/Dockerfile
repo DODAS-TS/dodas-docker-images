@@ -1,6 +1,9 @@
 # Image name: dodasts/ml-infn-jlabc
 FROM dodasts/snj-base-jlabc-gpu
 
+# Disable diff checkpoit
+RUN jupyter labextension disable nbdime-jupyterlab
+
 # Install system packages
 RUN DEBIAN_FRONTEND=noninteractive apt install -y subversion graphviz libgl1 \
     build-essential libargon2-0-dev libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
