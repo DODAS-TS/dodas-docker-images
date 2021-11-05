@@ -36,7 +36,7 @@ RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 \
     ipywidgets==7.6.5 \
     jedi-language-server==0.34.8 \
     notebook==6.4.1 \
-    nbdime==nbdime==3.1.1 \
+    nbdime==3.1.1 \
     pycurl==7.44.1 \
     idna==2.8 \
     importlib-metadata==4.8.1 \
