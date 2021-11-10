@@ -37,11 +37,11 @@ RUN python3 -m pip install --no-cache-dir jupyterlab==3.1.11 \
     idna==2.8 \
     importlib-metadata==4.8.1 \
     ipympl==0.8.2 \
-    jupyter_http_over_ws==0.0.8 \
     jupyterlab-git==0.33.0 \
     jupyterlab-system-monitor==0.8.0
 
-RUN jupyter serverextension enable --py jupyter_http_over_ws
+# jupyter_http_over_ws==0.0.8 \ # Temporarly removed. Needs further config: https://github.com/googlecolab/jupyter_http_over_ws#usage
+# RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN DEBIAN_FRONTEND=noninteractive apt install -y nodejs
