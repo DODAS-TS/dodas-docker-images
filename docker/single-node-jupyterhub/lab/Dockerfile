@@ -29,17 +29,17 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y oidc-agent
 
 # Install jupyterlab
 RUN python3 -m pip install --no-cache-dir \
-    jupyterlab==3.2.2 \
+    idna==3.3 \
+    importlib-metadata==4.8.2 \
+    ipympl==0.8.2 \
     ipywidgets==7.6.5 \
     jedi-language-server==0.34.8 \
-    notebook==6.4.5 \
-    nbdime==3.1.1 \
-    pycurl==7.44.1 \
-    idna==2.8 \
-    importlib-metadata==4.8.1 \
-    ipympl==0.8.2 \
     jupyterlab-git==0.33.0 \
-    jupyterlab-system-monitor==0.8.0
+    jupyterlab-system-monitor==0.8.0 \
+    jupyterlab==3.2.2 \
+    nbdime==3.1.1 \
+    notebook==6.4.5 \
+    pycurl==7.44.1
 
 # jupyter_http_over_ws==0.0.8 \ # Temporarly removed. Needs further config: https://github.com/googlecolab/jupyter_http_over_ws#usage
 # RUN jupyter serverextension enable --py jupyter_http_over_ws
