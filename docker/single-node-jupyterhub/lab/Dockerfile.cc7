@@ -33,7 +33,7 @@ RUN yum install -y oidc-agent
 # Install jupyterlab
 RUN python3 -m pip install --no-cache-dir \
     idna==3.3 \
-    importlib-metadata==4.8.2 \
+    importlib-metadata==3.10.1 \
     ipympl==0.8.2 \
     ipywidgets==7.6.5 \
     jedi-language-server==0.34.8 \
