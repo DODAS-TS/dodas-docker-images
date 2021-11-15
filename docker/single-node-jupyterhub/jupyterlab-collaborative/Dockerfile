@@ -7,7 +7,8 @@ COPY jupyter_lab_config.py /usr/local/share/dodasts/jupyter_configs/
 
 RUN python3 -m pip install --no-cache-dir jupyterlab-link-share==0.2.1
 
-RUN /bin/bash -c "jupyter lab build"
+# Build jupyter lab stuff
+RUN /bin/bash -c "jupyter lab build --dev-build=False --minimize=True"
 
 WORKDIR /jupyter-workspace
 
