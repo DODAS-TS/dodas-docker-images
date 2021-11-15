@@ -32,7 +32,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y oidc-agent
 
 # Install jupyterlab
 RUN python3 -m pip install --no-cache-dir \
-    jupyterlab==3.2.2 \
+    jupyterlab==3.2.3 \
     ipywidgets \
     jedi-language-server==0.34.8 \
     notebook==6.4.5 \

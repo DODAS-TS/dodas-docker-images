@@ -36,7 +36,7 @@ RUN python3 -m pip install --no-cache-dir \
     jedi-language-server==0.34.8 \
     jupyterlab-git==0.33.0 \
     jupyterlab-system-monitor==0.8.0 \
-    jupyterlab==3.2.2 \
+    jupyterlab==3.2.3 \
     nbdime==3.1.1 \
     notebook==6.4.5 \
     pycurl==7.44.1
