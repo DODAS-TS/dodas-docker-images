@@ -328,7 +328,7 @@ c.DockerSpawner.extra_create_kwargs.update({"command": spawn_cmd})
 
 post_start_cmd = os.getenv("POST_START_CMD", "")
 if post_start_cmd:
-    c.DockerSpawner.post_start_cmd = post_start_cmd
+    c.DockerSpawner.post_start_cmd = f"tini -s -- {post_start_cmd}"
 
 c.DockerSpawner.network_name = "jupyterhub"
 
