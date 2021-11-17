@@ -311,7 +311,7 @@ default_spawner = os.getenv("DEFAULT_SPAWNER", "LAB")
 # Default spawn to jupyter noteook
 spawn_cmd = os.environ.get(
     "DOCKER_SPAWN_CMD",
-    "jupyterhub-singleuser --port=8889 --ip=0.0.0.0 --allow-root --debug --no-browser",
+    "tini -s -- jupyterhub-singleuser --port=8889 --ip=0.0.0.0 --allow-root --debug --no-browser",
 )
 c.DockerSpawner.port = 8889
 
@@ -328,7 +328,7 @@ c.DockerSpawner.extra_create_kwargs.update({"command": spawn_cmd})
 
 post_start_cmd = os.getenv("POST_START_CMD", "")
 if post_start_cmd:
-    c.DockerSpawner.post_start_cmd = f"tini -s -- {post_start_cmd}"
+    c.DockerSpawner.post_start_cmd = post_start_cmd
 
 c.DockerSpawner.network_name = "jupyterhub"
 
