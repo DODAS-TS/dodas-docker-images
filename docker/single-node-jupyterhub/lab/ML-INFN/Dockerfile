@@ -19,5 +19,6 @@ RUN python3 -m pip install --no-cache-dir \
     pydot==1.4.2 \
     scikit-image==0.18.3 \
     scikit-learn==1.0.1 \
+    seaborn==0.11.2 \
     torch==1.10.0 \
     uproot==4.1.7
