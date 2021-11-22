@@ -12,9 +12,11 @@ WORKDIR /
 # Make dodasts, script and bin folders
 RUN mkdir -p /usr/local/share/dodasts /usr/local/share/dodasts/script /usr/local/share/dodasts/bin
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential python3-dev python3-pip libargon2-0-dev \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && apt-get install -y build-essential python3-dev python3-pip libargon2-0-dev \
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
-    libczmq-dev libcurl4-openssl-dev libssl-dev
+    libczmq-dev libcurl4-openssl-dev libssl-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install -U pip setuptools wheel
 
@@ -46,7 +48,7 @@ RUN python3 -m pip install --no-cache-dir \
 # RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install --no-cache-dir jupyterhub==1.5.0
 RUN npm install -g configurable-http-proxy

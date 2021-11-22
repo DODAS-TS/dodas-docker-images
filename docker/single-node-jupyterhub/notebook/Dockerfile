@@ -14,9 +14,11 @@ RUN mkdir -p /usr/local/share/dodasts/script
 # Make bin folder
 RUN mkdir -p /usr/local/share/dodasts/bin
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential python3-dev python3-pip libargon2-0-dev \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && apt-get install -y build-essential python3-dev python3-pip libargon2-0-dev \
     libffi-dev libpixman-1-dev libcairo2-dev libpangox-1.0-dev libjpeg-dev \
-    libczmq-dev
+    libczmq-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install -U --no-cache-dir pip setuptools wheel
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y curl libcurl4-openssl-dev libssl-dev
