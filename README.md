@@ -9,7 +9,7 @@
     <img height="128px" width="auto" alt="EOSC hub logo" src="https://github.com/DODAS-TS/dodas-templates/raw/master/docs/img/eosc-hub-web.png" />
 </p>
 
-## Images
+## Image list
 
 - Monitoring 
   - [![monitoring check](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/monitoring-check.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/monitoring-check.yaml)
