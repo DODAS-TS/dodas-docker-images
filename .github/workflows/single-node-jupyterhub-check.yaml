@@ -3,10 +3,10 @@ name: single-node-jupyterhub check
 on:
   push:
     paths:
-      - "docker/single-node-jupyterhub/*"
+      - "docker/single-node-jupyterhub/**"
   pull_request:
     paths:
-      - "docker/single-node-jupyterhub/*"
+      - "docker/single-node-jupyterhub/**"
 
 jobs:
   dockerlint:
