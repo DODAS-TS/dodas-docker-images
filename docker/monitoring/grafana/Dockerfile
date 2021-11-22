@@ -4,5 +4,5 @@ FROM  grafana/grafana:8.2.1
 USER root
 
 # Install INFN-CLOUD CAs
-RUN wget "https://crt.sh/?d=2475254782" --progress=bar -O /usr/local/share/ca-certificates/ca.crt && \
+RUN wget "https://crt.sh/?d=2475254782" -q -O /usr/local/share/ca-certificates/ca.crt && \
     update-ca-certificates
