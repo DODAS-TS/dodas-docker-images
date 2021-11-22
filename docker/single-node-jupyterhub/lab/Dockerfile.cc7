@@ -5,14 +5,14 @@ FROM ${BASE_IMAGE}
 COPY cc7/packages /tmp/
 
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
-RUN yum -y clean metadata
-RUN yum -y update \
+RUN yum -y clean metadata \
+    &&yum -y update \
     && yum -y upgrade \
     && yum -y install epel-release \
-    && yum -y install $(cat /tmp/packages) \
+    && xargs yum -y install < /tmp/packages \
     && yum -y clean all \
     && localedef -i en_US -f UTF-8 en_US.UTF-8 \
-    && rm -f packages \
+    && rm -f /tmp/packages \
     && yum clean all
 
 WORKDIR /
