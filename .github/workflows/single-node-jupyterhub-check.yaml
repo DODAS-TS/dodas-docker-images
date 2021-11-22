@@ -10,14 +10,27 @@ on:
 
 jobs:
   dockerlint:
+    strategy:
+      matrix:
+        dockerfile:
+          - docker/single-node-jupyterhub/notebook/Dockerfile
+          - docker/single-node-jupyterhub/lab/Dockerfile
+          - docker/single-node-jupyterhub/lab/Dockerfile.cc7
+          - docker/single-node-jupyterhub/lab/ML-INFN/Dockerfile
+          - docker/single-node-jupyterhub/lab/CYGNO/Dockerfile
+          - docker/single-node-jupyterhub/lab/base-persistence/Dockerfile
+          - docker/single-node-jupyterhub/jupyterlab-collaborative-proxy/Dockerfile
+          - docker/single-node-jupyterhub/jupyterlab-collaborative/Dockerfile
+          - docker/single-node-jupyterhub/jupyterlab-collaborative/ML-INFN/Dockerfile
+          - docker/single-node-jupyterhub/jupyterhub/Dockerfile
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Lint Dockerfile
         uses: hadolint/hadolint-action@master
         with:
-          dockerfile: "docker/single-node-jupyterhub/**/Dockerfile*"
-          failure-threshold: "error"
+          dockerfile: ${{ matrix.dockerfile }}
+          failure-threshold: error
 
   shellcheck:
     name: Shellcheck
@@ -28,3 +41,4 @@ jobs:
         uses: ludeeus/action-shellcheck@master
         with:
           scandir: "docker/single-node-jupyterhub"
+          severity: error

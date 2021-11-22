@@ -17,7 +17,7 @@ jobs:
         uses: hadolint/hadolint-action@master
         with:
           dockerfile: "docker/monitoring/grafana/Dockerfile"
-          failure-threshold: "error"
+          failure-threshold: error
 
   shellcheck:
     name: Shellcheck
@@ -28,3 +28,4 @@ jobs:
         uses: ludeeus/action-shellcheck@master
         with:
           scandir: "docker/monitoring"
+          severity: error
