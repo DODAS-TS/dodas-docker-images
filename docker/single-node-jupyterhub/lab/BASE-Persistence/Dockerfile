@@ -1,5 +1,6 @@
 # Image name: dodasts/snj-base-lab-persistence
-FROM dodasts/snj-base-lab
+ARG BASE_IMAGE="dodasts/snj-base-lab"
+FROM ${BASE_IMAGE}
 
 ARG JUPYTER_ROOT=/jupyter-workspace
 
