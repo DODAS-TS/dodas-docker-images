@@ -18,9 +18,8 @@ RUN yum -y update \
 WORKDIR /
 
 # Make dodasts, script and bin folders
-RUN mkdir -p /usr/local/share/dodasts /usr/local/share/dodasts/script /usr/local/share/dodasts/bin
-
-RUN python3 -m pip install  --no-cache-dir -U pip setuptools wheel
+RUN mkdir -p /usr/local/share/dodasts /usr/local/share/dodasts/script /usr/local/share/dodasts/bin \
+    && python3 -m pip install  --no-cache-dir -U pip setuptools wheel
 
 # Install sts-wire
 RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux --progress=bar -O /usr/local/share/dodasts/bin/sts-wire && \
@@ -48,15 +47,15 @@ RUN python3 -m pip install --no-cache-dir \
 # RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
-RUN yum -y install nodejs-16.13.0-1nodesource
+RUN yum -y install nodejs-16.13.0-1nodesource && yum clean all
 
 RUN curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo
 # Fix issue: https://github.com/nodesource/distributions/issues/1290
-RUN yum -y install yarn-1.22.15-1.noarch
+RUN yum -y install yarn-1.22.15-1.noarch && yum clean all
 
-RUN python3 -m pip install --no-cache-dir jupyterhub==1.5.0
-RUN npm install -g configurable-http-proxy
-RUN jupyter serverextension enable --py jupyterlab --sys-prefix
+RUN python3 -m pip install --no-cache-dir jupyterhub==1.5.0 \
+    && npm install -g configurable-http-proxy \
+    && jupyter serverextension enable --py jupyterlab --sys-prefix
 
 WORKDIR /usr/local/share/dodasts
 RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git

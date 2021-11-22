@@ -9,8 +9,8 @@ COPY post_script.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
 
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
-RUN yum -y clean metadata
-RUN yum -y update \
+RUN yum -y clean metadata \
+    && yum -y update \
     && yum -y upgrade \
     && yum -y install "$(cat /tmp/packages)" \
     && yum -y clean all \
