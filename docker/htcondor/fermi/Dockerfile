@@ -1,8 +1,9 @@
-ARG BASE_CONTAINER=dodasts/htcondor
-FROM $BASE_CONTAINER
+FROM htcondor/execute:8.9.9-el7
 
-ENV CONDAPFX="/cvmfs/fermi.local.repo/anaconda3"
-ENV CONDABIN="${CONDAPFX}/bin/conda"
+RUN curl -k "https://crt.sh/?d=2475254782" -o /etc/pki/ca-trust/source/anchors/ca.crt
+RUN update-ca-trust
+ENV PATH="/cvmfs/fermi.local.repo/anaconda3/bin:${PATH}"
+ENV HEADAS="/cvmfs/fermi.local.repo/ftools/x86_64-pc-linux-gnu-libc2.17"
 
 RUN yum install -y sqlite-devel \
   autoconf \
@@ -39,12 +40,3 @@ RUN yum install -y sqlite-devel \
   zlib-devel && \
 yum clean all && \
 rm -rf /var/cache/yum
-
-COPY condor.sh /opt/dodas/
-
-RUN rm /usr/local/sbin/dodas_condor && ln -s /opt/dodas/condor.sh /usr/local/sbin/dodas_condor
-
-ENV PATH="/cvmfs/fermi.local.repo/anaconda3/bin:${PATH}"
-ENV HEADAS="/cvmfs/fermi.local.repo/ftools/x86_64-pc-linux-gnu-libc2.17"
-
-ENTRYPOINT ["/usr/local/sbin/dodas_condor"]
