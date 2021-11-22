@@ -3,9 +3,11 @@ name: monitoring check
 on:
   push:
     paths:
+      - "!docker/**"
       - "docker/monitoring/**"
   pull_request:
     paths:
+      - "!docker/**"
       - "docker/monitoring/**"
 
 jobs:
