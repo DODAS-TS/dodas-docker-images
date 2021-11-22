@@ -2,33 +2,34 @@
 ARG BASE_IMAGE="cern/cc7-base"
 FROM ${BASE_IMAGE}
 
-COPY cc7/packages packages
+COPY cc7/packages /tmp/
 
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
 RUN yum -y clean metadata
 RUN yum -y update \
     && yum -y upgrade \
     && yum -y install epel-release \
-    && yum -y install $(cat packages) \
+    && yum -y install $(cat /tmp/packages) \
     && yum -y clean all \
     && localedef -i en_US -f UTF-8 en_US.UTF-8 \
-    && rm -f packages
+    && rm -f packages \
+    && yum clean all
 
 WORKDIR /
 
 # Make dodasts, script and bin folders
 RUN mkdir -p /usr/local/share/dodasts /usr/local/share/dodasts/script /usr/local/share/dodasts/bin
 
-RUN python3 -m pip install -U pip setuptools wheel
+RUN python3 -m pip install  --no-cache-dir -U pip setuptools wheel
 
 # Install sts-wire
-RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /usr/local/share/dodasts/bin/sts-wire && \
+RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux --progress=bar -O /usr/local/share/dodasts/bin/sts-wire && \
     chmod +x /usr/local/share/dodasts/bin/sts-wire && \
     ln -s /usr/local/share/dodasts/bin/sts-wire /usr/local/bin/sts-wire
 
 # Install oidc-agent
-RUN cd /etc/yum.repos.d && wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
-RUN yum install -y oidc-agent
+RUN cd /etc/yum.repos.d && wget --progress=bar https://repo.data.kit.edu/data-kit-edu-centos7.repo
+RUN yum install -y oidc-agent && yum clean all
 
 # Install jupyterlab
 RUN python3 -m pip install --no-cache-dir \
@@ -58,9 +59,10 @@ RUN npm install -g configurable-http-proxy
 RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 
 WORKDIR /usr/local/share/dodasts
-RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git \
-    && cd jupyterlab-collaborative-util-extension \
-    && jupyter labextension install
+RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git
+WORKDIR /usr/local/share/dodastsupyterlab-collaborative-util-extension
+RUN jupyter labextension install
+WORKDIR /usr/local/share/dodasts
 
 COPY jupyter_lab_config.py /usr/etc/jupyter/
 

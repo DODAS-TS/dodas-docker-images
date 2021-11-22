@@ -1,7 +1,11 @@
 # Image name: dodasts/snj-base-jlabc-proxy
 FROM ubuntu:20.04
 
-RUN DEBIAN_FRONTEND=noninteractive apt update && apt upgrade -y && apt install -y python3 python3-pip
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y python3 python3-pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/share/collab_proxy
 

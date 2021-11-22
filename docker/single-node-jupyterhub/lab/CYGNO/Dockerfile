@@ -3,7 +3,7 @@ FROM dodasts/snj-base-lab-cc7
 
 ARG JUPYTER_ROOT=/jupyter-workspace
 
-COPY packages packages
+COPY packages /tmp/
 
 COPY post_script.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
@@ -12,7 +12,7 @@ RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
 RUN yum -y clean metadata
 RUN yum -y update \
     && yum -y upgrade \
-    && yum -y install $(cat packages) \
+    && yum -y install "$(cat /tmp/packages)" \
     && yum -y clean all \
     && rm -f packages
 
@@ -20,7 +20,7 @@ RUN jupyter labextension uninstall @jlab_collaborative_ext/context-menu
 
 # Install Geant4
 WORKDIR /tmp/
-RUN wget http://cern.ch/geant4-data/releases/geant4.10.05.p01.tar.gz \
+RUN wget --progress=bar http://cern.ch/geant4-data/releases/geant4.10.05.p01.tar.gz \
     && tar -xzf "geant4.10.05.p01.tar.gz" \
     && mv "geant4.10.05.p01" geant4 \
     && rm "geant4.10.05.p01.tar.gz" 
@@ -38,26 +38,28 @@ RUN cmake3 -DCMAKE_BUILD_TYPE=Release \
     -DGEANT4_BUILD_MULTITHREADED=ON \
     ../geant4 \ 
     && make -j4 \
-    && make install \
-    && cd ..\
-    && rm -rf geant4 geant4-build
+    && make install 
+WORKDIR /tmp
+RUN rm -rf geant4 geant4-build
 
 # Install garfield
 WORKDIR /usr/local/share/garfield
 ENV GARFIELD_HOME=/usr/local/share/garfield
 ENV HEED_DATABASE=${GARFIELD_HOME}/Heed/heed++/database
 RUN git clone https://gitlab.cern.ch/garfield/garfieldpp.git ${GARFIELD_HOME} \
-    && mkdir build \
-    && cd build \
-    && cmake3 ${GARFIELD_HOME} \
+    && mkdir build
+WORKDIR /usr/local/share/garfield/build
+RUN cmake3 ${GARFIELD_HOME} \
     && make -j 4 \
     && make install 
 
+WORKDIR /
+
 # Install boto
-RUN pip3 install -U git+https://github.com/DODAS-TS/boto3sts
+RUN pip3 install --no-cache-dir -U git+https://github.com/DODAS-TS/boto3sts
 
 # Install ca
-RUN wget "https://crt.sh/?d=2475254782" -O /etc/pki/ca-trust/source/anchors/ca.crt \
+RUN wget "https://crt.sh/?d=2475254782" --progress=bar -O /etc/pki/ca-trust/source/anchors/ca.crt \
     && update-ca-trust \
     && update-ca-trust force-enable
 
