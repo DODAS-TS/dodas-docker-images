@@ -14,7 +14,7 @@ RUN yum -y update \
     && yum -y upgrade \
     && yum -y install "$(cat /tmp/packages)" \
     && yum -y clean all \
-    && rm -f packages
+    && rm -f /tmp/packages
 
 RUN jupyter labextension uninstall @jlab_collaborative_ext/context-menu
 
