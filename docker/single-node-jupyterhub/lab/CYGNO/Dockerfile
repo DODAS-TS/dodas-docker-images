@@ -12,7 +12,7 @@ RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
 RUN yum -y clean metadata \
     && yum -y update \
     && yum -y upgrade \
-    && yum -y install < /tmp/packages \
+    && xargs yum -y install < /tmp/packages \
     && yum -y clean all \
     && rm -f /tmp/packages
 
