@@ -48,7 +48,9 @@ RUN python3 -m pip install --no-cache-dir \
 # RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && apt-get install -y nodejs \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install --no-cache-dir jupyterhub==1.5.0
 RUN npm install -g configurable-http-proxy
@@ -56,7 +58,7 @@ RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 
 WORKDIR /usr/local/share/dodasts
 RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git
-WORKDIR /usr/local/share/dodastsupyterlab-collaborative-util-extension
+WORKDIR /usr/local/share/dodasts/jupyterlab-collaborative-util-extension
 RUN jupyter labextension install
 WORKDIR /usr/local/share/dodasts
 

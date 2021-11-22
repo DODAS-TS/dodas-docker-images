@@ -60,7 +60,7 @@ RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 
 WORKDIR /usr/local/share/dodasts
 RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git
-WORKDIR /usr/local/share/dodastsupyterlab-collaborative-util-extension
+WORKDIR /usr/local/share/dodasts/jupyterlab-collaborative-util-extension
 RUN jupyter labextension install
 WORKDIR /usr/local/share/dodasts
 

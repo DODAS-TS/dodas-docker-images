@@ -13,7 +13,10 @@ RUN python3 -m pip install -U pip setuptools wheel
 RUN pip3 install flask==2.0.2 \
     jupyterhub==1.5.0
 
-RUN DEBIAN_FRONTEND=noninteractive apt install -y libcurl4-openssl-dev libssl-dev
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && apt-get install -y libcurl4-openssl-dev libssl-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY collab_proxy.py .
 

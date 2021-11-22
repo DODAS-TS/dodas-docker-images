@@ -21,7 +21,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install -U --no-cache-dir pip setuptools wheel
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y curl libcurl4-openssl-dev libssl-dev
+RUN DEBIAN_FRONTEND=noninteractive apt-get update \
+    && apt-get install -y curl libcurl4-openssl-dev libssl-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install sts-wire
 RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux --progress=bar -O /usr/local/share/dodasts/bin/sts-wire && \
