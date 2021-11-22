@@ -1,8 +1,9 @@
 # Image name: dodasts/snj-base-notebook
 FROM ubuntu:20.04
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y git software-properties-common wget fuse
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y git software-properties-common wget fuse \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
 

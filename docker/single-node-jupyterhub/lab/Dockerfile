@@ -3,8 +3,9 @@
 ARG BASE_IMAGE="ubuntu:20.04"
 FROM ${BASE_IMAGE}
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y git software-properties-common wget fuse curl
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y git software-properties-common wget fuse curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /
 
