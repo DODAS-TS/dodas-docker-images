@@ -12,7 +12,7 @@ RUN /bin/bash -c "jupyter lab build --dev-build=False --minimize=True"
 
 WORKDIR /jupyter-workspace
 
-CMD ["jupyter", "lab", "--debug", \
+CMD ["tini", "-s", "--", "jupyter", "lab", "--debug", \
     "--JupyterApp.config_file=/usr/local/share/dodasts/jupyter_configs/jupyter_lab_config.py", \
     "--ServerApp.keyfile=/usr/local/share/dodasts/certs/jupyter/hostcert.key", \
     "--ServerApp.certfile=/usr/local/share/dodasts/certs/jupyter/hostcert.pem", \
