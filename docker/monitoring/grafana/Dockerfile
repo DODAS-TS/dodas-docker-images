@@ -1,5 +1,5 @@
 # Image name: dodasts/monitoring-grafana
-FROM  grafana/grafana:8.2.1
+FROM  grafana/grafana:8.2.5
 
 USER root
 
