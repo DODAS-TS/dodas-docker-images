@@ -52,5 +52,4 @@ jobs:
           platforms: linux/amd64
           outputs: "type=registry,push=true"
           tags: |
-              ghcr.io/${{ steps.get_repo_owner.outputs.repo_owner }}/execute-fermi:${{ env.RELEASE_VERSION }}
               ${{ steps.docker_meta.outputs.tags }}
