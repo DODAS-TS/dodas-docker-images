@@ -1,6 +1,7 @@
 # Configuration file for JupyterHub
 import json
 import os
+import pathlib
 import pprint
 import socket
 import subprocess
@@ -347,7 +348,14 @@ c.DockerSpawner.http_timeout = 600
 # c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
 
 notebook_dir: str = os.environ.get("DOCKER_NOTEBOOK_DIR", "/jupyter-workspace")
-notebook_mount_dir: str = os.environ.get("DOCKER_NOTEBOOK_MOUNT_DIR", "/jupyter-mounts")
+
+notebook_mount_dir: str = os.environ.get("DOCKER_NOTEBOOK_MOUNT_DIR", "")
+if notebook_mount_dir != "":
+    # Force path check
+    pathlib.Path(notebook_mount_dir).resolve(True)
+else:
+    notebook_mount_dir = "/jupyter-mounts"  # Default value
+
 collaborative_service: bool = os.getenv("JUPYTER_COLLAB_SERVICE", "False").lower() in [
     "true",
     "t",
