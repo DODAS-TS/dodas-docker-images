@@ -347,7 +347,9 @@ c.DockerSpawner.http_timeout = 600
 # notebook directory in the container
 # c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
 
-notebook_dir: str = os.environ.get("DOCKER_NOTEBOOK_DIR", "/jupyter-workspace")
+notebook_dir: str = os.environ.get("DOCKER_NOTEBOOK_DIR", "")
+if notebook_dir == "":
+    notebook_dir = "/jupyter-workspace"  # Default value
 
 notebook_mount_dir: str = os.environ.get("DOCKER_NOTEBOOK_MOUNT_DIR", "")
 if notebook_mount_dir != "":
