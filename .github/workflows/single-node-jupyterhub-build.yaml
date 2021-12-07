@@ -284,7 +284,7 @@ jobs:
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
 
-  snj-base-jhub-ml-infn-hackathon:
+  snj-jhub-ml-infn-hackathon:
     runs-on: ubuntu-latest
     needs: snj-base-jhub
     steps:
