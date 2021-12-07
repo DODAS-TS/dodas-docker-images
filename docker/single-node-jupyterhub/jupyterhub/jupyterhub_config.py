@@ -249,7 +249,7 @@ class CustomSpawner(dockerspawner.DockerSpawner):
         memory = "".join(formdata["mem"])
         self.mem_limit = memory
         options["gpu"] = formdata.get("gpu", "")
-        use_gpu = "".join(formdata["gpu"]) == "Y"
+        use_gpu = "".join(options["gpu"]) == "Y"
         device_request = {}
         if use_gpu:
             device_request = {
