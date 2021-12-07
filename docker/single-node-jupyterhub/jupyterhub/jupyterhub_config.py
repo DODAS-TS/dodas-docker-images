@@ -390,7 +390,7 @@ volumes_collab = {
     notebook_mount_dir
     + "/collaborativefolder": {
         "bind": notebook_dir + "/collaborativefolder",
-        "mode": "ro",
+        "mode": "rw",
     },
     # notebook_mount_dir
     # + "/collaborativefolder/{username}": {
