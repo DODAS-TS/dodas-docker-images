@@ -386,13 +386,13 @@ volumes_collab = {
     notebook_mount_dir
     + "/collaborativefolder": {
         "bind": notebook_dir + "/collaborativefolder",
-        "mode": "rw",
+        "mode": "ro",
     },
-    notebook_mount_dir
-    + "/collaborativefolder/{username}": {
-        "bind": notebook_dir + "/collaborativefolder/{username}",
-        "mode": "rw",
-    },
+    # notebook_mount_dir
+    # + "/collaborativefolder/{username}": {
+    #     "bind": notebook_dir + "/collaborativefolder/{username}",
+    #     "mode": "rw",
+    # },
 }
 if collaborative_service:
     c.DockerSpawner.volumes = {**volumes, **volumes_collab}
