@@ -206,6 +206,10 @@ _option_template = """
 """
 # Spawn single-user servers as Docker containers
 class CustomSpawner(dockerspawner.DockerSpawner):
+
+    # ref: https://github.com/jupyterhub/dockerspawner/blob/87938e64fd3ca9a3e6170144fa6395502e3dba34/dockerspawner/dockerspawner.py#L309
+    pull_policy = "always"
+
     def _options_form_default(self):
         # Get images
         images = os.environ.get("JUPYTER_IMAGE_LIST", "no default image")
