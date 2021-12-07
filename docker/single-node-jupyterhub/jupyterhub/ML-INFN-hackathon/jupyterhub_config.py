@@ -202,6 +202,10 @@ _option_template = """
 """
 # Spawn single-user servers as Docker containers
 class CustomSpawner(dockerspawner.DockerSpawner):
+
+    # ref: https://github.com/jupyterhub/dockerspawner/blob/87938e64fd3ca9a3e6170144fa6395502e3dba34/dockerspawner/dockerspawner.py#L309
+    pull_policy = "always"
+
     def _options_form_default(self):
         # Get images
         # images = os.environ.get("JUPYTER_IMAGE_LIST", "no default image")
@@ -244,7 +248,7 @@ class CustomSpawner(dockerspawner.DockerSpawner):
         options["mem"] = formdata["mem"]
         memory = "".join(formdata["mem"])
         self.mem_limit = memory
-        options["gpu"] = formdata["gpu"]
+        options["gpu"] = formdata.get("gpu", "")
         use_gpu = "".join(formdata["gpu"]) == "Y"
         device_request = {}
         if use_gpu:
