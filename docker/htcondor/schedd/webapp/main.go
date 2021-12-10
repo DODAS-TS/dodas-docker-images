@@ -26,7 +26,7 @@ import (
 	"time"
 
 	execute "github.com/alexellis/go-execute/pkg/v1"
-	jwtgo "github.com/dgrijalva/jwt-go"
+	jwtgo "github.com/golang-jwt/jwt"
 	cache "github.com/patrickmn/go-cache"
 )
 
