@@ -1,4 +1,4 @@
-## How to use
+# How to use
 
 Example withing a docker compose service:
 
