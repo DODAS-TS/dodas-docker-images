@@ -9,7 +9,7 @@ services:
     [...]
     
     backup_service:
-        build: backup_service
+        image: dodasts/backup-service
         volumes:
         - /path/of/source/folder:/source
         - /path/of/backup/folder:/var/cache/rsnapshot
