@@ -11,6 +11,9 @@
 
 ## Image list
 
+- Backup Service
+  - [![backup service check](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/backup-service-check.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/backup-service-check.yaml)
+  - [![backup service build](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/backup-service-build.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/backup-service-build.yaml)
 - Monitoring 
   - [![monitoring check](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/monitoring-check.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/monitoring-check.yaml)
   - [![monitoring build](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/monitoring-build.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/monitoring-build.yaml)
