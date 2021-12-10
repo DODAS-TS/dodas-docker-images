@@ -17,6 +17,6 @@
 - Monitoring 
   - [![monitoring check](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/monitoring-check.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/monitoring-check.yaml)
   - [![monitoring build](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/monitoring-build.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/monitoring-build.yaml)
-- Single-node-jupyterhub
+- Single Node JupyterHub
   - [![single-node-jupyterhub check](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/single-node-jupyterhub-check.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/single-node-jupyterhub-check.yaml)
   - [![single-node-jupyterhub build](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/single-node-jupyterhub-build.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/single-node-jupyterhub-build.yaml)
