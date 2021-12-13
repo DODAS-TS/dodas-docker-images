@@ -11,7 +11,7 @@ services:
     backup_service:
         image: dodasts/backup-service
         volumes:
-        - /path/of/source/folder:/source
+        - /path/of/source/folder:/source:ro
         - /path/of/backup/folder:/var/cache/rsnapshot
 
     [...]
