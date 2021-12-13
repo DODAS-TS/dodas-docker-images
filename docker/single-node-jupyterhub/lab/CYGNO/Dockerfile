@@ -63,11 +63,17 @@ RUN wget "https://crt.sh/?d=2475254782" --progress=bar -O /etc/pki/ca-trust/sour
     && update-ca-trust \
     && update-ca-trust force-enable
 
+# Install 
+RUN pip3 install --no-cache-dir -U mahotas \
+    && pip3 install --no-cache-dir -U git+https://github.com/gmazzitelli/cygno_repo.git
+
 # Link folders
 RUN mkdir -p ${JUPYTER_ROOT} \
     && ln -s /s3 ${JUPYTER_ROOT}/cloud-storage \
     && ln -s /shared ${JUPYTER_ROOT}/shared \
     && ln -s /private ${JUPYTER_ROOT}/private
+
+RUN alternatives --set python /usr/bin/python3
 
 
 WORKDIR /jupyter-workspace
