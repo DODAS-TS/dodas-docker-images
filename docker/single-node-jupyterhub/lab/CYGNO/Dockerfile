@@ -73,7 +73,5 @@ RUN mkdir -p ${JUPYTER_ROOT} \
     && ln -s /shared ${JUPYTER_ROOT}/shared \
     && ln -s /private ${JUPYTER_ROOT}/private
 
-RUN alternatives --set python /usr/bin/python3
-
 
 WORKDIR /jupyter-workspace
