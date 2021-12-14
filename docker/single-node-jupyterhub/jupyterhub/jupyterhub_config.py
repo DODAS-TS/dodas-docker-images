@@ -381,7 +381,7 @@ volumes = {
     },
     # Mount point for private stuff
     notebook_mount_dir
-    + "users/{username}/": {"bind": notebook_dir + "/private", "mode": "rw"},
+    + "/users/{username}/": {"bind": notebook_dir + "/private", "mode": "rw"},
 }
 
 volumes_collab = {
