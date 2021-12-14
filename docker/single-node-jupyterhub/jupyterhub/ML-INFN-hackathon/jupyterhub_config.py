@@ -355,12 +355,10 @@ notebook_dir: str = os.environ.get("DOCKER_NOTEBOOK_DIR", "")
 if notebook_dir == "":
     notebook_dir = "/jupyter-workspace"  # Default value
 
-notebook_mount_dir: str = os.environ.get("DOCKER_NOTEBOOK_MOUNT_DIR", "")
-if notebook_mount_dir != "":
-    # Force path check
-    pathlib.Path(notebook_mount_dir).resolve(True)
-else:
-    notebook_mount_dir = "/jupyter-mounts"  # Default value
+notebook_mount_dir = "/jupyter-mounts"  # Default value
+notebook_mount_dir_prefix: str = os.environ.get("DOCKER_NOTEBOOK_MOUNT_DIR", "")
+if notebook_mount_dir_prefix != "":
+    notebook_mount_dir = notebook_mount_dir_prefix + "/jupyter-mounts"
 
 collaborative_service: bool = os.getenv("JUPYTER_COLLAB_SERVICE", "False").lower() in [
     "true",
