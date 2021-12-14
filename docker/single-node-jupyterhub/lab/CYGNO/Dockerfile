@@ -1,6 +1,11 @@
 # Image name: dodasts/cygno-lab
 FROM dodasts/snj-base-lab-cc7
 
+# Set python3 to default globally
+# RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1 \
+#     && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 2 \
+#     && yes 2 | update-alternatives --config python
+
 ARG JUPYTER_ROOT=/jupyter-workspace
 
 COPY packages /tmp/
@@ -66,6 +71,9 @@ RUN wget "https://crt.sh/?d=2475254782" --progress=bar -O /etc/pki/ca-trust/sour
 # Install 
 RUN pip3 install --no-cache-dir -U mahotas \
     && pip3 install --no-cache-dir -U git+https://github.com/gmazzitelli/cygno_repo.git
+
+# Forse default python in jupyter kernel to Python3
+COPY kernel.json /usr/local/share/jupyter/kernels/python3/
 
 # Link folders
 RUN mkdir -p ${JUPYTER_ROOT} \
