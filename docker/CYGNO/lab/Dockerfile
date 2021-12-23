@@ -71,9 +71,9 @@ RUN wget "https://crt.sh/?d=2475254782" --progress=bar -O /etc/pki/ca-trust/sour
 # Install 
 RUN pip3 install --no-cache-dir -U \
     mahotas==1.4.12 \
-    scikit-image==0.19.0 \
-    scikit-learn==1.0.1 \
-    scipy==1.7.3 \
+    scikit-image==0.17.2 \
+    scikit-learn==0.24.2 \
+    scipy==1.5.4 \
     && pip3 install --no-cache-dir -U git+https://github.com/gmazzitelli/cygno_repo.git
 
 # Forse default python in jupyter kernel to Python3
