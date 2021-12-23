@@ -1,5 +1,8 @@
-# Image name: dodasts/ml-infn-lab
-FROM dodasts/snj-base-lab-gpu
+# Image name: dodasts/ml-infn-jlabc
+FROM dodasts/snj-base-jlabc-gpu:v1.0.0-snj
+
+# Disable diff checkpoit
+RUN jupyter labextension disable nbdime-jupyterlab
 
 # Install system packages
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
@@ -20,6 +23,5 @@ RUN python3 -m pip install --no-cache-dir \
     pydot==1.4.2 \
     scikit-image==0.18.3 \
     scikit-learn==1.0.1 \
-    seaborn==0.11.2 \
     torch==1.10.0 \
     uproot==4.1.7
