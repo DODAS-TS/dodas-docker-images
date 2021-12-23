@@ -18,14 +18,10 @@ jobs:
           - docker/single-node-jupyterhub/notebook/Dockerfile
           - docker/single-node-jupyterhub/lab/Dockerfile
           - docker/single-node-jupyterhub/lab/Dockerfile.cc7
-          - docker/single-node-jupyterhub/lab/ML-INFN/Dockerfile
-          - docker/single-node-jupyterhub/lab/CYGNO/Dockerfile
           - docker/single-node-jupyterhub/lab/base-persistence/Dockerfile
           - docker/single-node-jupyterhub/jupyterlab-collaborative-proxy/Dockerfile
           - docker/single-node-jupyterhub/jupyterlab-collaborative/Dockerfile
-          - docker/single-node-jupyterhub/jupyterlab-collaborative/ML-INFN/Dockerfile
           - docker/single-node-jupyterhub/jupyterhub/Dockerfile
-          - docker/single-node-jupyterhub/jupyterhub/ML-INFN-hackathon/Dockerfile
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

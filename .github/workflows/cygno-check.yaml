@@ -1,0 +1,37 @@
+name: cygno check
+
+on:
+  push:
+    paths:
+      - "!docker/**"
+      - "docker/CYGNO/**"
+  pull_request:
+    paths:
+      - "!docker/**"
+      - "docker/CYGNO/**"
+
+jobs:
+  dockerlint:
+    strategy:
+      matrix:
+        dockerfile:
+          - docker/CYGNO/lab/Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@master
+        with:
+          dockerfile: ${{ matrix.dockerfile }}
+          failure-threshold: error
+
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: "docker/CYGNO"
+          severity: error
