@@ -90,6 +90,9 @@ RUN pip3 install --no-cache-dir -U \
 # Forse default python in jupyter kernel to Python3
 COPY kernel.json /usr/local/share/jupyter/kernels/python3/
 
+# cmake3 alias
+RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
+
 # Link folders
 RUN mkdir -p ${JUPYTER_ROOT} \
     && ln -s /s3 ${JUPYTER_ROOT}/cloud-storage \
