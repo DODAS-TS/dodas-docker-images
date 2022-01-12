@@ -58,6 +58,15 @@ RUN cmake3 ${GARFIELD_HOME} \
     && make -j 4 \
     && make install 
 
+# Install CADMesh
+WORKDIR /usr/local/share/CADMesh
+RUN git clone --branch v2.0.3 https://github.com/christopherpoole/CADMesh.git . \
+    && git submodule update --init --recursive \
+    && mkdir -p build
+WORKDIR /usr/local/share/CADMesh/build
+RUN cmake3 .. \
+    && make install
+
 WORKDIR /
 
 # Install boto

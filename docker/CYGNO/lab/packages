@@ -1,3 +1,4 @@
+assimp-devel
 avahi-compat-libdns_sd-devel
 avahi-devel
 cfitsio-devel
@@ -86,6 +87,7 @@ root-unfold
 root-unuran
 root-xproof
 srm-ifce-devel
+tetgen-devel
 unixODBC-devel
 urw-fonts
 xerces-c
