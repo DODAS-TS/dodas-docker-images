@@ -67,6 +67,14 @@ WORKDIR /usr/local/share/CADMesh/build
 RUN cmake3 .. \
     && make install
 
+# Install RooUnfold
+WORKDIR /usr/local/share/RooUnfold
+RUN git clone --branch 2.0.1 https://gitlab.cern.ch/RooUnfold/RooUnfold.git . \
+    && make \
+    && make bin \
+    && cp lib* /usr/lib64/root/ \
+    && cp RooUnfoldDict_rdict.pcm /usr/lib64/root/
+
 WORKDIR /
 
 # Install boto
@@ -85,7 +93,8 @@ RUN pip3 install --no-cache-dir -U \
     scipy==1.5.4 \
     jedi-language-server==0.21.0 \
     metakernel==0.28.2 \
-    && pip3 install --no-cache-dir -U git+https://github.com/gmazzitelli/cygno_repo.git
+    && pip3 install --no-cache-dir -U git+https://github.com/gmazzitelli/cygno_repo.git \
+    && pip3 install --no-cache-dir git+https://gitlab.cern.ch/RooUnfold/RooUnfold@2.0.1
 
 # Forse default python in jupyter kernel to Python3
 COPY kernel.json /usr/local/share/jupyter/kernels/python3/
