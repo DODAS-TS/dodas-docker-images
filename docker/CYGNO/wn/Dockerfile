@@ -16,9 +16,6 @@ RUN chmod +x /usr/local/share/dodasts/script/install_CADMesh.sh
 COPY scripts/install_RooUnfold.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/install_RooUnfold.sh
 
-COPY post_script.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
-
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
 RUN yum -y clean metadata \
     && yum --exclude=\*oidc-agent\* -y update \
