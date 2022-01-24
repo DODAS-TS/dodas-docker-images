@@ -35,22 +35,19 @@ RUN yum -y clean metadata \
 
 RUN jupyter labextension uninstall @jlab_collaborative_ext/context-menu
 
-# Install Geant4
 WORKDIR /usr/local/share/dodasts/script/
-RUN ./install_geant4.sh
 
-# Install garfield
-WORKDIR /usr/local/share/garfield
+# garfield env variables
 ENV GARFIELD_HOME=/usr/local/share/garfield
 ENV HEED_DATABASE=${GARFIELD_HOME}/Heed/heed++/database
-RUN ./install_garfield.sh
 
+# Install Geant4
+RUN ./install_geant4.sh
+# Install garfield
+RUN ./install_garfield.sh.sh
 # Install CADMesh
-WORKDIR /usr/local/share/CADMesh
 RUN ./install_CADMesh.sh
-
 # Install RooUnfold
-WORKDIR /usr/local/share/RooUnfold
 RUN ./install_RooUnfold.sh
 
 WORKDIR /
