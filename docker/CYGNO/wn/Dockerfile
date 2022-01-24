@@ -52,7 +52,7 @@ RUN wget "https://crt.sh/?d=2475254782" --progress=bar -O /etc/pki/ca-trust/sour
 
 # Install 
 RUN pip3 install --no-cache-dir -U \
-    mahotas==1.4.12 \
+    mahotas==1.4.11 \
     scikit-image==0.17.2 \
     scikit-learn==0.24.2 \
     scipy==1.5.4 \
