@@ -1,13 +1,7 @@
 # Image name: dodasts/cygno-lab
-FROM dodasts/snj-base-lab-cc7:v1.0.0-snj
+FROM htcondor/execute:8.9.9-el7
 
-# Set python3 to default globally
-# RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1 \
-#     && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 2 \
-#     && yes 2 | update-alternatives --config python
-
-ARG JUPYTER_ROOT=/jupyter-workspace
-
+COPY ../assets/base_packages /tmp/
 COPY ../assets/packages /tmp/
 
 COPY ../scripts/install_geant4.sh /usr/local/share/dodasts/script/
@@ -22,18 +16,17 @@ RUN chmod +x /usr/local/share/dodasts/script/install_CADMesh.sh
 COPY ../scripts/install_RooUnfold.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/install_RooUnfold.sh
 
-COPY ../scripts/post_script.sh /usr/local/share/dodasts/script/
+COPY post_script.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
 
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
 RUN yum -y clean metadata \
     && yum --exclude=\*oidc-agent\* -y update \
     && yum --exclude=\*oidc-agent\* -y upgrade \
+    && xargs yum -y install < /tmp/base_packages \
     && xargs yum -y install < /tmp/packages \
     && yum -y clean all \
-    && rm -f /tmp/packages
-
-RUN jupyter labextension uninstall @jlab_collaborative_ext/context-menu
+    && rm -f /tmp/*packages
 
 # Install Geant4
 WORKDIR /usr/local/share/dodasts/script/
@@ -43,7 +36,7 @@ RUN ./install_geant4.sh
 WORKDIR /usr/local/share/garfield
 ENV GARFIELD_HOME=/usr/local/share/garfield
 ENV HEED_DATABASE=${GARFIELD_HOME}/Heed/heed++/database
-RUN ./install_garfield.sh
+RUN ./install_garfield.sh.sh
 
 # Install CADMesh
 WORKDIR /usr/local/share/CADMesh
@@ -73,17 +66,5 @@ RUN pip3 install --no-cache-dir -U \
     metakernel==0.28.2 \
     && pip3 install --no-cache-dir -U git+https://github.com/gmazzitelli/cygno_repo.git
 
-# Force default python in jupyter kernel to Python3
-COPY kernel.json /usr/local/share/jupyter/kernels/python3/
-
 # cmake3 alias
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
-
-# Link folders
-RUN mkdir -p ${JUPYTER_ROOT} \
-    && ln -s /s3 ${JUPYTER_ROOT}/cloud-storage \
-    && ln -s /shared ${JUPYTER_ROOT}/shared \
-    && ln -s /private ${JUPYTER_ROOT}/private
-
-
-WORKDIR /jupyter-workspace
