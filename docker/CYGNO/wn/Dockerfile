@@ -34,7 +34,7 @@ ENV HEED_DATABASE=${GARFIELD_HOME}/Heed/heed++/database
 # Install Geant4
 RUN ./install_geant4.sh
 # Install garfield
-RUN ./install_garfield.sh.sh
+RUN ./install_garfield.sh
 # Install CADMesh
 RUN ./install_CADMesh.sh
 # Install RooUnfold
