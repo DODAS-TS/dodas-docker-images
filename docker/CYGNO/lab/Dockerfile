@@ -8,21 +8,21 @@ FROM dodasts/snj-base-lab-cc7:v1.0.0-snj
 
 ARG JUPYTER_ROOT=/jupyter-workspace
 
-COPY ../assets/packages /tmp/
+COPY assets/packages /tmp/
 
-COPY ../scripts/install_geant4.sh /usr/local/share/dodasts/script/
+COPY scripts/install_geant4.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/install_geant4.sh
 
-COPY ../scripts/install_garfield.sh /usr/local/share/dodasts/script/
+COPY scripts/install_garfield.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/install_garfield.sh
 
-COPY ../scripts/install_CADMesh.sh /usr/local/share/dodasts/script/
+COPY scripts/install_CADMesh.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/install_CADMesh.sh
 
-COPY ../scripts/install_RooUnfold.sh /usr/local/share/dodasts/script/
+COPY scripts/install_RooUnfold.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/install_RooUnfold.sh
 
-COPY ../scripts/post_script.sh /usr/local/share/dodasts/script/
+COPY scripts/post_script.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
 
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
@@ -74,7 +74,7 @@ RUN pip3 install --no-cache-dir -U \
     && pip3 install --no-cache-dir -U git+https://github.com/gmazzitelli/cygno_repo.git
 
 # Force default python in jupyter kernel to Python3
-COPY kernel.json /usr/local/share/jupyter/kernels/python3/
+COPY lab/kernel.json /usr/local/share/jupyter/kernels/python3/
 
 # cmake3 alias
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
