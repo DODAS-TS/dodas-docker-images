@@ -5,7 +5,7 @@ wget --progress=bar http://cern.ch/geant4-data/releases/geant4.10.05.p01.tar.gz 
     mv "geant4.10.05.p01" geant4 &&
     rm "geant4.10.05.p01.tar.gz"
 
-pushd /geant4-build || exit 1
+pushd geant4-build || exit 1
 
 cmake3 -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr/local/share/geant4 \
