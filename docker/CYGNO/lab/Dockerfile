@@ -10,6 +10,11 @@ ARG JUPYTER_ROOT=/jupyter-workspace
 
 COPY assets/packages /tmp/
 
+COPY lab/htcondor-development-rhel7.repo /etc/yum.repos.d/
+COPY lab/RPM-GPG-KEY-HTCondor /etc/pki/rpm-gpg/
+COPY lab/htcondor_ca.crt /etc/pki/ca-trust/source/anchors/
+COPY lab/condor_config.local /etc/condor/
+
 COPY scripts/install_geant4.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/install_geant4.sh
 
@@ -30,6 +35,14 @@ RUN yum -y clean metadata \
     && yum --exclude=\*oidc-agent\* -y update \
     && yum --exclude=\*oidc-agent\* -y upgrade \
     && xargs yum -y install < /tmp/packages \
+    && yum -y install \
+    condor \
+    condor-boinc \
+    condor-classads \
+    condor-externals \
+    condor-procd \
+    python2-condor \
+    python3-condor \
     && yum -y clean all \
     && rm -f /tmp/packages
 
