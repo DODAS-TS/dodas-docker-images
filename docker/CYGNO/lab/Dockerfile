@@ -8,7 +8,7 @@ FROM dodasts/snj-base-lab-cc7:v1.0.0-snj
 
 ARG JUPYTER_ROOT=/jupyter-workspace
 
-COPY .bashrc /root/
+COPY lab/.bashrc /root/
 
 COPY lab/jupyter_lab_config.py /tmp/
 RUN cat /tmp/jupyter_lab_config.py >> /usr/etc/jupyter/jupyter_lab_config.py \
