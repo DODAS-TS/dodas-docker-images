@@ -10,7 +10,7 @@ ARG JUPYTER_ROOT=/jupyter-workspace
 
 COPY .bashrc /root/
 
-COPY jupyter_lab_config.py /tmp/
+COPY lab/jupyter_lab_config.py /tmp/
 RUN cat /tmp/jupyter_lab_config.py >> /usr/etc/jupyter/jupyter_lab_config.py \
     && rm /tmp/jupyter_lab_config.py
 
