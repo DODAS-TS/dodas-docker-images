@@ -79,6 +79,7 @@ RUN pip3 install --no-cache-dir -U \
     scikit-image==0.17.2 \
     scikit-learn==0.24.2 \
     scipy==1.5.4 \
+    seaborn==0.11.2 \
     jedi-language-server==0.21.0 \
     metakernel==0.28.2 \
     && pip3 install --no-cache-dir -U git+https://github.com/gmazzitelli/cygno_repo.git
