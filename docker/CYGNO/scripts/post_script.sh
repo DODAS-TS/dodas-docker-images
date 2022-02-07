@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 BASE_CACHE_DIR="/usr/local/share/dodasts/sts-wire/cache"
-COMMON_PARAMS=" --localCache full --tryRemount --noDummyFileCheck"
 
 mkdir -p "${BASE_CACHE_DIR}"
 mkdir -p /usr/local/share/dodasts/sts-wire/cache
@@ -21,36 +20,36 @@ mkdir -p /s3/cygno-data
 sleep 1s && nice -n 19 sts-wire https://iam.cloud.infn.it/ \
     "${USERNAME}" https://minio.cloud.infn.it/ \
     "/${USERNAME}" "/s3/${USERNAME}" \
-    "${COMMON_PARAMS}" \
+    --localCache full --tryRemount --noDummyFileCheck \
     --localCacheDir "${BASE_CACHE_DIR}/${USERNAME}" \
     &>"/var/log/sts-wire/mount_log_${USERNAME}.txt" &
 sleep 2s && nice -n 19 sts-wire https://iam.cloud.infn.it/ \
     scratch https://minio.cloud.infn.it/ \
     /scratch /s3/scratch \
-    "${COMMON_PARAMS}" \
+    --localCache full --tryRemount --noDummyFileCheck \
     --localCacheDir "${BASE_CACHE_DIR}/scratch" \
     &>/var/log/sts-wire/mount_log_scratch.txt &
 sleep 3s && nice -n 19 sts-wire https://iam.cloud.infn.it/ \
     cygno https://minio.cloud.infn.it/ \
     /cygnus /s3/cygno \
-    "${COMMON_PARAMS}" \
+    --localCache full --tryRemount --noDummyFileCheck \
     --localCacheDir "${BASE_CACHE_DIR}/cygno" \
     &>/var/log/sts-wire/mount_log_cygno.txt &
 sleep 4s && nice -n 19 sts-wire https://iam.cloud.infn.it/ \
     cygno_analysis https://minio.cloud.infn.it/ \
     /cygno-analysis /s3/cygno-analysis \
-    "${COMMON_PARAMS}" \
+    --localCache full --tryRemount --noDummyFileCheck \
     --localCacheDir "${BASE_CACHE_DIR}/cygno_analysis" \
     &>/var/log/sts-wire/mount_log_cygnoalanysis.txt &
 sleep 5s && nice -n 19 sts-wire https://iam.cloud.infn.it/ \
     cygno_sim https://minio.cloud.infn.it/ \
     /cygno-sim /s3/cygno-sim \
-    "${COMMON_PARAMS}" \
+    --localCache full --tryRemount --noDummyFileCheck \
     --localCacheDir "${BASE_CACHE_DIR}/cygno_sim" \
     &>/var/log/sts-wire/mount_log_cygnosim.txt &
 sleep 6s && nice -n 19 sts-wire https://iam.cloud.infn.it/ \
     cygno_data https://minio.cloud.infn.it/ \
     /cygno-data /s3/cygno-data \
-    "${COMMON_PARAMS}" \
+    --localCache full --tryRemount --noDummyFileCheck \
     --localCacheDir "${BASE_CACHE_DIR}/cygno_data" \
     &>/var/log/sts-wire/mount_log_cygnodata.txt &

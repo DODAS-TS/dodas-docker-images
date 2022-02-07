@@ -1,0 +1,39 @@
+name: ml-infn check
+
+on:
+  push:
+    paths:
+      - "!docker/**"
+      - "docker/ML-INFN/**"
+  pull_request:
+    paths:
+      - "!docker/**"
+      - "docker/ML-INFN/**"
+
+jobs:
+  dockerlint:
+    strategy:
+      matrix:
+        dockerfile:
+          - docker/ML-INFN/lab/Dockerfile
+          - docker/ML-INFN/jupyterlab-collaborative/Dockerfile
+          - docker/ML-INFN/jupyterhub/Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@master
+        with:
+          dockerfile: ${{ matrix.dockerfile }}
+          failure-threshold: error
+
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: "docker/ML-INFN"
+          severity: error
