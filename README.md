@@ -21,8 +21,8 @@
   - [![single-node-jupyterhub check](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/single-node-jupyterhub-check.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/single-node-jupyterhub-check.yaml)
   - [![single-node-jupyterhub build](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/single-node-jupyterhub-build.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/single-node-jupyterhub-build.yaml)
 - CYGNO
-  [![cygno check](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/cygno-check.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/cygno-check.yaml)
-  [![cygno build](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/cygno-build.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/cygno-build.yaml)
+  - [![cygno check](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/cygno-check.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/cygno-check.yaml)
+  - [![cygno build](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/cygno-build.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/cygno-build.yaml)
 - ML-INFN
   - [![ml-infn check](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/ml-infn-check.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/ml-infn-check.yaml)
   - [![ml-infn build](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/ml-infn-build.yaml/badge.svg)](https://github.com/DODAS-TS/dodas-docker-images/actions/workflows/ml-infn-build.yaml)
