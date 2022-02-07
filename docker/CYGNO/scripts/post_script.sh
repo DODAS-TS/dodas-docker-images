@@ -53,3 +53,6 @@ sleep 6s && nice -n 19 sts-wire https://iam.cloud.infn.it/ \
     --localCache full --tryRemount --noDummyFileCheck \
     --localCacheDir "${BASE_CACHE_DIR}/cygno_data" \
     &>/var/log/sts-wire/mount_log_cygnodata.txt &
+
+# Start crond
+crond
