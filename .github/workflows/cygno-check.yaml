@@ -15,6 +15,7 @@ jobs:
     strategy:
       matrix:
         dockerfile:
+          - docker/CYGNO/hub/Dockerfile
           - docker/CYGNO/lab/Dockerfile
           - docker/CYGNO/wn/Dockerfile
     runs-on: ubuntu-latest
