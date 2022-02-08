@@ -36,6 +36,9 @@ RUN chmod +x /usr/local/share/dodasts/script/install_RooUnfold.sh
 COPY scripts/post_script.sh /usr/local/share/dodasts/script/
 RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
 
+COPY scripts/oidc_agent_init.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/oidc_agent_init.sh
+
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
 RUN yum -y clean metadata \
     && yum --exclude=\*oidc-agent\* -y update \

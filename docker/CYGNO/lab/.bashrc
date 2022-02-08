@@ -18,3 +18,8 @@ USERDIR="/jupyter-workspace/cloud-storage/$USERNAME"
 if [ -d "$USERDIR" ] && [ -f "$USERDIR/.bashrc" ]; then
     . "$USERDIR/.bashrc"
 fi
+
+# Configure oidc-agent for user token management
+# Ref: https://indigo-dc.gitbook.io/oidc-agent/user/oidc-keychain
+export OIDC_CONFIG_DIR=$HOME/.oidc-agent
+eval $(oidc-keychain)
