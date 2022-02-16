@@ -4,18 +4,6 @@ FROM htcondor/execute:8.9.9-el7
 COPY assets/base_packages /tmp/
 COPY assets/packages /tmp/
 
-COPY scripts/install_geant4.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/install_geant4.sh
-
-COPY scripts/install_garfield.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/install_garfield.sh
-
-COPY scripts/install_CADMesh.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/install_CADMesh.sh
-
-COPY scripts/install_RooUnfold.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/install_RooUnfold.sh
-
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
 RUN yum -y clean metadata \
     && yum --exclude=\*oidc-agent\* -y update \
@@ -32,12 +20,20 @@ ENV GARFIELD_HOME=/usr/local/share/garfield
 ENV HEED_DATABASE=${GARFIELD_HOME}/Heed/heed++/database
 
 # Install Geant4
+COPY scripts/install_geant4.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/install_geant4.sh
 RUN ./install_geant4.sh
 # Install garfield
+COPY scripts/install_garfield.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/install_garfield.sh
 RUN ./install_garfield.sh
 # Install CADMesh
+COPY scripts/install_CADMesh.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/install_CADMesh.sh
 RUN ./install_CADMesh.sh
 # Install RooUnfold
+COPY scripts/install_RooUnfold.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/install_RooUnfold.sh
 RUN ./install_RooUnfold.sh
 
 WORKDIR /
