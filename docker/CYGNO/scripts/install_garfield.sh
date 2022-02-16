@@ -10,7 +10,9 @@ git clone https://gitlab.cern.ch/garfield/garfieldpp.git "${GARFIELD_HOME}" &&
 
 pushd "${GARFIELD_HOME}/build" || exit 2
 
-cmake3 -DGeant4_DIR=/usr/local/share/geant4/lib64/Geant4-10.5.1/ -Werror=dev "${GARFIELD_HOME}" || exit 3
+source /usr/local/share/geant4/bin/geant4.sh
+
+cmake3 -Werror=dev "${GARFIELD_HOME}" || exit 3
 make -j 8 && make install
 
 popd || exit 4

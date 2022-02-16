@@ -11,9 +11,7 @@ pushd /usr/local/share/CYGNO-MC/CYGNO-MC-build || exit 2
 
 source /usr/local/share/geant4/bin/geant4.sh
 
-cmake3 \
-    -DGeant4_DIR=/usr/local/share/geant4/lib64/Geant4-10.5.1/ \
-    -Dcadmesh_DIR=/usr/local/share/CADMesh/ \
+cmake3 -Dcadmesh_DIR=/usr/local/share/CADMesh/ \
     -Werror=dev .. || exit 3
 make -j 8
 
