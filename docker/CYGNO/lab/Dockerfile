@@ -106,4 +106,4 @@ RUN mkdir -p ${JUPYTER_ROOT} \
     && ln -s /private ${JUPYTER_ROOT}/private
 
 
-# WORKDIR /jupyter-workspace
+WORKDIR /jupyter-workspace
