@@ -10,8 +10,10 @@ git clone --branch v1.1 https://github.com/christopherpoole/CADMesh.git . &&
 
 pushd /usr/local/share/CADMesh/build || exit 2
 
-RUN cmake3 .. &&
-    make install
+source /usr/local/share/geant4/bin/geant4.sh
 
-popd || exit 3
+cmake3 -Werror=dev .. || exit 3
+make -j 8 && make install
+
 popd || exit 4
+popd || exit 5

@@ -16,6 +16,7 @@ libargon2-devel
 libcurl-devel
 libcurl-openssl-devel
 libffi-devel
+libglvnd-devel
 libjpeg-turbo-devel
 libtiff-devel
 libxml2-devel

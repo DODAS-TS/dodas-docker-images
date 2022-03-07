@@ -21,24 +21,6 @@ COPY lab/RPM-GPG-KEY-HTCondor /etc/pki/rpm-gpg/
 COPY lab/htcondor_ca.crt /etc/pki/ca-trust/source/anchors/
 COPY lab/condor_config.local /etc/condor/
 
-COPY scripts/install_geant4.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/install_geant4.sh
-
-COPY scripts/install_garfield.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/install_garfield.sh
-
-COPY scripts/install_CADMesh.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/install_CADMesh.sh
-
-COPY scripts/install_RooUnfold.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/install_RooUnfold.sh
-
-COPY scripts/post_script.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
-
-COPY scripts/oidc_agent_init.sh /usr/local/share/dodasts/script/
-RUN chmod +x /usr/local/share/dodasts/script/oidc_agent_init.sh
-
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
 RUN yum -y clean metadata \
     && yum --exclude=\*oidc-agent\* -y update \
@@ -57,6 +39,12 @@ RUN yum -y clean metadata \
 
 RUN jupyter labextension uninstall @jlab_collaborative_ext/context-menu
 
+COPY scripts/post_script.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/post_script.sh
+
+COPY scripts/oidc_agent_init.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/oidc_agent_init.sh
+
 WORKDIR /usr/local/share/dodasts/script/
 
 # garfield env variables
@@ -64,13 +52,25 @@ ENV GARFIELD_HOME=/usr/local/share/garfield
 ENV HEED_DATABASE=${GARFIELD_HOME}/Heed/heed++/database
 
 # Install Geant4
+COPY scripts/install_geant4.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/install_geant4.sh
 RUN ./install_geant4.sh
 # Install garfield
+COPY scripts/install_garfield.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/install_garfield.sh
 RUN ./install_garfield.sh
 # Install CADMesh
+COPY scripts/install_CADMesh.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/install_CADMesh.sh
 RUN ./install_CADMesh.sh
 # Install RooUnfold
+COPY scripts/install_RooUnfold.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/install_RooUnfold.sh
 RUN ./install_RooUnfold.sh
+# Install CYGNO-MC
+COPY scripts/install_CYGNO-MC.sh /usr/local/share/dodasts/script/
+RUN chmod +x /usr/local/share/dodasts/script/install_CYGNO-MC.sh
+RUN ./install_CYGNO-MC.sh
 
 WORKDIR /
 

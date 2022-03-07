@@ -12,6 +12,12 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+# Geant4
+source /usr/local/share/geant4/bin/geant4.sh
+
+# CADmesh library
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
 USERDIR="/jupyter-workspace/cloud-storage/$USERNAME"
 
 # Source user environment
