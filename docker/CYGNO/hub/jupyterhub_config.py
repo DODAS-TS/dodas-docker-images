@@ -9,6 +9,7 @@ import sys
 import warnings
 
 import dockerspawner
+import jwt
 from oauthenticator.generic import GenericOAuthenticator
 from tornado import gen
 
@@ -71,18 +72,21 @@ class EnvAuthenticator(GenericOAuthenticator):
         spawner.environment["JUPYTERHUB_ACTIVITY_INTERVAL"] = "15"
 
         amIAllowed = False
-        allowed_groups = ""
+        allowed_groups = [
+            f"/{group}" for group in os.environ["OAUTH_GROUPS"].split(" ")
+        ]
 
         if os.environ.get("OAUTH_GROUPS"):
-            spawner.environment["GROUPS"] = " ".join(
-                auth_state["oauth_user"]["wlcg.groups"]
-            )
-            allowed_groups = [
-                f"/{group}" for group in os.environ["OAUTH_GROUPS"].split(" ")
-            ]
-            self.log.info(auth_state["oauth_user"]["wlcg.groups"])
+            instance = jwt.JWT()
+            groups = instance.decode(
+                auth_state["access_token"],
+                do_verify=False,
+            )["wlcg.groups"]
+            spawner.environment["GROUPS"] = " ".join(groups)
+            self.log.info("allowed_groups: %s", allowed_groups)
+            self.log.info("groups: %s", groups)
             for gr in allowed_groups:
-                if gr in auth_state["oauth_user"]["wlcg.groups"]:
+                if gr in groups:
                     amIAllowed = True
         else:
             amIAllowed = True
@@ -92,9 +96,7 @@ class EnvAuthenticator(GenericOAuthenticator):
                 "OAuth user contains not in group the allowed groups %s"
                 % allowed_groups
             )
-            raise Exception(
-                "OAuth user not in the allowed groups '%s'" % allowed_groups
-            )
+            raise Exception("OAuth user not in the allowed groups %s" % allowed_groups)
 
     # https://github.com/jupyterhub/oauthenticator/blob/master/oauthenticator/generic.py#L157
     async def authenticate(self, handler, data=None):
@@ -126,6 +128,14 @@ class EnvAuthenticator(GenericOAuthenticator):
                 return
 
         auth_state = self._create_auth_state(token_resp_json, user_data_resp_json)
+
+        instance = jwt.JWT()
+        groups = instance.decode(
+            auth_state["access_token"],
+            do_verify=False,
+        )["wlcg.groups"]
+
+        auth_state["oauth_user"]["wlcg.groups"] = groups
 
         is_admin = False
         if (
@@ -166,7 +176,7 @@ c.GenericOAuthenticator.scope = [
     "openid",
     "profile",
     "email",
-    "address",
+    # "address",
     "offline_access",
     "wlcg",
     "wlcg.groups",

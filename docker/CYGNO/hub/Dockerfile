@@ -6,5 +6,7 @@ FROM dodasts/snj-base-jhub:v1.0.0-snj
 
 COPY --from=REGISTRATION /usr/local/bin/dodas-IAMClientRec /.init/dodas-IAMClientRec
 
+RUN python3 -m pip install jwt
+
 COPY jupyterhub_config.py /srv/jupyterhub/
 
