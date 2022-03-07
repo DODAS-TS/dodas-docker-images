@@ -168,6 +168,8 @@ c.GenericOAuthenticator.scope = [
     "email",
     "address",
     "offline_access",
+    "wlcg",
+    "wlcg.groups",
 ]
 c.GenericOAuthenticator.username_key = "preferred_username"
 
