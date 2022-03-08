@@ -9,7 +9,6 @@ import sys
 import warnings
 
 import dockerspawner
-import jwt
 from oauthenticator.generic import GenericOAuthenticator
 from tornado import gen
 
@@ -51,6 +50,10 @@ else:
 client_id = cache_results["client_id"]
 client_secret = cache_results["client_secret"]
 
+wlcg_client_id = os.environ.get("WLCG_IAM_CLIENT_ID", "")
+wlcg_client_secret = os.environ.get("WLCG_IAM_CLIENT_SECRET", "")
+wlcg_refresh_token = os.environ.get("WLCG_REFRESH_TOKEN", "")
+
 
 class EnvAuthenticator(GenericOAuthenticator):
     @gen.coroutine
@@ -70,23 +73,19 @@ class EnvAuthenticator(GenericOAuthenticator):
         spawner.environment["REFRESH_TOKEN"] = auth_state["refresh_token"]
         spawner.environment["USERNAME"] = auth_state["oauth_user"]["preferred_username"]
         spawner.environment["JUPYTERHUB_ACTIVITY_INTERVAL"] = "15"
+        spawner.environment["WLCG_IAM_CLIENT_ID"] = wlcg_client_id
+        spawner.environment["WLCG_IAM_CLIENT_SECRET"] = wlcg_client_secret
+        spawner.environment["WLCG_REFRESH_TOKEN"] = wlcg_refresh_token
 
         amIAllowed = False
-        allowed_groups = [
-            f"/{group}" for group in os.environ["OAUTH_GROUPS"].split(" ")
-        ]
+        allowed_groups = ""
 
         if os.environ.get("OAUTH_GROUPS"):
-            instance = jwt.JWT()
-            groups = instance.decode(
-                auth_state["access_token"],
-                do_verify=False,
-            )["wlcg.groups"]
-            spawner.environment["GROUPS"] = " ".join(groups)
-            self.log.info("allowed_groups: %s", allowed_groups)
-            self.log.info("groups: %s", groups)
+            spawner.environment["GROUPS"] = " ".join(auth_state["oauth_user"]["groups"])
+            allowed_groups = os.environ["OAUTH_GROUPS"].split(" ")
+            self.log.info(auth_state["oauth_user"]["groups"])
             for gr in allowed_groups:
-                if gr in groups:
+                if gr in auth_state["oauth_user"]["groups"]:
                     amIAllowed = True
         else:
             amIAllowed = True
@@ -96,7 +95,9 @@ class EnvAuthenticator(GenericOAuthenticator):
                 "OAuth user contains not in group the allowed groups %s"
                 % allowed_groups
             )
-            raise Exception("OAuth user not in the allowed groups %s" % allowed_groups)
+            raise Exception(
+                "OAuth user not in the allowed groups '%s'" % allowed_groups
+            )
 
     # https://github.com/jupyterhub/oauthenticator/blob/master/oauthenticator/generic.py#L157
     async def authenticate(self, handler, data=None):
@@ -129,25 +130,14 @@ class EnvAuthenticator(GenericOAuthenticator):
 
         auth_state = self._create_auth_state(token_resp_json, user_data_resp_json)
 
-        instance = jwt.JWT()
-        groups = instance.decode(
-            auth_state["access_token"],
-            do_verify=False,
-        )["wlcg.groups"]
-
-        auth_state["oauth_user"]["wlcg.groups"] = groups
-
         is_admin = False
-        if (
-            os.environ.get("ADMIN_OAUTH_GROUPS")
-            in auth_state["oauth_user"]["wlcg.groups"]
-        ):
+        if os.environ.get("ADMIN_OAUTH_GROUPS") in auth_state["oauth_user"]["groups"]:
             self.log.info(
                 "%s : %s is in %s",
                 (
                     name,
                     os.environ.get("ADMIN_OAUTH_GROUPS"),
-                    auth_state["oauth_user"]["wlcg.groups"],
+                    auth_state["oauth_user"]["groups"],
                 ),
             )
             is_admin = True
@@ -176,10 +166,8 @@ c.GenericOAuthenticator.scope = [
     "openid",
     "profile",
     "email",
-    # "address",
+    "address",
     "offline_access",
-    "wlcg",
-    "wlcg.groups",
 ]
 c.GenericOAuthenticator.username_key = "preferred_username"
 
@@ -420,6 +408,8 @@ if collaborative_service:
     c.DockerSpawner.volumes = {**volumes, **volumes_collab}
 else:
     c.DockerSpawner.volumes = volumes
+
+print(c.DockerSpawner.volumes)
 
 use_cvmfs: bool = os.getenv("JUPYTER_WITH_CVMFS", "False").lower() in [
     "true",
