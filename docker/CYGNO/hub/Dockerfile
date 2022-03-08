@@ -8,5 +8,5 @@ COPY --from=REGISTRATION /usr/local/bin/dodas-IAMClientRec /.init/dodas-IAMClien
 
 RUN python3 -m pip install jwt
 
-COPY hub/jupyterhub_config.py /srv/jupyterhub/
+# COPY hub/jupyterhub_config.py /srv/jupyterhub/
 
