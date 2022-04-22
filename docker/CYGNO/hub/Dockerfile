@@ -1,5 +1,8 @@
 # Image name: dodasts/snj-base-jhub
-FROM ghcr.io/dodas-ts/dodas-iam-client-rec:v0.0.6-pre3 as REGISTRATION
+#FROM ghcr.io/dodas-ts/dodas-iam-client-rec:v0.0.6-pre3 as REGISTRATION
+#DS rollback to this
+FROM dciangot/dodas-iam-client-rec:test5 as REGISTRATION
+
 
 # Image name: dodasts/cygno-hub
 FROM dodasts/snj-base-jhub:v1.0.0-snj
