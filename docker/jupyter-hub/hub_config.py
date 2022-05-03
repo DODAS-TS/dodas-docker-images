@@ -8,7 +8,7 @@ from oauthenticator.generic import GenericOAuthenticator
 from tornado import gen
 import subprocess
 import warnings
-
+import re
 import os
 
 from subprocess import check_call
@@ -60,6 +60,88 @@ class EnvAuthenticator(GenericOAuthenticator):
         spawner.environment['S3_ENDPOINT'] = s3_endpoint
 
 #c.JupyterHub.authenticator_class = GitHubEnvAuthenticator
+        amIAllowed = False
+        allowed_groups = ""
+
+        self.log.info(auth_state["oauth_user"])
+
+        if auth_state["oauth_user"]["sub"] == os.environ["OAUTH_SUB"]:
+            amIAllowed = True
+
+        if os.environ.get("OAUTH_GROUPS"):
+            spawner.environment["GROUPS"] = " ".join(auth_state["oauth_user"]["groups"])
+            allowed_groups_full = os.environ["OAUTH_GROUPS"].split(" ")
+            allowed_groups = [ele for ele in allowed_groups_full if not re.search('catchall', ele)]
+
+            self.log.info(auth_state["oauth_user"]["groups"])
+            self.log.info(allowed_groups)
+
+            matched_groups = set(allowed_groups_full).intersection(set(auth_state["oauth_user"]["groups"])) 
+            if matched_groups:  amIAllowed = True
+
+        if not amIAllowed:
+            err_msg = "Authorization Failed: User is not the owner of the service"
+            if allowed_groups:
+                err_msg =  err_msg + " nor belonging to the allowed groups %s" % allowed_groups
+            self.log.error( err_msg )
+
+            raise Exception( err_msg )
+
+    # https://github.com/jupyterhub/oauthenticator/blob/master/oauthenticator/generic.py#L157
+    async def authenticate(self, handler, data=None):
+        code = handler.get_argument("code")
+
+        params = dict(
+            redirect_uri=self.get_callback_url(handler),
+            code=code,
+            grant_type="authorization_code",
+        )
+        params.update(self.extra_params)
+
+        headers = self._get_headers()
+
+        token_resp_json = await self._get_token(headers, params)
+
+        user_data_resp_json = await self._get_user_data(token_resp_json)
+
+        if callable(self.username_key):
+            name = self.username_key(user_data_resp_json)
+        else:
+            name = user_data_resp_json.get(self.username_key)
+            if not name:
+                self.log.error(
+                    "OAuth user contains no key %s: %s",
+                    self.username_key,
+                    user_data_resp_json,
+                )
+                return
+
+        auth_state = self._create_auth_state(token_resp_json, user_data_resp_json)
+
+        is_admin = False
+        matched_admin_groups = False 
+        if os.environ["ADMIN_OAUTH_GROUPS"] :
+            allowed_admin_groups_full = os.environ["OAUTH_GROUPS"].split(" ")
+            allowed_admin_groups = [ele for ele in allowed_admin_groups_full if not re.search('catchall', ele)]
+ 
+            matched_admin_groups = set(allowed_admin_groups_full).intersection(set(auth_state["oauth_user"]["groups"])) 
+
+        if os.environ.get("OAUTH_SUB") == auth_state["oauth_user"]["sub"]  or matched_admin_groups:
+            self.log.info(
+                "%s : is admin",
+                ( name ),
+            )
+            is_admin = True
+        else:
+            self.log.info(" %s is not in admin of the service ", name)
+
+        return {
+            "name": name,
+            "admin": is_admin,
+            "auth_state": auth_state,  # self._create_auth_state(token_resp_json, user_data_resp_json)
+        }
+
+
 c.JupyterHub.authenticator_class = EnvAuthenticator
 c.GenericOAuthenticator.oauth_callback_url = callback
 
