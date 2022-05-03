@@ -7,6 +7,7 @@ import socket
 import subprocess
 import sys
 import warnings
+import re
 
 import dockerspawner
 from oauthenticator.generic import GenericOAuthenticator
@@ -73,24 +74,29 @@ class EnvAuthenticator(GenericOAuthenticator):
         amIAllowed = False
         allowed_groups = ""
 
-        if os.environ.get("OAUTH_GROUPS"):
-            spawner.environment["GROUPS"] = " ".join(auth_state["oauth_user"]["groups"])
-            allowed_groups = os.environ["OAUTH_GROUPS"].split(" ")
-            self.log.info(auth_state["oauth_user"]["groups"])
-            for gr in allowed_groups:
-                if gr in auth_state["oauth_user"]["groups"]:
-                    amIAllowed = True
-        else:
+        self.log.info(auth_state["oauth_user"])
+
+        if auth_state["oauth_user"]["sub"] == os.environ["OAUTH_SUB"]:
             amIAllowed = True
 
+        elif os.environ.get("OAUTH_GROUPS"):
+            spawner.environment["GROUPS"] = " ".join(auth_state["oauth_user"]["groups"])
+            allowed_groups_full = os.environ["OAUTH_GROUPS"].split(" ")
+            allowed_groups = [ele for ele in allowed_groups_full if not re.search('catchall', ele)]
+
+            self.log.info(auth_state["oauth_user"]["groups"])
+            self.log.info(allowed_groups)
+
+            matched_groups = set(allowed_groups_full).intersection(set(auth_state["oauth_user"]["groups"])) 
+            if matched_groups:  amIAllowed = True
+
         if not amIAllowed:
-            self.log.error(
-                "OAuth user contains not in group the allowed groups %s"
-                % allowed_groups
-            )
-            raise Exception(
-                "OAuth user not in the allowed groups '%s'" % allowed_groups
-            )
+            err_msg = "Authorization Failed: User is not the owner of the service"
+            if allowed_groups:
+                err_msg =  err_msg + " nor belonging to the allowed groups %s" % allowed_groups
+            self.log.error( err_msg )
+
+            raise Exception( err_msg )
 
     # https://github.com/jupyterhub/oauthenticator/blob/master/oauthenticator/generic.py#L157
     async def authenticate(self, handler, data=None):
@@ -124,18 +130,21 @@ class EnvAuthenticator(GenericOAuthenticator):
         auth_state = self._create_auth_state(token_resp_json, user_data_resp_json)
 
         is_admin = False
-        if os.environ.get("ADMIN_OAUTH_GROUPS") in auth_state["oauth_user"]["groups"]:
+        matched_admin_groups = False 
+        if os.environ["ADMIN_OAUTH_GROUPS"] :
+            allowed_admin_groups_full = os.environ["OAUTH_GROUPS"].split(" ")
+            allowed_admin_groups = [ele for ele in allowed_admin_groups_full if not re.search('catchall', ele)]
+ 
+            matched_admin_groups = set(allowed_admin_groups_full).intersection(set(auth_state["oauth_user"]["groups"])) 
+
+        if os.environ.get("OAUTH_SUB") == auth_state["oauth_user"]["sub"]  or matched_admin_groups:
             self.log.info(
-                "%s : %s is in %s",
-                (
-                    name,
-                    os.environ.get("ADMIN_OAUTH_GROUPS"),
-                    auth_state["oauth_user"]["groups"],
-                ),
+                "%s : is admin",
+                ( name ),
             )
             is_admin = True
         else:
-            self.log.info(" %s is not in admin group ", name)
+            self.log.info(" %s is not in admin of the service ", name)
 
         return {
             "name": name,
@@ -402,6 +411,7 @@ if collaborative_service:
 else:
     c.DockerSpawner.volumes = volumes
 
+print(c.DockerSpawner.volumes)
 use_cvmfs: bool = os.getenv("JUPYTER_WITH_CVMFS", "False").lower() in [
     "true",
     "t",
