@@ -79,7 +79,7 @@ class EnvAuthenticator(GenericOAuthenticator):
         if auth_state["oauth_user"]["sub"] == os.environ["OAUTH_SUB"]:
             amIAllowed = True
 
-        elif os.environ.get("OAUTH_GROUPS"):
+        if os.environ.get("OAUTH_GROUPS"):
             spawner.environment["GROUPS"] = " ".join(auth_state["oauth_user"]["groups"])
             allowed_groups_full = os.environ["OAUTH_GROUPS"].split(" ")
             allowed_groups = [ele for ele in allowed_groups_full if not re.search('catchall', ele)]
