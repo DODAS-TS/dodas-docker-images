@@ -132,7 +132,7 @@ class EnvAuthenticator(GenericOAuthenticator):
         is_admin = False
         matched_admin_groups = False 
         if os.environ["ADMIN_OAUTH_GROUPS"] :
-            allowed_admin_groups_full = os.environ["OAUTH_GROUPS"].split(" ")
+            allowed_admin_groups_full = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")
             allowed_admin_groups = [ele for ele in allowed_admin_groups_full if not re.search('catchall', ele)]
  
             matched_admin_groups = set(allowed_admin_groups_full).intersection(set(auth_state["oauth_user"]["groups"])) 
