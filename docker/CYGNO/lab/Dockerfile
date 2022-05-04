@@ -91,7 +91,7 @@ RUN pip3 install --no-cache-dir -U \
     seaborn==0.11.2 \
     jedi-language-server==0.21.0 \
     metakernel==0.28.2 \
-    && pip3 install --no-cache-dir -U git+https://github.com/gmazzitelli/cygno_repo.git
+    && pip3 install --no-cache-dir -U git+https://github.com/CYGNUS-RD/cygno.git
 
 # Force default python in jupyter kernel to Python3
 COPY lab/kernel.json /usr/local/share/jupyter/kernels/python3/
