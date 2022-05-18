@@ -81,8 +81,9 @@ class EnvAuthenticator(GenericOAuthenticator):
 
         if os.environ.get("OAUTH_GROUPS"):
             spawner.environment["GROUPS"] = " ".join(auth_state["oauth_user"]["groups"])
-            allowed_groups_full = os.environ["OAUTH_GROUPS"].split(" ")
-            allowed_groups = [ele for ele in allowed_groups_full if not re.search('catchall', ele)]
+            allowed_groups = os.environ["OAUTH_GROUPS"].split(" ")
+            #allowed_groups_full = os.environ["OAUTH_GROUPS"].split(" ")
+            #allowed_groups = [ele for ele in allowed_groups_full if not re.search('catchall', ele)]
 
             self.log.info(auth_state["oauth_user"]["groups"])
             self.log.info(allowed_groups)
@@ -132,9 +133,10 @@ class EnvAuthenticator(GenericOAuthenticator):
         is_admin = False
         matched_admin_groups = False 
         if os.environ["ADMIN_OAUTH_GROUPS"] :
-            allowed_admin_groups_full = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")
-            allowed_admin_groups = [ele for ele in allowed_admin_groups_full if not re.search('catchall', ele)]
- 
+           # allowed_admin_groups_full = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")
+           # allowed_admin_groups = [ele for ele in allowed_admin_groups_full if not re.search('catchall', ele)]
+            allowed_admin_groups = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")
+            
             matched_admin_groups = set(allowed_admin_groups_full).intersection(set(auth_state["oauth_user"]["groups"])) 
 
         if os.environ.get("OAUTH_SUB") == auth_state["oauth_user"]["sub"]  or matched_admin_groups:
