@@ -72,7 +72,10 @@ class EnvAuthenticator(GenericOAuthenticator):
         spawner.environment["JUPYTERHUB_ACTIVITY_INTERVAL"] = "15"
 
         amIAllowed = False
-        allowed_groups = ""
+        allowed_groups_user = ""
+        allowed_groups_admin = ""
+        matched_groups_user = False
+        matched_groups_admin = False
 
         self.log.info(auth_state["oauth_user"])
 
@@ -81,16 +84,23 @@ class EnvAuthenticator(GenericOAuthenticator):
 
         if os.environ.get("OAUTH_GROUPS"):
             spawner.environment["GROUPS"] = " ".join(auth_state["oauth_user"]["groups"])
-            allowed_groups = os.environ["OAUTH_GROUPS"].split(" ")
-            #allowed_groups_full = os.environ["OAUTH_GROUPS"].split(" ")
-            #allowed_groups = [ele for ele in allowed_groups_full if not re.search('catchall', ele)]
+            allowed_groups_user = os.environ["OAUTH_GROUPS"].split(" ")
 
+            self.log.info("Allowed groups user")
             self.log.info(auth_state["oauth_user"]["groups"])
-            self.log.info(allowed_groups)
+            self.log.info(allowed_groups_user)
 
-            matched_groups = set(allowed_groups).intersection(set(auth_state["oauth_user"]["groups"])) 
-            if matched_groups:  amIAllowed = True
-
+            matched_groups_user = set(allowed_groups).intersection(set(auth_state["oauth_user"]["groups"])) 
+                
+        if os.environ["ADMIN_OAUTH_GROUPS"] :
+            allowed_groups_admin = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")            
+            matched_groups_admin = set(allowed_groups_admin).intersection(set(auth_state["oauth_user"]["groups"])) 
+            
+            self.log.info("Allowed groups user")
+            self.log.info(allowed_groups_admin)
+            
+        if matched_groups_user or matched_groups_admin : amIAllowed = True
+                
         if not amIAllowed:
             err_msg = "Authorization Failed: User is not the owner of the service"
             if allowed_groups:
@@ -133,10 +143,7 @@ class EnvAuthenticator(GenericOAuthenticator):
         is_admin = False
         matched_admin_groups = False 
         if os.environ["ADMIN_OAUTH_GROUPS"] :
-           # allowed_admin_groups_full = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")
-           # allowed_admin_groups = [ele for ele in allowed_admin_groups_full if not re.search('catchall', ele)]
-            allowed_admin_groups = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")
-            
+            allowed_admin_groups = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")            
             matched_admin_groups = set(allowed_admin_groups).intersection(set(auth_state["oauth_user"]["groups"])) 
 
         if os.environ.get("OAUTH_SUB") == auth_state["oauth_user"]["sub"]  or matched_admin_groups:
