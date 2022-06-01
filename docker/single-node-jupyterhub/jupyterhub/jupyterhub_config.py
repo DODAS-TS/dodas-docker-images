@@ -88,7 +88,7 @@ class EnvAuthenticator(GenericOAuthenticator):
             self.log.info(auth_state["oauth_user"]["groups"])
             self.log.info(allowed_groups)
 
-            matched_groups = set(allowed_groups_full).intersection(set(auth_state["oauth_user"]["groups"])) 
+            matched_groups = set(allowed_groups).intersection(set(auth_state["oauth_user"]["groups"])) 
             if matched_groups:  amIAllowed = True
 
         if not amIAllowed:
@@ -137,7 +137,7 @@ class EnvAuthenticator(GenericOAuthenticator):
            # allowed_admin_groups = [ele for ele in allowed_admin_groups_full if not re.search('catchall', ele)]
             allowed_admin_groups = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")
             
-            matched_admin_groups = set(allowed_admin_groups_full).intersection(set(auth_state["oauth_user"]["groups"])) 
+            matched_admin_groups = set(allowed_admin_groups).intersection(set(auth_state["oauth_user"]["groups"])) 
 
         if os.environ.get("OAUTH_SUB") == auth_state["oauth_user"]["sub"]  or matched_admin_groups:
             self.log.info(
