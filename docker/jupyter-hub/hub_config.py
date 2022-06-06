@@ -8,7 +8,6 @@ from oauthenticator.generic import GenericOAuthenticator
 from tornado import gen
 import subprocess
 import warnings
-import re
 import os
 
 from subprocess import check_call
