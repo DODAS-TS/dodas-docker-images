@@ -6,3 +6,4 @@ RUN pip3 install 'https://github.com/CYGNUS-RD/middleware/blob/master/midas/mida
 RUN pip3 install tensorflow
 # RUN pip3 install keras
 RUN pip3 install opencv-python
+RUN ln -nfs /usr/bin/python3 /usr/bin/python
