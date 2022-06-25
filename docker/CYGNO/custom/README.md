@@ -6,6 +6,7 @@ Custum test Docker for CYGNO
 * esempio 
 ```
 docker build -t gmazzitelli/cygno-lab:v1.0.14-cygno /Users/mazzitel/cygno_dev/dodas-docker-images/docker/CYGNO/custom/
+docker push gmazzitelli/cygno-lab:v1.0.14-cygno
 ```
 * convien fare il pull sulla macchina
 ```
