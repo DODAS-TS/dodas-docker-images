@@ -91,10 +91,15 @@ RUN pip3 install --no-cache-dir -U \
     seaborn==0.11.2 \
     jedi-language-server==0.21.0 \
     metakernel==0.28.2 \
+    tensorflow==2.6.2 \
+    opencv-python==4.6.0.66
     && pip3 install --no-cache-dir -U git+https://github.com/CYGNUS-RD/cygno.git
+    && pip3 install 'https://github.com/CYGNUS-RD/middleware/blob/master/midas/midaslib.tar.gz?raw=true'
 
 # Force default python in jupyter kernel to Python3
 COPY lab/kernel.json /usr/local/share/jupyter/kernels/python3/
+# Force python 3 from console
+RUN ln -nfs /usr/bin/python3 /usr/bin/python
 
 # cmake3 alias
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
