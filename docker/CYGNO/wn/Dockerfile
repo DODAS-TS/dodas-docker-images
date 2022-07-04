@@ -54,7 +54,10 @@ RUN pip3 install --no-cache-dir -U \
     scipy==1.5.4 \
     jedi-language-server==0.21.0 \
     metakernel==0.28.2 \
-    && pip3 install --no-cache-dir -U git+https://github.com/gmazzitelli/cygno_repo.git
+    tensorflow==2.6.2 \
+    opencv-python==4.6.0.66 \
+    && pip3 install --no-cache-dir -U git+https://github.com/CYGNUS-RD/cygno.git
+    && pip3 install 'https://github.com/CYGNUS-RD/middleware/blob/master/midas/midaslib.tar.gz?raw=true'
 
 # cmake3 alias
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
