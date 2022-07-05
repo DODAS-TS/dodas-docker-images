@@ -8,6 +8,7 @@ import subprocess
 import sys
 import warnings
 import re
+import jwt
 
 import dockerspawner
 from oauthenticator.generic import GenericOAuthenticator
@@ -31,31 +32,17 @@ os.environ["IAM_INSTANCE"] = iam_server
 
 myenv = os.environ.copy()
 
-cache_file = "./cookies/iam_secret"
-
-if os.path.isfile(cache_file):
-    with open(cache_file) as f:
-        cache_results = json.load(f)
-else:
-    response = subprocess.check_output(
-        ["/.init/dodas-IAMClientRec", server_host], env=myenv
-    )
-    response_list = response.decode("utf-8").split("\n")
-    client_id = response_list[len(response_list) - 3]
-    client_secret = response_list[len(response_list) - 2]
-
-    cache_results = {"client_id": client_id, "client_secret": client_secret}
-    with open(cache_file, "w") as w:
-        json.dump(cache_results, w)
-
-client_id = cache_results["client_id"]
-client_secret = cache_results["client_secret"]
-
-
 class EnvAuthenticator(GenericOAuthenticator):
     @gen.coroutine
     def pre_spawn_start(self, user, spawner):
         auth_state = yield user.get_auth_state()
+        
+        # Spiga - Patch to implement WLCG - IAM prifiles compatibility
+     
+        if "wlcg.groups" in auth_state["scope"]:
+            groups = jwt.decode(auth_state["access_token"], options={"verify_signature": False})
+            auth_state["oauth_user"]["groups"] = groups["wlcg.groups"]
+        # Spiga
 
         pprint.pprint(auth_state)
         if not auth_state:
@@ -64,8 +51,8 @@ class EnvAuthenticator(GenericOAuthenticator):
         # define some environment variables from auth_state
         self.log.info(auth_state)
         spawner.environment["IAM_SERVER"] = iam_server
-        spawner.environment["IAM_CLIENT_ID"] = client_id
-        spawner.environment["IAM_CLIENT_SECRET"] = client_secret
+        spawner.environment["IAM_CLIENT_ID"] =  os.environ["IAM_CLIENT_ID"]
+        spawner.environment["IAM_CLIENT_SECRET"] =  os.environ["IAM_CLIENT_SECRET"]
         spawner.environment["ACCESS_TOKEN"] = auth_state["access_token"]
         spawner.environment["REFRESH_TOKEN"] = auth_state["refresh_token"]
         spawner.environment["USERNAME"] = auth_state["oauth_user"]["preferred_username"]
@@ -78,6 +65,8 @@ class EnvAuthenticator(GenericOAuthenticator):
         matched_groups_admin = False
 
         self.log.info(auth_state["oauth_user"])
+        
+       
 
         if auth_state["oauth_user"]["sub"] == os.environ["OAUTH_SUB"]:
             amIAllowed = True
@@ -90,7 +79,7 @@ class EnvAuthenticator(GenericOAuthenticator):
             self.log.info(auth_state["oauth_user"]["groups"])
             self.log.info(allowed_groups_user)
 
-            matched_groups_user = set(allowed_groups).intersection(set(auth_state["oauth_user"]["groups"])) 
+            matched_groups_user = set(allowed_groups_user).intersection(set(auth_state["oauth_user"]["groups"])) 
                 
         if os.environ["ADMIN_OAUTH_GROUPS"] :
             allowed_groups_admin = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")            
@@ -103,8 +92,8 @@ class EnvAuthenticator(GenericOAuthenticator):
                 
         if not amIAllowed:
             err_msg = "Authorization Failed: User is not the owner of the service"
-            if allowed_groups:
-                err_msg =  err_msg + " nor belonging to the allowed groups %s" % allowed_groups
+            if allowed_groups_user or allowed_groups_admin :
+                err_msg =  err_msg + " nor belonging to the allowed groups %s %s" % (allowed_groups_user,allowed_groups_admin)
             self.log.error( err_msg )
 
             raise Exception( err_msg )
@@ -140,6 +129,15 @@ class EnvAuthenticator(GenericOAuthenticator):
 
         auth_state = self._create_auth_state(token_resp_json, user_data_resp_json)
 
+       
+        # Spiga - Patch to implement WLCG - IAM prifiles compatibility
+        if "wlcg.groups" in auth_state["scope"]:
+            groups = jwt.decode(auth_state["access_token"], options={"verify_signature": False})
+            auth_state["oauth_user"]["groups"] = groups["wlcg.groups"]      
+        # Spiga
+
+        self.log.info(auth_state)
+ 
         is_admin = False
         matched_admin_groups = False 
         if os.environ["ADMIN_OAUTH_GROUPS"] :
@@ -168,8 +166,8 @@ c.GenericOAuthenticator.oauth_callback_url = callback
 c.JupyterHub.db_url = "sqlite:///db/jupyterhub.sqlite"
 
 # PUT IN SECRET
-c.GenericOAuthenticator.client_id = client_id
-c.GenericOAuthenticator.client_secret = client_secret
+c.GenericOAuthenticator.client_id = os.environ["IAM_CLIENT_ID"]
+c.GenericOAuthenticator.client_secret = os.environ["IAM_CLIENT_SECRET"]
 c.GenericOAuthenticator.authorize_url = iam_server.strip("/") + "/authorize"
 c.GenericOAuthenticator.token_url = iam_server.strip("/") + "/token"
 c.GenericOAuthenticator.userdata_url = iam_server.strip("/") + "/userinfo"
@@ -179,7 +177,9 @@ c.GenericOAuthenticator.scope = [
     "email",
     "address",
     "offline_access",
-]
+    "wlcg", 
+    "wlcg.groups",
+    ]
 c.GenericOAuthenticator.username_key = "preferred_username"
 
 c.GenericOAuthenticator.enable_auth_state = True
