@@ -1,0 +1,10 @@
+--- netutil.py.orig	2021-12-13 18:21:05.000000000 +0000
++++ netutil.py	2022-07-04 13:48:43.207405758 +0000
+@@ -588,6 +588,7 @@
+         # TODO: Do we need to do this ourselves or can we trust
+         # the defaults?
+         context.options |= ssl.OP_NO_COMPRESSION
++    context.options |= ssl.OP_NO_RENEGOTIATION
+     return context
+ 
+ 
