@@ -41,7 +41,7 @@ class EnvAuthenticator(GenericOAuthenticator):
      
         if "wlcg.groups" in auth_state["scope"]:
             groups = jwt.decode(auth_state["access_token"], options={"verify_signature": False})
-            auth_state["oauth_user"]["groups"] = groups["wlcg.groups"]
+            auth_state["oauth_user"]["groups"] =  [ s[1:]  for s in groups["wlcg.groups"] ]
         # Spiga
 
         pprint.pprint(auth_state)
@@ -133,7 +133,7 @@ class EnvAuthenticator(GenericOAuthenticator):
         # Spiga - Patch to implement WLCG - IAM prifiles compatibility
         if "wlcg.groups" in auth_state["scope"]:
             groups = jwt.decode(auth_state["access_token"], options={"verify_signature": False})
-            auth_state["oauth_user"]["groups"] = groups["wlcg.groups"]      
+            auth_state["oauth_user"]["groups"] =  [ s[1:]  for s in groups["wlcg.groups"] ]
         # Spiga
 
         self.log.info(auth_state)
