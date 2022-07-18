@@ -1,5 +1,5 @@
 # Image name: dodasts/ml-infn-jlabc
-FROM dodasts/snj-base-jlabc-gpu:v1.0.0-snj
+FROM dodasts/snj-base-jlabc-gpu:v1.0.5-snj
 
 # Disable diff checkpoit
 RUN jupyter labextension disable nbdime-jupyterlab
