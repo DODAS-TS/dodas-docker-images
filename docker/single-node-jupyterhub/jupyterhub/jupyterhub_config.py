@@ -90,7 +90,7 @@ class EnvAuthenticator(GenericOAuthenticator):
             self.log.info(auth_state["oauth_user"]["groups"])
             self.log.info(allowed_groups_user)
 
-            matched_groups_user = set(allowed_groups).intersection(set(auth_state["oauth_user"]["groups"])) 
+            matched_groups_user = set(allowed_groups_user).intersection(set(auth_state["oauth_user"]["groups"])) 
                 
         if os.environ["ADMIN_OAUTH_GROUPS"] :
             allowed_groups_admin = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")            
@@ -103,8 +103,8 @@ class EnvAuthenticator(GenericOAuthenticator):
                 
         if not amIAllowed:
             err_msg = "Authorization Failed: User is not the owner of the service"
-            if allowed_groups:
-                err_msg =  err_msg + " nor belonging to the allowed groups %s" % allowed_groups
+            if allowed_groups_user or allowed_groups_admin:
+                err_msg =  err_msg + " nor belonging to the allowed groups %s %s" % (allowed_groups_user, allowed_groups_admin)
             self.log.error( err_msg )
 
             raise Exception( err_msg )
