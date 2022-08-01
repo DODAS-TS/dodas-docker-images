@@ -17,3 +17,7 @@ sudo docker pull gmazzitelli/cygno-lab:v1.0.14-cygno
 ```
 
 * test https://192.135.24.159:8888/
+* per mettere piu' versioni aggiornare la variabile come nell'esempio in usr/local/share/dodasts/jupyterhub/docker-compose.yaml: 
+```
+- JUPYTER_IMAGE_LIST=gmazzitelli/cygno-lab:v1.0.14-cygno,dodasts/cygno-lab:v1.0.16-cygno
+```
