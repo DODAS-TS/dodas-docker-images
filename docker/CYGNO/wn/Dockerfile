@@ -47,7 +47,8 @@ RUN wget "https://crt.sh/?d=2475254782" --progress=bar -O /etc/pki/ca-trust/sour
     && update-ca-trust force-enable
 
 # Install 
-RUN pip3 install --no-cache-dir -U \
+RUN pip3 install --upgrade pip \
+    && pip3 install --no-cache-dir -U \
     mahotas==1.4.11 \
     scikit-image==0.17.2 \
     scikit-learn==0.24.2 \
@@ -56,8 +57,14 @@ RUN pip3 install --no-cache-dir -U \
     metakernel==0.28.2 \
     tensorflow==2.6.2 \
     opencv-python==4.6.0.66 \
+<<<<<<< HEAD
     && pip3 install --no-cache-dir -U git+https://github.com/CYGNUS-RD/cygno.git
     && pip3 install 'https://github.com/CYGNUS-RD/middleware/blob/master/midas/midaslib.tar.gz?raw=true'
 
+=======
+    && pip3 install --no-cache-dir -U git+https://github.com/CYGNUS-RD/cygno.git \
+    && pip3 install 'https://github.com/CYGNUS-RD/middleware/blob/master/midas/midaslib.tar.gz?raw=true'
+    
+>>>>>>> upstream/master
 # cmake3 alias
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake

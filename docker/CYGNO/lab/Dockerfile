@@ -101,6 +101,9 @@ COPY lab/kernel.json /usr/local/share/jupyter/kernels/python3/
 # Force python 3 from console
 RUN ln -nfs /usr/bin/python3 /usr/bin/python
 
+# Force python 3 from console
+RUN ln -nfs /usr/bin/python3 /usr/bin/python
+
 # cmake3 alias
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
 

@@ -3,6 +3,16 @@
 ARG BASE_IMAGE="ubuntu:20.04"
 FROM ${BASE_IMAGE}
 
+ARG BASE_IMAGE
+
+RUN if [ "$BASE_IMAGE" = "tensorflow/tensorflow:2.7.0rc1-gpu" ] ;  then \       
+    rm /etc/apt/sources.list.d/cuda.list \
+    && rm /etc/apt/sources.list.d/nvidia-ml.list \
+    && apt-key del 7fa2af80 \
+    && apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub \
+    && apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/7fa2af80.pub \
+; else echo 'Ubuntu'; fi
+
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y git software-properties-common wget fuse curl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
