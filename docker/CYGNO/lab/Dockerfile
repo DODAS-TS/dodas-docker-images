@@ -98,8 +98,6 @@ RUN pip3 install --no-cache-dir -U \
 
 # Force default python in jupyter kernel to Python3
 COPY lab/kernel.json /usr/local/share/jupyter/kernels/python3/
-# Force python 3 from console
-RUN ln -nfs /usr/bin/python3 /usr/bin/python
 
 # Force python 3 from console
 RUN ln -nfs /usr/bin/python3 /usr/bin/python
