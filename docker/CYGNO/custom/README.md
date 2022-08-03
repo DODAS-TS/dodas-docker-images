@@ -1,5 +1,6 @@
 Custum test Docker for CYGNO
 
+
 * info: https://confluence.infn.it/pages/viewpage.action?spaceKey=INFNCLOUD&title=Estenzione+e+Customizzazione+immagini+docker+CYGNO
 * docker build -t mydockerhubuser/mycustomimage:myversion /docker/path (non Dockerfile ma il path alla directory)
 * il docker-compose.yaml sulla VM sta in /usr/local/share/dodasts/jupyterhub/
@@ -40,4 +41,10 @@ git checkout master
 # other branch:
 
 git merge --no-ff upstream/master 
+```
+* per la build completa:
+```
+cd /Users/mazzitel/dodas-docker-images/docker/CYGNO
+docker build -t gmazzitelli/cygno-lab:v1.0.17-cygno -f lab/Dockerfile .
+docker push gmazzitelli/cygno-lab:v1.0.17-cygno
 ```
