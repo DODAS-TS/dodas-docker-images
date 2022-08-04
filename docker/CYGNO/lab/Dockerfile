@@ -99,11 +99,19 @@ RUN pip3 install --no-cache-dir -U \
 # Force default python in jupyter kernel to Python3
 COPY lab/kernel.json /usr/local/share/jupyter/kernels/python3/
 
-# Force python 3 from console
-RUN ln -nfs /usr/bin/python3 /usr/bin/python
-
 # cmake3 alias
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
+
+# Eamnule "pippone" last requirments....
+# RUN yum install emacs -y 
+# RUN yum install screen -y
+# RUN wget https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tgz; \
+#     tar xvf Python-3.9.10.tgz; \
+#     cd Python-3.9*/; \
+#     ./configure --enable-optimizations; \
+#     make altinstall; \
+#     cd .. ; \
+#     rm -rf Python-3.9*
 
 # Link folders
 RUN mkdir -p ${JUPYTER_ROOT} \
