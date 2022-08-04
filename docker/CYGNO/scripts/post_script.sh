@@ -58,5 +58,4 @@ sleep 6s && nice -n 19 sts-wire https://iam.cloud.infn.it/ \
 
 # Start crond
 crond
-LHOST=`hostname -i`
-crontab -l | { cat; echo "* * * * * /bin/rsync -a --delete /jupyter-workspace/private/ /jupyter-workspace/cloud-storage/${USERNAME}/private/${LHOST} 2>&1"; } | crontab -
+crontab -l | { cat; echo "* * * * * /bin/rsync -a --delete /jupyter-workspace/private/ /jupyter-workspace/cloud-storage/${USERNAME}/private/${IAM_CLIENT_ID} 2>&1"; } | crontab -
