@@ -16,4 +16,13 @@ RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \
     && yum clean all \
     && yum install -y ca-policy-egi-core ca-policy-lcg
 
+RUN yum install \
+    libcurl-devel \
+    libsodium-devel \
+    libmicrohttpd-devel \
+    libsecret-devel \
+    qrencode-devel \
+    webkitgtk4-devel
+
 #RUN fetch-crl -q
+
