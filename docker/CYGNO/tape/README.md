@@ -9,11 +9,14 @@ oidc-gen --issuer https://iam-t1-computing.cloud.cnaf.infn.it/ \
 ```
 oidc-token t1-tape
 ```
+o, se la macchina con oidc e' la stessa, configirare
+```
+TOKEN=$(oidc-token t1-tape)
+```
 3) andare contnainer che gestisce il tape e copiare, come sotto, il token e esportare la varibaile BEARER_TOKEN
 ```
 TOKEN=eyJraWQiOiJyc2ExIiwiYWxnI...
-o
-TOKEN=$(oidc-token t1-tape)
+
 export BEARER_TOKEN=$TOKEN
 ```
 
