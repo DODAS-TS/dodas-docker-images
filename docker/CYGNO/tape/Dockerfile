@@ -25,8 +25,7 @@ RUN sed -i 's/\/bin\/bin\//\/bin\//g' /usr/bin/oidc-agent-service
 
 #
 # RUN echo "eval `oidc-agent-service use`" >> /root/.bash_profile
-# RUN echo "oidc-gen --issuer https://iam-t1-computing.cloud.cnaf.infn.it/ --pw-cmd=\"echo pwd\" --scope \"openid profile email address phone offline_access eduperson_scoped_affiliation eduperson_enti
-tlement\" t1-tape"  >> /root/.bash_profile 
+# RUN echo "oidc-gen --issuer https://iam-t1-computing.cloud.cnaf.infn.it/ --pw-cmd=\"echo pwd\" --scope \"openid profile email address phone offline_access eduperson_scoped_affiliation eduperson_entitlement\" t1-tape"  >> /root/.bash_profile 
 # RUN echo "export BEARER_TOKEN=$(oidc-token t1-tape)"  >> /root/.bash_profile 
 # RUN echo "echo \"Tocken t1-tape: $BEARER_TOKEN\""  >> /root/.bash_profile 
 #
