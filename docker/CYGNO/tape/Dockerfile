@@ -20,6 +20,7 @@ RUN wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
 RUN yum -y update && yum -y install \
 	git \
 	oidc-agent \
+	python3 \
 	python-pip 
 	
 	
