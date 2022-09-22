@@ -19,9 +19,12 @@ RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \
 RUN wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
 RUN yum -y update && yum -y install \
 	git \
-	oidc-agent
+	oidc-agent \
+	python-pip 
+	
 	
 RUN sed -i 's/\/bin\/bin\//\/bin\//g' /usr/bin/oidc-agent-service
+
 
 #
 # RUN echo "eval `oidc-agent-service use`" >> /root/.bash_profile
