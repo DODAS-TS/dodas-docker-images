@@ -18,14 +18,11 @@ RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \
 
 RUN wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
 RUN yum -y update && yum -y install \
-	git \
-	oidc-agent \
-	python3 \
-	python-pip 
+	oidc-agent 
 	
 	
 RUN sed -i 's/\/bin\/bin\//\/bin\//g' /usr/bin/oidc-agent-service
-
+RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/oicd-setup.sh
 
 #
 # RUN echo "eval `oidc-agent-service use`" >> /root/.bash_profile
