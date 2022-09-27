@@ -20,9 +20,11 @@ RUN wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
 RUN yum -y update && yum -y install \
 	oidc-agent 
 	
-	
+WORKDIR /root
 RUN sed -i 's/\/bin\/bin\//\/bin\//g' /usr/bin/oidc-agent-service
 RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/oicd-setup.sh
+RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/cygno_s32tape
+RUN 
 
 #
 # RUN echo "eval `oidc-agent-service use`" >> /root/.bash_profile
