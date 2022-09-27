@@ -1,4 +1,8 @@
 * Uso:
+nel folder root bisogna esguire la richiesta di token con ```source oicd-setup.sh``` e poi eseguire ```./cygno_s32tape.sh```
+
+OLD
+
 1) generare un tocken da qualunque macchina (la prima volta)
 ```
 eval `oidc-agent-service use`
