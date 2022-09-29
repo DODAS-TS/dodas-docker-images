@@ -28,7 +28,7 @@ if __name__ == '__main__':
         filename = "run02308.mid.gz"
 	source =  "https://s3.cloud.infn.it/v1/AUTH_2ebf769785574195bde2ff418deac08a/cygno-data/LNGS/%s" %filename
 	dest   =  "davs://xfer-archive.cr.cnaf.infn.it:8443/cygno/%s" %filename
-        dest_cred = os.environ['BEARER_TOKEN']
+        dest_cred = os.environ['TAPE_TOKEN']
 
         # ADD here the T1 tape token
         #dest_cred = ""
