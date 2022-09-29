@@ -31,7 +31,7 @@ if __name__ == '__main__':
         dest_cred = os.environ['BEARER_TOKEN']
 
         # ADD here the T1 tape token
-        dest_cred = ""
+        dest_cred = $BEARER_TOKEN
 
 
 #       cred = gfal2.cred_new("BEARER", os.getenv('TOKEN'))
