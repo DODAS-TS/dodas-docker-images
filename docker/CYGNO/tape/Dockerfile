@@ -4,12 +4,13 @@ FROM cern/cc7-base:20220601-1
 
 WORKDIR /etc/yum.repos.d
 
-RUN wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
 RUN yum -y update && yum -y install \
-	oidc-agent 
+    wget 
+
+RUN wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
 
 RUN yum -y update && yum -y install \
-    wget \
+    oidc-agent \
     gfal2-util \
     gfal2-all 
 
