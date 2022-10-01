@@ -2,9 +2,6 @@ FROM gmazzitelli/cygno-tape:v1.0.1-cygno
 
 WORKDIR /etc/yum.repos.d
 
-RUN yum -y update && yum -y install \
-    wget 
-
 RUN  wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
 
 RUN yum install -y \
