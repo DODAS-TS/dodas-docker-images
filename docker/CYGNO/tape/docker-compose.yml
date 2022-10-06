@@ -1,0 +1,6 @@
+version: "3"
+services:
+  app:
+    image: gmazzitelli/cygno-tape:v1.0.1-cygno
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t

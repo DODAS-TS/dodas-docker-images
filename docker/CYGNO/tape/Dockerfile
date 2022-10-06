@@ -8,9 +8,20 @@ RUN yum install -y \
     oidc-agent \
     && yum clean all 
 
-WORKDIR /root
 RUN sed -i 's/\/bin\/bin\//\/bin\//g' /usr/bin/oidc-agent-service
-RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/oicd-setup.sh
-RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/cygno_s32tape.sh
-RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/s32tape.py
-RUN chmod a+x oicd-setup.sh cygno_s32tape.sh s32tape.py
+
+RUN yum install -y git \
+	python3 \
+	python-pip
+
+RUN pip3 install --upgrade pip
+RUN pip3 install git+https://github.com/DODAS-TS/boto3sts
+RUN pip3 install git+https://github.com/CYGNUS-RD/cygno.git
+
+RUN mkdir /root/script
+WORKDIR /root/script
+
+# RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/oicd-setup.sh
+# RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/cygno_s32tape.sh
+# RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/s32tape.py
+# RUN chmod a+x oicd-setup.sh cygno_s32tape.sh s32tape.py
