@@ -74,3 +74,8 @@ Cordiali saluti,
 
    Andrea
 ~~~~~
+
+###Tips
+edit & test file
+```ssh -L 10000:localhost:10000 testnotebook```
+```docker run -d -p 10000:8888 -v "${PWD}":/home/jovyan/work/ jupyter/scipy-notebook:9e63909e0317``` 
