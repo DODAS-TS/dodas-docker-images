@@ -58,4 +58,5 @@ sleep 6s && nice -n 19 sts-wire https://iam.cloud.infn.it/ \
 
 # Start crond
 crond
-crontab -l | { cat; echo "* * * * * /bin/rsync -a --delete /jupyter-workspace/private/ /jupyter-workspace/cloud-storage/${USERNAME}/private/${IAM_CLIENT_ID} 2>&1"; } | crontab -
+# automatic backup. To be check.
+# crontab -l | { cat; echo "* * * * * /bin/rsync -a --delete /jupyter-workspace/private/ /jupyter-workspace/cloud-storage/${USERNAME}/private/${IAM_CLIENT_ID} 2>&1"; } | crontab -
