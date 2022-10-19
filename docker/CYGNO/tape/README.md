@@ -1,5 +1,5 @@
 ### Usage:
-* ```docker-container up -dt```
+* ```docker-container up -d```
 * ```docker attach tapev4```
 * nel folder root bisogna esguire la richiesta di token con ```source oicd-setup.sh``` e poi eseguire ```./cygno_s32tape.sh```
 * [monitor spazio](https://t1metria.cr.cnaf.infn.it/d/ZArHZvEMz/storage-usage-per-experiment?orgId=18&var-exp=cygn&var-vo=CYGNO)
