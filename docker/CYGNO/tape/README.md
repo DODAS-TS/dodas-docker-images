@@ -4,6 +4,12 @@
 * nel folder root bisogna esguire la richiesta di token con ```source oicd-setup.sh``` e poi eseguire ```./cygno_s32tape.sh```
 * [monitor spazio](https://t1metria.cr.cnaf.infn.it/d/ZArHZvEMz/storage-usage-per-experiment?orgId=18&var-exp=cygn&var-vo=CYGNO)
 
+### Tips for editing
+```cd <script>```
+```ssh -L 10000:localhost:10000 testnotebook```
+```docker run -d -p 10000:8888 -v "${PWD}":/home/jovyan/work/ jupyter/scipy-notebook:9e63909e0317``` 
+
+
 OLD
 
 1) generare un tocken da qualunque macchina (la prima volta)
@@ -78,7 +84,3 @@ Cordiali saluti,
    Andrea
 ~~~~~
 
-###Tips
-edit & test file
-```ssh -L 10000:localhost:10000 testnotebook```
-```docker run -d -p 10000:8888 -v "${PWD}":/home/jovyan/work/ jupyter/scipy-notebook:9e63909e0317``` 
