@@ -18,6 +18,9 @@ RUN pip3 install --upgrade pip
 RUN pip3 install git+https://github.com/DODAS-TS/boto3sts
 RUN pip3 install git+https://github.com/CYGNUS-RD/cygno.git
 
+RUN wget http://download-ib01.fedoraproject.org/pub/epel/7/aarch64/
+RUN yum install -y gfal2-util gfal2-all
+
 RUN mkdir /root/script
 WORKDIR /root/script
 

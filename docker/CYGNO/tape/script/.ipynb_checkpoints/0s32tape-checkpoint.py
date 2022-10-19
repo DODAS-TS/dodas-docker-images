@@ -1,11 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import gfal2
 import logging
 import optparse
 import sys
 import os
 from optparse import OptionParser
-from cygno import s3
+import cygno as cy
 
 def event_callback(event):
     #print event
@@ -40,10 +40,16 @@ def copy_s32tape(filename, backet="cygno-data", intag="LNGS", outtag=""):
     params.event_callback   = event_callback
     params.monitor_callback = monitor_callback
 
-# to enable if needed [basic examples]
-# gfal2.set_verbose(gfal2.verbose_level.debug)
+        # to enable if needed [basic examples]
+#        gfal2.set_verbose(gfal2.verbose_level.debug)
     params.overwrite = True
-    params.checksum_check = True
+#        params.checksum_check = True
+
+# not necessarily needed. 
+# current cygno data are www readable 
+#       s_cred = ctx.cred_new("BEARER",source_cred)
+#       ctx.cred_set(source,s_cred)
+#       print("Source credentials: %s" % source_cred)
 
 # writing on tape at T1 requires authN/Z
     d_cred = ctx.cred_new("BEARER",dest_cred)
@@ -61,17 +67,17 @@ def copy_s32tape(filename, backet="cygno-data", intag="LNGS", outtag=""):
         print("Copy failed: %s" % str(e))
         sys.exit(1)   
     
-def main(backet, intag, outtag, session, verbose):
-    print(backet, intag, outtag, session,verbose)
-    s3.backet_list(tag=intag, bucket=backet, session=session, verbose=verbose)
+def main(backet, options, options, options):
+    print(backet, options, options, options)
+
 if __name__ == '__main__':
     cygno_backet_list = ["cygnus", "cygno-data", "cygno-sim", "cygno-analysis"]
     #
     parser = OptionParser(usage='usage: %prog\t [-tsv] [ls backet]\n\t\t\t [put backet filename]\n\t\t\t [[get backet filein] fileout]\n\t\t\t [rm backet fileneme]\nAvailable Backet: '+str(cygno_backet_list)+\
         "\n recall to run comman: \n eval \`oidc-agent\` \n oidc-gen --reauthenticate --flow device infncloud-iam")
     parser.add_option('-b','--backet', dest='backet', type='string', default='cygno-data', help='backet on s3;');
-    parser.add_option('-t','--intag', dest='intag', type='string', default='', help='tag on s3;');
-    parser.add_option('-o','--outtaag', dest='outtag', type='string', default='', help='out tag on tape;');
+    parser.add_option('-t','--intag', dest='intag', type='string', default='LNGS', help='tag on s3;');
+    parser.add_option('-o','--outtaag', dest='intag', type='outtaag', default='LNGS', help='out tag on tape;');
     parser.add_option('-s','--session', dest='session', type='string', default='infncloud-iam', help='token profile [infncloud-iam];');
     parser.add_option('-v','--verbose', dest='verbose', action="store_true", default=False, help='verbose output;');
     (options, args) = parser.parse_args()
@@ -87,5 +93,5 @@ if __name__ == '__main__':
     #     parser.error(error)
     
     
-    main(backet=options.backet, intag=options.intag, outtag=options.outtag, session=options.session, verbose=options.verbose)
+    main(options.backet, options.intag, options.outtag, options.session)
 
