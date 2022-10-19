@@ -7,6 +7,9 @@ import os
 from optparse import OptionParser
 from cygno import s3
 
+dest_cred = os.environ['TAPE_TOKEN']
+
+
 def event_callback(event):
     #print event
     print("[%s] %s %s %s" % (event.timestamp, event.domain, event.stage, event.description))
@@ -15,22 +18,21 @@ def monitor_callback(src, dst, average, instant, transferred, elapsed):
     print("[%4d] %.2fMB (%.2fKB/s)\r" % (elapsed, transferred / 1048576, average / 1024)),
     sys.stdout.flush()
     
-def copy_s32tape(filename, backet="cygno-data", intag="LNGS", outtag=""):   
+def copy_s32tape(filekey, backet="cygno-data", outtag=""):   
     # filename = "run02308.mid.gz"
-    source =  "https://s3.cloud.infn.it/v1/AUTH_2ebf769785574195bde2ff418deac08a/{:s}/{:s}/{:s}".format(backet, intag, filename)
+    source =  "https://s3.cloud.infn.it/v1/AUTH_2ebf769785574195bde2ff418deac08a/{:s}/{:s}".format(backet, filekey)
     if outtag != "":
-        dest_p = "{:s}/{:s}".format(outtag, filename)
+        dest_p = "{:s}/{:s}".format(outtag, filekey)
     else:
-        dest_p = filename
+        dest_p = filekey
     dest   =  "davs://xfer-archive.cr.cnaf.infn.it:8443/cygno/{:s}".format(dest_p)
-    dest_cred = os.environ['TAPE_TOKEN']
 
 # ADD here the T1 tape token
 # dest_cred = ""
 
     print("Source:      %s" % source)
     print("Destination: %s" % dest)
-    print("Destination Token: %s" % dest_cred)
+
 
 # Instantiate gfal2
     ctx = gfal2.creat_context()
@@ -43,7 +45,7 @@ def copy_s32tape(filename, backet="cygno-data", intag="LNGS", outtag=""):
 # to enable if needed [basic examples]
 # gfal2.set_verbose(gfal2.verbose_level.debug)
     params.overwrite = True
-    params.checksum_check = True
+#    params.checksum_check = True
 
 # writing on tape at T1 requires authN/Z
     d_cred = ctx.cred_new("BEARER",dest_cred)
@@ -62,8 +64,18 @@ def copy_s32tape(filename, backet="cygno-data", intag="LNGS", outtag=""):
         sys.exit(1)   
     
 def main(backet, intag, outtag, session, verbose):
-    print(backet, intag, outtag, session,verbose)
-    s3.backet_list(tag=intag, bucket=backet, session=session, verbose=verbose)
+    if verbose: 
+        print("Destination Token: %s" % dest_cred)
+        print(backet, intag, outtag, session, verbose)
+        
+    print("Generating index...")
+    lsfilekey = s3.backet_list(tag=intag, bucket=backet, session=session, filearray=True, verbose=verbose)
+    if verbose: print (lsfilekey)
+    for i, filekey in enumerate(lsfilekey):
+        print(filekey.split('/')[-1])
+        copy_s32tape(filekey, backet=backet, outtag=outtag) 
+    
+    
 if __name__ == '__main__':
     cygno_backet_list = ["cygnus", "cygno-data", "cygno-sim", "cygno-analysis"]
     #
