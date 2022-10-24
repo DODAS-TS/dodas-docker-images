@@ -1,30 +1,10 @@
-FROM gmazzitelli/cygno-tape:v1.0.1-cygno
+FROM ubuntu:22.04
+RUN apt update -y && apt install -y python3 python3-pip oidc-agent git
 
-WORKDIR /etc/yum.repos.d
+RUN pip install git+https://github.com/DODAS-TS/boto3sts
+RUN pip install 'https://github.com/CYGNUS-RD/middleware/blob/master/midas/midaslib.tar.gz?raw=true'
+RUN pip install git+https://github.com/CYGNUS-RD/cygno.git
 
-RUN  wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
-
-RUN yum install -y \
-    oidc-agent \
-    && yum clean all 
-
-RUN sed -i 's/\/bin\/bin\//\/bin\//g' /usr/bin/oidc-agent-service
-
-RUN yum install -y git \
-	python3 \
-	python-pip
-
-RUN pip3 install --upgrade pip
-RUN pip3 install git+https://github.com/DODAS-TS/boto3sts
-RUN pip3 install git+https://github.com/CYGNUS-RD/cygno.git
-
-RUN wget http://download-ib01.fedoraproject.org/pub/epel/7/aarch64/
-RUN yum install -y gfal2-util gfal2-all
-
+RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN mkdir /root/script
 WORKDIR /root/script
-
-# RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/oicd-setup.sh
-# RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/cygno_s32tape.sh
-# RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/s32tape.py
-# RUN chmod a+x oicd-setup.sh cygno_s32tape.sh s32tape.py

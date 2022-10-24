@@ -45,7 +45,7 @@ def copy_s32tape(filekey, backet="cygno-data", outtag=""):
 # to enable if needed [basic examples]
 # gfal2.set_verbose(gfal2.verbose_level.debug)
     params.overwrite = True
-#    params.checksum_check = True
+    params.checksum_check = True
 
 # writing on tape at T1 requires authN/Z
     d_cred = ctx.cred_new("BEARER",dest_cred)
