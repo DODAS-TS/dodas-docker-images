@@ -9,7 +9,7 @@ import numpy as np
 import time
 
 
-dest_cred = os.environ['TAPE_TOKEN']
+
 
 def event_callback(event):
     #print event
@@ -19,10 +19,11 @@ def monitor_callback(src, dst, average, instant, transferred, elapsed):
     print("[%4d] %.2fMB (%.2fKB/s)\r" % (elapsed, transferred / 1048576, average / 1024)),
     sys.stdout.flush()
     
-def copy_s32tape(filekey, backet="cygno-data", outtag="", verbose=False):   
+def copy_s32tape(filekey, dest_cred, backet="cygno-data", outtag="", verbose=False):   
     import urllib
     import gfal2
-    # filename = "run02308.mid.gz"
+    import os
+
     filekey=urllib.pathname2url(filekey)
     source =  "https://s3.cloud.infn.it/v1/AUTH_2ebf769785574195bde2ff418deac08a/{:s}/{:s}".format(backet, filekey)
     if outtag != "":
@@ -32,7 +33,6 @@ def copy_s32tape(filekey, backet="cygno-data", outtag="", verbose=False):
     dest   =  "davs://xfer-archive.cr.cnaf.infn.it:8443/cygno/{:s}".format(dest_p)
 
 # ADD here the T1 tape token
-# dest_cred = ""
     if verbose: 
         print("Source:      %s" % source)
         print("Destination: %s" % dest)
@@ -52,6 +52,7 @@ def copy_s32tape(filekey, backet="cygno-data", outtag="", verbose=False):
 #    params.checksum_check = True
 
 # writing on tape at T1 requires authN/Z
+    
     d_cred = ctx.cred_new("BEARER",dest_cred)
     ctx.cred_set(dest,d_cred)
 #    print("Destination credentials: %s" % dest_cred)
@@ -70,28 +71,32 @@ def copy_s32tape(filekey, backet="cygno-data", outtag="", verbose=False):
         return 1
     
 def main(backet, intag, outtag, session, verbose):
+    dest_cred = os.environ['TAPE_TOKEN']
     if verbose: 
         print("Destination Token: %s" % dest_cred)
         print(backet, intag, outtag, session, verbose)
     end = start = time.time()
-
+    
     print("Reading index...")
     nfile = 0
     fs = open("./index_save.txt", "w")
     with open("./index.txt") as f:
         for filekey in f:
-            if (end - start) > 1800:
+            if (end - start) > 1000:
                 start = time.time()
-                os.sysetm("source ./oicd-setup.sh")
+                os.system("source ./oicd-setup.sh")
+                dest_cred = os.environ['TAPE_TOKEN']
                 print(">>>>>>>> Token reniwed...")
             end = time.time()
             
             filekey=filekey.split('\n')[0]
-            if verbose: print(filekey.split('/')[-1])
+            if verbose: print("File: {:s} dt: {:d}".format(filekey.split('/')[-1], int(end - start))) 
 
-            if copy_s32tape(filekey, backet=backet, outtag=outtag, verbose=verbose)==0:
+            if copy_s32tape(filekey, dest_cred, backet=backet, outtag=outtag, verbose=verbose)==0:
                 fs.write(filekey+"\n")
                 nfile += 1
+            else:
+                sys.exit(1)
 
     print("file transefer: "+str(nfile))
     fs.close()
