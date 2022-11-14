@@ -57,8 +57,20 @@ RUN pip3 install --upgrade pip \
     metakernel==0.28.2 \
     tensorflow==2.6.2 \
     opencv-python==4.6.0.66 \
+    root_numpy \
+    pydot \
+    graphviz \
+    uproot \
     && pip3 install --no-cache-dir -U git+https://github.com/CYGNUS-RD/cygno.git \
     && pip3 install 'https://github.com/CYGNUS-RD/middleware/blob/master/midas/midaslib.tar.gz?raw=true'
 
 # cmake3 alias
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
+
+RUN wget https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tgz; \
+    tar xvf Python-3.9.10.tgz; \
+    cd Python-3.9*/; \
+    ./configure --enable-optimizations; \
+    make altinstall; \
+    cd .. ; \
+    rm -rf Python-3.9*
