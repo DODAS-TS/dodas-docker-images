@@ -1,8 +1,8 @@
 version: "3"
 services:
   app:
-    image: gmazzitelli/cygno-tape:v1.1.1-cygno
-    container_name: tapev1.1
+    image: gmazzitelli/cygno-tape:v1.0.4-cygno
+    container_name: tapev4
     stdin_open: true # docker run -i
     tty: true        # docker run -t
     volumes:
