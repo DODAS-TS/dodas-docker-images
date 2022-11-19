@@ -7,7 +7,9 @@
 ### Tips for editing
 ```cd <script>```
 ```ssh -L 10000:localhost:10000 testnotebook```
-```docker run -d -p 10000:8888 -v "${PWD}":/home/jovyan/work/ jupyter/scipy-notebook:9e63909e0317``` 
+```docker run -d -p 10000:8888 --name editor -v "${PWD}":/home/jovyan/work/ jupyter/scipy-notebook:9e63909e0317``` 
+e poi avere il token di accesso guardate
+```docker logs editor``` 
 
 
 OLD
