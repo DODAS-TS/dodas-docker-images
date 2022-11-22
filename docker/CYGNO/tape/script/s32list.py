@@ -14,7 +14,7 @@ def main(fileindex, backet, intag, outtag, session, verbose):
         print(backet, intag, outtag, session, verbose)
         
     print("Generating index...")
-    lsfilekey = s3.backet_list(tag=intag, bucket=backet, session=session, filearray=True, verbose=verbose)
+    lsfilekey = s3.bucket_list(tag=intag, bucket=backet, session=session, filearray=True, verbose=verbose)
     f = open(fileindex, "w")
     if verbose: print (lsfilekey)
     for i, filekey in enumerate(lsfilekey):

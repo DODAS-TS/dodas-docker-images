@@ -1,9 +1,0 @@
-version: "3"
-services:
-  app:
-    image: gmazzitelli/cygno-tape:v1.0.5-cygno
-    container_name: tapev5
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
-    volumes:
-      - "./script/:/root/script"

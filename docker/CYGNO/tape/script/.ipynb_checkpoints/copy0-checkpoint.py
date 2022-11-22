@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
 # to enable if needed [basic examples]
 #    gfal2.set_verbose(gfal2.verbose_level.debug)
-    params.overwrite = True
+#    params.overwrite = True
 #    params.checksum_check = True
 
 # not necessarily needed. 

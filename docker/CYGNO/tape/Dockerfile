@@ -17,6 +17,7 @@ RUN yum install -y git \
 RUN pip3 install --upgrade pip
 RUN pip3 install git+https://github.com/DODAS-TS/boto3sts
 RUN pip3 install git+https://github.com/CYGNUS-RD/cygno.git
+RUN pip3 install mysql-connector
 RUN pip2 install numpy==1.16.6
 
 #RUN wget http://download-ib01.fedoraproject.org/pub/epel/7/aarch64/

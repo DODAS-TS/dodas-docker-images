@@ -106,7 +106,7 @@ COPY lab/kernel.json /usr/local/share/jupyter/kernels/python3/
 # cmake3 alias
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
 
-# Eamnule "pippone" last requirments....
+# last requirments....
 RUN yum install emacs -y 
 RUN yum install screen -y
 RUN wget https://www.python.org/ftp/python/3.9.10/Python-3.9.10.tgz; \
