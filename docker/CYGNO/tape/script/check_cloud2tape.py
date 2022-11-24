@@ -5,7 +5,7 @@
 # cheker and sql update Nov 22 
 #
 
-def main(bucket, TAG, session, fcopy, fsql, verbose):
+def main(bucket, TAG, session, fcopy, fsql, fforce, verbose):
     #
 
     import os,sys
@@ -19,7 +19,7 @@ def main(bucket, TAG, session, fcopy, fsql, verbose):
     start = end = time.time()
     tmpout = '/tmp/tmp.dat'
     tape_path = 'davs://xfer-archive.cr.cnaf.infn.it:8443/cygno/'
-    if fsql:
+    if fsql or not fforce:
         connection = cy.daq_sql_cennection(verbose)
         if not connection:
             print ("ERROR: Sql connetion")
@@ -33,67 +33,74 @@ def main(bucket, TAG, session, fcopy, fsql, verbose):
             #
             # loop on run*.gz files
             #
-            file_in= file_in_dir[i].split("/")[-1]
-            run_number = int(file_in.split('run')[-1].split('.mid.gz')[0])
-
-            filesize = int(cy.s3.obj_size(file_in, tag=TAG, bucket=bucket, session=session, verbose=verbose))
-
             if (verbose): 
                 print("-------------------------")
-                print("Cloud name", file_in)
-                print("run_number", run_number) 
-                print("Cloud size", filesize)
-                print("fsql", fsql)
-                print("fcopy", fcopy)
-            # if (fsql): 
-            #     cy.daq_update_runlog_replica_status(connection, run_number, storage="cloud", status=1, verbose=verbose)
-            #     cy.daq_update_runlog_replica_size(connection, run_number, filesize, verbose=verbose)
-            if (start-end)>1000 or (start-end)==0:
-                output = subprocess.check_output("source ./oicd-setup.sh", shell=True)
-                print (output)
-                start = time.time()
-            try:
-                tape_data_file = subprocess.check_output("gfal-ls -l "+tape_path\
-                                                +TAG+"/"+file_in+" | awk '{print $5\" \"$9}'", shell=True)
+            file_in= file_in_dir[i].split("/")[-1]
+            run_number = int(file_in.split('run')[-1].split('.mid.gz')[0])
             
-                remotesize, tape_file = tape_data_file.decode("utf-8").split(" ")
-                remotesize = int(remotesize)
-            except:
-                remotesize=0
-                tape_file=file_in
-            if (verbose): 
-                print("Tape", tape_file) 
-                print("Tape size", remotesize)
-            
+            if not fforce and cy.daq_read_runlog_replica_status(connection, run_number, storage="tape", verbose=verbose)==1:
+                    print ("File ", file_in, " ok, nothing done")
+            else:
+                filesize = int(cy.s3.obj_size(file_in, tag=TAG, bucket=bucket, session=session, verbose=verbose))
+                if (verbose): 
+                    print("Cloud name", file_in)
+                    print("run_number", run_number) 
+                    print("Cloud size", filesize)
+                    print("SQL actual status", cy.daq_read_runlog_replica_status(connection, run_number, storage="tape", verbose=verbose))
+                    print("tocken {:.0f} s".format(end-start))
+                # if (fsql): 
+                #     cy.daq_update_runlog_replica_status(connection, run_number, storage="cloud", status=1, verbose=verbose)
+                #     cy.daq_update_runlog_replica_size(connection, run_number, filesize, verbose=verbose)
+                if (end-start)>1200 or (start-end)==0:
+                    output = subprocess.check_output("source ./oicd-setup.sh > ./token.dat", shell=True)
+                    with open("./token.dat") as file:
+                        lines = [line.rstrip() for line in file]
+                    os.environ["BEARER_TOKEN"] = lines[1]
+                    if (verbose): print(lines[1])
+                    start = time.time()
+                end = time.time()
+                try:
+                    tape_data_file = subprocess.check_output("gfal-ls -l "+tape_path\
+                                     +TAG+"/"+file_in+" | awk '{print $5\" \"$9}'", shell=True)
 
-            if (filesize != remotesize) and (filesize>0):
-                print ("WARNING: file size mismatch", file_in, filesize, remotesize)
-                if (fcopy):
-                    print (">>> coping file: "+file_in)
+                    remotesize, tape_file = tape_data_file.decode("utf-8").split(" ")
+                    remotesize = int(remotesize)
+                except:
+                    remotesize=0
+                    tape_file=file_in
+                if (verbose): 
+                    print("Tape", tape_file) 
+                    print("Tape size", remotesize)
 
-                    cy.obj_get(file_in, tmpout, tag, bucket=bucket, session=session, verbose=verbose)
-                    # status, isthere = cy.s3.obj_put(INAPATH+file_in,tag=TAG, 
-                    #                              bucket=bucket, session=session, 
-                    #                              verbose=verbose)
-                    tape_data_copy = subprocess.check_output("gfal-copy "+tape_path\
-                                                +TAG+"/"+file_in, shell=True)
-                    
-                    cy.cmd.rm(tmpout)
-                    if verbose: print (">>> status: ", status, "sql:", fsql)
-                    if (not status and fsql):
+
+                if (filesize != remotesize) and (filesize>0):
+                    print ("WARNING: file size mismatch", file_in, filesize, remotesize)
+                    if (fcopy):
+                        print (">>> coping file: "+file_in)
+                        try:
+                            cy.s3.obj_get(file_in, tmpout, TAG, bucket=bucket, session=session, verbose=verbose)
+
+                            tape_data_copy = subprocess.check_output("gfal-copy "+tmpout+" "+tape_path\
+                                         +TAG+"/"+file_in, shell=True)
+
+                            cy.cmd.rm_file(tmpout)
+
+                            if (fsql):
+                                cy.daq_update_runlog_replica_status(connection, run_number, 
+                                                                    storage="tape", status=1, verbose=verbose)
+                                cy.daq_update_runlog_replica_tag(connection, run_number, TAG=TAG, verbose=verbose)
+                        except:
+                            print ("ERROR: Copy on TAPE faliure")
+                else:
+                    print ("File ", file_in, " ok")
+                    if (fsql):
                         cy.daq_update_runlog_replica_status(connection, run_number, 
                                                             storage="tape", status=1, verbose=verbose)
-                        cy.daq_update_runlog_replica_tag(connection, run_number, TAG=TAG, verbose=verbose)
-                    else:
-                        print ("ERROR: Copy on TAPE faliure")
-            else:
-                print ("File ", file_in, " ok")
-                if (fsql):
-                    cy.daq_update_runlog_replica_status(connection, run_number, 
-                                                        storage="tape", status=1, verbose=verbose)
-            end = time.time()
-                
+
+
     sys.exit(0)
+    
+    
 if __name__ == "__main__":
     from optparse import OptionParser
     #
@@ -110,10 +117,11 @@ if __name__ == "__main__":
     parser.add_option('-c','--copy', dest='copy', action="store_true", default=False, help='upload data to TAPE if not present')
     parser.add_option('-s','--session', dest='session', type='string', default=SESSION, help='token profile [infncloud-iam];');
     parser.add_option('-q','--sql', dest='sql', action="store_true", default=False, help='update sql')
+    parser.add_option('-f','--force', dest='force', action="store_true", default=False, help='force full recheck of data')
     parser.add_option('-v','--verbose', dest='verbose', action="store_true", default=False, help='verbose output')
     (options, args) = parser.parse_args()
     if options.verbose: 
         print ("options", options)
         print ("args", args)
      
-    main(options.bucket, options.tag, options.session, options.copy, options.sql, options.verbose)
+    main(options.bucket, options.tag, options.session, options.copy, options.sql, options.force, options.verbose)

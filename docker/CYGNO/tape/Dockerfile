@@ -1,6 +1,20 @@
-FROM gmazzitelli/cygno-tape:v1.0.1-cygno
+FROM cern/cc7-base:20220601-1
+
+RUN yum -y update && yum -y install \
+    wget \
+    gfal2-util \
+    gfal2-all 
 
 WORKDIR /etc/yum.repos.d
+
+RUN  wget http://repository.egi.eu/sw/production/cas/1/current/repo-files/EGI-trustanchors.repo \
+     &&  wget http://repository.egi.eu/community/software/preview.repository/2.0/releases/repofiles/centos-7-x86_64.repo 
+
+RUN yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \
+    && yum --setopt=tsflags=nodocs -y install epel-release yum-plugin-ovl \
+    && yum --setopt=tsflags=nodocs -y install fetch-crl wn sysstat \
+    && yum clean all \
+    && yum install -y ca-policy-egi-core ca-policy-lcg
 
 RUN  wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
 
@@ -20,13 +34,6 @@ RUN pip3 install git+https://github.com/CYGNUS-RD/cygno.git
 RUN pip3 install mysql-connector
 RUN pip2 install numpy==1.16.6
 
-#RUN wget http://download-ib01.fedoraproject.org/pub/epel/7/aarch64/
-#RUN yum install -y gfal2-util gfal2-all
-
 RUN mkdir /root/script
 WORKDIR /root/script
 
-# RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/oicd-setup.sh
-# RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/cygno_s32tape.sh
-# RUN wget https://raw.githubusercontent.com/gmazzitelli/dodas-docker-images/master/docker/CYGNO/tape/s32tape.py
-# RUN chmod a+x oicd-setup.sh cygno_s32tape.sh s32tape.py
