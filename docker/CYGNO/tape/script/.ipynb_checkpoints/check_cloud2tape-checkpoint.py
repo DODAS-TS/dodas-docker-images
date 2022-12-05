@@ -16,6 +16,7 @@ def main(bucket, TAG, session, fcopy, fsql, fforce, verbose):
     import time
     import subprocess
     import mysql.connector
+    script_path = os.path.dirname(os.path.realpath(__file__))
     start = end = time.time()
     tmpout = '/tmp/tmp.dat'
     tape_path = 'davs://xfer-archive.cr.cnaf.infn.it:8443/cygno/'
@@ -46,14 +47,14 @@ def main(bucket, TAG, session, fcopy, fsql, fforce, verbose):
                     print("Cloud name", file_in)
                     print("run_number", run_number) 
                     print("Cloud size", filesize)
-                    print("Staus SQL", cy.daq_read_runlog_replica_status(connection, run_number, storage="tape", verbose=verbose))
-                    print((end-start))
+                    print("SQL actual status", cy.daq_read_runlog_replica_status(connection, run_number, storage="tape", verbose=verbose))
+                    print("tocken {:.0f} s".format(end-start))
                 # if (fsql): 
                 #     cy.daq_update_runlog_replica_status(connection, run_number, storage="cloud", status=1, verbose=verbose)
                 #     cy.daq_update_runlog_replica_size(connection, run_number, filesize, verbose=verbose)
                 if (end-start)>1200 or (start-end)==0:
-                    output = subprocess.check_output("source ./oicd-setup.sh > ./token.dat", shell=True)
-                    with open("./token.dat") as file:
+                    output = subprocess.check_output("source "+script_path+"/oicd-setup.sh > "+script_path+"/token.dat", shell=True)
+                    with open(script_path+"/token.dat") as file:
                         lines = [line.rstrip() for line in file]
                     os.environ["BEARER_TOKEN"] = lines[1]
                     if (verbose): print(lines[1])
@@ -79,7 +80,9 @@ def main(bucket, TAG, session, fcopy, fsql, fforce, verbose):
                         print (">>> coping file: "+file_in)
                         try:
                             cy.s3.obj_get(file_in, tmpout, TAG, bucket=bucket, session=session, verbose=verbose)
-
+                            if (remotesize):
+                                tape_data_copy = subprocess.check_output("gfal-rm "+tape_path\
+                                                 +TAG+"/"+file_in, shell=True)
                             tape_data_copy = subprocess.check_output("gfal-copy "+tmpout+" "+tape_path\
                                          +TAG+"/"+file_in, shell=True)
 

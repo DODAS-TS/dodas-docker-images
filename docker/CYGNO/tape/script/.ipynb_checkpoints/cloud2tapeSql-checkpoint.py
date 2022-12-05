@@ -25,19 +25,16 @@ def main(bucket, TAG, session, fcopy, fsql, fforce, verbose):
         if not connection:
             print ("ERROR: Sql connetion")
             sys.exit(1)
-    file_in_dir=cy.s3.bucket_list(tag=TAG, bucket=bucket, session=session, filearray=True, verbose=verbose)
-    print ("File in dir %d" % np.size(file_in_dir))
-    for i in range(0, np.size(file_in_dir)):
-        if ('run' in str(file_in_dir[i]))   and \
-        ('.mid.gz' in str(file_in_dir[i]))  and \
-        (not file_in_dir[i].startswith('.')):
-            #
-            # loop on run*.gz files
-            #
+    
+    
+    runs = cy.daq_not_on_tape_runs(connection, verbose=verbose)
+    if (verbose): print(runs)
+    
+    for i, run in enumerate(runs):
+        file_in="run{:05d}.mid.gz".format(run)
             if (verbose): 
                 print("-------------------------")
-            file_in= file_in_dir[i].split("/")[-1]
-            run_number = int(file_in.split('run')[-1].split('.mid.gz')[0])
+            run_number = run
             
             if not fforce and cy.daq_read_runlog_replica_status(connection, run_number, storage="tape", verbose=verbose)==1:
                     print ("File ", file_in, " ok, nothing done")
@@ -49,9 +46,7 @@ def main(bucket, TAG, session, fcopy, fsql, fforce, verbose):
                     print("Cloud size", filesize)
                     print("SQL actual status", cy.daq_read_runlog_replica_status(connection, run_number, storage="tape", verbose=verbose))
                     print("tocken {:.0f} s".format(end-start))
-                # if (fsql): 
-                #     cy.daq_update_runlog_replica_status(connection, run_number, storage="cloud", status=1, verbose=verbose)
-                #     cy.daq_update_runlog_replica_size(connection, run_number, filesize, verbose=verbose)
+
                 if (end-start)>1200 or (start-end)==0:
                     output = subprocess.check_output("source "+script_path+"/oicd-setup.sh > "+script_path+"/token.dat", shell=True)
                     with open(script_path+"/token.dat") as file:
