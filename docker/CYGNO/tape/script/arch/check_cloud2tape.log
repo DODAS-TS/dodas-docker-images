@@ -1,0 +1,33 @@
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
+options {'bucket': 'cygno-data', 'tag': 'LNGS', 'copy': True, 'session': 'infncloud-wlcg', 'sql': True, 'force': False, 'verbose': True}
+args []
+ERROR: Sql connetion
