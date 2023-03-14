@@ -31,7 +31,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update \
 RUN python3 -m pip install -U pip setuptools wheel
 
 # Install sts-wire
-RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux --progress=bar -O /usr/local/share/dodasts/bin/sts-wire && \
+RUN wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.1.2/sts-wire_linux --progress=bar -O /usr/local/share/dodasts/bin/sts-wire && \
     chmod +x /usr/local/share/dodasts/bin/sts-wire && \
     ln -s /usr/local/share/dodasts/bin/sts-wire /usr/local/bin/sts-wire
 
