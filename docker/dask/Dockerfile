@@ -157,7 +157,7 @@ RUN chmod +x /usr/local/bin/jupyterhub-singleuser
 
 # Install sts-wire
 RUN mkdir -p /.init && \
-    wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.0.0/sts-wire_linux -O /.init/sts-wire && \
+    wget https://github.com/DODAS-TS/sts-wire/releases/download/v2.1.2/sts-wire_linux -O /.init/sts-wire && \
     chmod +x /.init/sts-wire
 
 # RUN mkdir ${JUPYTER_ROOT}
