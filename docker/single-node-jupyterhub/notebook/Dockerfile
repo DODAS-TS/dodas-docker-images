@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 COPY custom.js /tmp/
 WORKDIR /
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN DEBIAN_FRONTEND=noninteractive apt-get update --no-install-recommends && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends base-files=11ubuntu5.7 libgnutls30=3.6.13-2ubuntu1.8 \
     libpam-modules=1.3.1-5ubuntu4.6 libpam-modules-bin=1.3.1-5ubuntu4.6 libpam-runtime=1.3.1-5ubuntu4.6 libpam0g=1.3.1-5ubuntu4.6 \
     libsystemd0=245.4-4ubuntu3.20 libudev1=245.4-4ubuntu3.20 tar=1.30+dfsg-7ubuntu0.20.04.3 git=1:2.25.1-1ubuntu3.10 software-properties-common=0.99.9.11 \
@@ -27,7 +27,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update --no-install-recommends && \
     apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87 && \
     add-apt-repository "deb https://repo.data.kit.edu/ubuntu/20.04 ./" && \
     DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y oidc-agent=4.5.1-1 && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends oidc-agent=4.5.1-1 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
     # Install jupyterlab
     python3 -m pip install --no-cache-dir \
     jupyterlab==3.2.3 \
@@ -40,7 +41,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update --no-install-recommends && \
     importlib-metadata==6.0.0 \
     ipympl==0.9.3 && \
     curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs=16.19.1-deb-1nodesource1 && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends nodejs=16.19.1-deb-1nodesource1 && \
     python3 -m pip install --no-cache-dir jupyterhub==1.5.0 && \
     npm install -g configurable-http-proxy@4.5.4 && \
     # Add custom js for collaborative button in notebooks
