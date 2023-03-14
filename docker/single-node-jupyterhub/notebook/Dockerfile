@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 COPY custom.js /tmp/
 WORKDIR /
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y && \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y --no-install-recommends && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y git=1:2.25.1-1ubuntu3.10 software-properties-common=0.99.9.11 \
     wget=1.20.3-1ubuntu2 fuse=2.9.9-3 --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/* && \
