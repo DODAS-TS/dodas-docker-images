@@ -3,12 +3,11 @@ FROM ubuntu:20.04
 COPY custom.js /tmp/
 WORKDIR /
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN \
-    apt-get update --no-install-recommends && \
+RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends base-files=11ubuntu5.7 libgnutls30=3.6.13-2ubuntu1.8 \
     libpam-modules=1.3.1-5ubuntu4.6 libpam-modules-bin=1.3.1-5ubuntu4.6 libpam-runtime=1.3.1-5ubuntu4.6 libpam0g=1.3.1-5ubuntu4.6 \
-    libsystemd0=245.4-4ubuntu3.20 libudev1=245.4-4ubuntu3.20 tar=1.30+dfsg-7ubuntu0.20.04.3 && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y git=1:2.25.1-1ubuntu3.10 software-properties-common=0.99.9.11 \
+    libsystemd0=245.4-4ubuntu3.20 libudev1=245.4-4ubuntu3.20 tar=1.30+dfsg-7ubuntu0.20.04.3 \
+    git=1:2.25.1-1ubuntu3.10 software-properties-common=0.99.9.11 \
     wget=1.20.3-1ubuntu2 fuse=2.9.9-3 --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     # Make dodasts folder
