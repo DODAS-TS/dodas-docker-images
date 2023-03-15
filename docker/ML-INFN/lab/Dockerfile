@@ -1,5 +1,5 @@
 # Image name: dodasts/ml-infn-lab
-FROM dodasts/snj-base-lab-gpu:v1.0.0-snj
+FROM dodasts/snj-base-lab-gpu:v1.1.1-snj
 
 # Install system packages
 RUN DEBIAN_FRONTEND=noninteractive apt-get update \
