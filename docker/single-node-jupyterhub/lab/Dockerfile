@@ -69,7 +69,9 @@ RUN jupyter serverextension enable --py jupyterlab --sys-prefix
 WORKDIR /usr/local/share/dodasts
 RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git
 WORKDIR /usr/local/share/dodasts/jupyterlab-collaborative-util-extension
-RUN jupyter labextension install
+RUN sed -i 's/\(    "target":\)\(.*\)/\1 "'"es2018"'",/g' tsconfig.json && \
+    sed -i '/"compilerOptions": {/a \    "lib": ["es2018", "dom"],' tsconfig.json && \
+    jupyter labextension install
 WORKDIR /usr/local/share/dodasts
 
 COPY jupyter_lab_config.py /usr/etc/jupyter/
