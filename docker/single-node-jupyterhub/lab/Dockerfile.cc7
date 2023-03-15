@@ -60,7 +60,7 @@ RUN python3 -m pip install --no-cache-dir jupyterhub==1.5.0 \
 WORKDIR /usr/local/share/dodasts
 RUN git clone https://github.com/DODAS-TS/jupyterlab-collaborative-util-extension.git
 WORKDIR /usr/local/share/dodasts/jupyterlab-collaborative-util-extension
-RUN sed -i 's/    "target": "es2017",/    "target": "es2018",/g' tsconfig.json && \
+RUN sed -i 's/\(    "target":\)\(.*\)/\1 "'"es2018"'",/g' tsconfig.json && \
     sed -i '/"compilerOptions": {/a \    "lib": ["es2018", "dom"],' tsconfig.json && \
     jupyter labextension install
 WORKDIR /usr/local/share/dodasts
