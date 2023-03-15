@@ -4,8 +4,8 @@ FROM jupyterhub/jupyterhub:1.5.0
 
 RUN mkdir -p /.init
 
-RUN python3 -m pip install --no-cache-dir -U pip setuptools wheel
-RUN python3 -m pip install --no-cache-dir \
+RUN python3 -m pip install --no-cache-dir -U pip==23.0.1 setuptools==67.6.0 wheel==0.40.0 && \
+    python3 -m pip install --no-cache-dir \
     dockerspawner==12.1.0 \
     oauthenticator==14.2.0 \
     pyjwt==2.4.0 \
@@ -15,9 +15,10 @@ RUN python3 -m pip install --no-cache-dir \
 # RUN useradd test -p "$(openssl passwd -1 test)"
 # RUN mkdir /home/test && chown test: /home/test
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y wget && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN wget "https://crt.sh/?d=2475254782" --progress=bar -O /usr/local/share/ca-certificates/ca.crt && update-ca-certificates
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    wget=1.20.3-1ubuntu2 && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    wget "https://crt.sh/?d=2475254782" --progress=bar -O /usr/local/share/ca-certificates/ca.crt && update-ca-certificates
 
 COPY jupyterhub_config.py /srv/jupyterhub/
 
