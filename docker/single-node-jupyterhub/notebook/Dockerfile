@@ -4,13 +4,13 @@ COPY custom.js /tmp/
 WORKDIR /
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends base-files=11ubuntu5.7 libgnutls30=3.6.13-2ubuntu1.8 \
-    libpam-modules=1.3.1-5ubuntu4.6 libpam-modules-bin=1.3.1-5ubuntu4.6 libpam-runtime=1.3.1-5ubuntu4.6 libpam0g=1.3.1-5ubuntu4.6 \
-    libsystemd0=245.4-4ubuntu3.20 libudev1=245.4-4ubuntu3.20 tar=1.30+dfsg-7ubuntu0.20.04.3 git=1:2.25.1-1ubuntu3.10 software-properties-common=0.99.9.11 \
-    wget=1.20.3-1ubuntu2 fuse=2.9.9-3 build-essential=12.8ubuntu1.1 python3-dev=3.8.2-0ubuntu2 python3-pip=20.0.2-5ubuntu1.8 libargon2-dev=0~20171227-0.2 \
-    libffi-dev=3.3-4 libpixman-1-dev=0.38.4-0ubuntu2.1 libcairo2-dev=1.16.0-4ubuntu1 libpangox-1.0-dev=0.0.2-5ubuntu1 libjpeg-dev=8c-2ubuntu8 \
-    libczmq-dev=4.2.0-2 curl=7.68.0-1ubuntu2.16 libcurl4-openssl-dev=7.68.0-1ubuntu2.16 libssl-dev=1.1.1f-1ubuntu2.17 \
-    dirmngr=2.2.19-3ubuntu2.2 gpg-agent=2.2.19-3ubuntu2.2 \
+    DEBIAN_FRONTEND=noninteractive apt-get upgrade -y --no-install-recommends && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    git=1:2.25.1-1ubuntu3.10 software-properties-common=0.99.9.11 wget=1.20.3-1ubuntu2 fuse=2.9.9-3 \
+    build-essential=12.8ubuntu1.1 python3-dev=3.8.2-0ubuntu2 python3-pip=20.0.2-5ubuntu1.8 libargon2-dev=0~20171227-0.2 \
+    libffi-dev=3.3-4 libpixman-1-dev=0.38.4-0ubuntu2.1 libcairo2-dev=1.16.0-4ubuntu1 libpangox-1.0-dev=0.0.2-5ubuntu1 \
+    libjpeg-dev=8c-2ubuntu8 libczmq-dev=4.2.0-2 curl=7.68.0-1ubuntu2.16 libcurl4-openssl-dev=7.68.0-1ubuntu2.16 \
+    libssl-dev=1.1.1f-1ubuntu2.17 dirmngr=2.2.19-3ubuntu2.2 gpg-agent=2.2.19-3ubuntu2.2 \
     && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     # Make dodasts folder
     mkdir -p /usr/local/share/dodasts && \
