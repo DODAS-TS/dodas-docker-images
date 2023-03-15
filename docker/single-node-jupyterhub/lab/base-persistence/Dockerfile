@@ -1,5 +1,6 @@
 # Image name: dodasts/snj-base-lab-persistence
 ARG BASE_IMAGE="dodasts/snj-base-lab"
+# hadolint ignore=DL3006
 FROM ${BASE_IMAGE}
 
 ARG JUPYTER_ROOT=/jupyter-workspace
