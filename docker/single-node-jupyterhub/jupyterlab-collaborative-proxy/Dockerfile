@@ -12,7 +12,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 WORKDIR /usr/share/collab_proxy
 
 RUN python3 -m pip install -U --no-cache-dir pip==23.0.1 setuptools==67.6.0 wheel==0.40.0 && \
-    pip3 install flask==2.0.2 \
+    pip3 install --no-cache-dir flask==2.0.2 \
     jupyterhub==1.5.0
 
 COPY collab_proxy.py .
