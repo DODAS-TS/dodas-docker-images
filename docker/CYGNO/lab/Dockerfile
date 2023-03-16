@@ -23,6 +23,7 @@ COPY lab/condor_config.local /etc/condor/
 
 # clean metadata: https://srvfail.com/yum-doesnt-work-in-clean-centos-7-install-exiting-on-user-cancel/
 RUN yum -y clean metadata \
+    && yum install -y epel-release \
     && yum --exclude=\*oidc-agent\* -y update \
     && yum --exclude=\*oidc-agent\* -y upgrade \
     && xargs yum -y install < /tmp/packages \
