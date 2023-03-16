@@ -1,5 +1,5 @@
 # Image name: dodasts/cygno-lab
-FROM dodasts/snj-base-lab-cc7:v1.0.0-snj
+FROM dodasts/snj-base-lab-cc7:v1.1.1-snj
 
 # Set python3 to default globally
 # RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1 \
