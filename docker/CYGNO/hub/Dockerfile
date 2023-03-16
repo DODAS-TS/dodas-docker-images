@@ -5,7 +5,7 @@ FROM dciangot/dodas-iam-client-rec:test5 as REGISTRATION
 
 
 # Image name: dodasts/cygno-hub
-FROM dodasts/snj-base-jhub:v1.0.0-snj
+FROM dodasts/snj-base-jhub:v1.1.1-snj
 
 COPY --from=REGISTRATION /usr/local/bin/dodas-IAMClientRec /.init/dodas-IAMClientRec
 
