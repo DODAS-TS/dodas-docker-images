@@ -1,5 +1,7 @@
 FROM gmazzitelli/cygno-tape:v1.0.1-cygno
 
+ENV OIDC_AGENT=/usr/bin/oidc-agent
+
 WORKDIR /etc/yum.repos.d
 
 RUN  wget https://repo.data.kit.edu/data-kit-edu-centos7.repo

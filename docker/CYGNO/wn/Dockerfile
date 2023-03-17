@@ -1,6 +1,8 @@
 # Image name: dodasts/cygno-lab
 FROM htcondor/execute:8.9.9-el7
 
+ENV OIDC_AGENT=/usr/bin/oidc-agent
+
 COPY assets/base_packages /tmp/
 COPY assets/packages /tmp/
 

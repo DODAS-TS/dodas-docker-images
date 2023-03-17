@@ -1,5 +1,7 @@
 FROM cern/cc7-base:20220601-1
 
+ENV OIDC_AGENT=/usr/bin/oidc-agent
+
 RUN yum -y update && yum -y install \
     wget \
     gfal2-util \
