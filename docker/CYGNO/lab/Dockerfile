@@ -1,6 +1,8 @@
 # Image name: dodasts/cygno-lab
 FROM dodasts/snj-base-lab-cc7:v1.1.1-snj
 
+ENV OIDC_AGENT=/usr/bin/oidc-agent
+
 # Set python3 to default globally
 # RUN update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1 \
 #     && update-alternatives --install /usr/bin/python python /usr/bin/python3.6 2 \
