@@ -1,4 +1,4 @@
-FROM dciangot/dodas-iam-client-rec:test5 as REGISTRATION
+FROM dciangot/dodas-iam-client-rec:v0.0.6 as REGISTRATION
 
 FROM jupyter/minimal-notebook:lab-3.1.7
 
