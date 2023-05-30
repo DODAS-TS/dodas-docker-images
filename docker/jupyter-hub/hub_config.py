@@ -64,7 +64,10 @@ class EnvAuthenticator(GenericOAuthenticator):
 
 #c.JupyterHub.authenticator_class = GitHubEnvAuthenticator
         amIAllowed = False
-        allowed_groups = ""
+        allowed_groups_user = ""
+        allowed_groups_admin = ""
+        matched_groups_user = False
+        matched_groups_admin = False
 
         self.log.info(auth_state["oauth_user"])
 
