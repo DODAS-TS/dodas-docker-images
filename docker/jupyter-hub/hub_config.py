@@ -9,6 +9,7 @@ from tornado import gen
 import subprocess
 import warnings
 import os
+import jwt
 
 from subprocess import check_call
 
@@ -43,6 +44,9 @@ class EnvAuthenticator(GenericOAuthenticator):
     @gen.coroutine
     def pre_spawn_start(self, user, spawner):
         auth_state = yield user.get_auth_state()
+        if "wlcg.groups" in auth_state["scope"]:
+            groups = jwt.decode(auth_state["access_token"], options={"verify_signature": False})
+            auth_state["oauth_user"]["groups"] = [ s[1:] for s in groups["wlcg.groups"] ]
         import pprint
         pprint.pprint(auth_state)
         if not auth_state:
@@ -75,7 +79,7 @@ class EnvAuthenticator(GenericOAuthenticator):
             self.log.info(auth_state["oauth_user"]["groups"])
             self.log.info(allowed_groups_user)
 
-            matched_groups_user = set(allowed_groups).intersection(set(auth_state["oauth_user"]["groups"])) 
+            matched_groups_user = set(allowed_groups_user).intersection(set(auth_state["oauth_user"]["groups"])) 
                 
         if os.environ["ADMIN_OAUTH_GROUPS"] :
             allowed_groups_admin = os.environ["ADMIN_OAUTH_GROUPS"].split(" ")            
@@ -88,8 +92,8 @@ class EnvAuthenticator(GenericOAuthenticator):
                 
         if not amIAllowed:
             err_msg = "Authorization Failed: User is not the owner of the service"
-            if allowed_groups:
-                err_msg =  err_msg + " nor belonging to the allowed groups %s" % allowed_groups
+            if allowed_groups_user or allowed_groups_admin:
+                err_msg =  err_msg + " nor belonging to the allowed groups %s %s" % (allowed_groups_user,allowed_groups_admin)
             self.log.error( err_msg )
 
             raise Exception( err_msg )
@@ -124,7 +128,13 @@ class EnvAuthenticator(GenericOAuthenticator):
                 return
 
         auth_state = self._create_auth_state(token_resp_json, user_data_resp_json)
+        
+        if "wlcg.groups" in auth_state["scope"]:
+            groups = jwt.decode(auth_state["access_token"], options={"verify_signature": False})
+            auth_state["oauth_user"]["groups"] = [ s[1:] for s in groups["wlcg.groups"] ]
 
+        self.log.info(auth_state)
+        
         is_admin = False
         matched_admin_groups = False 
         if os.environ["ADMIN_OAUTH_GROUPS"] :
@@ -155,7 +165,7 @@ c.GenericOAuthenticator.client_secret = client_secret
 c.GenericOAuthenticator.authorize_url = iam_server.strip('/') + '/authorize'
 c.GenericOAuthenticator.token_url = iam_server.strip('/') + '/token'
 c.GenericOAuthenticator.userdata_url = iam_server.strip('/') + '/userinfo'
-c.GenericOAuthenticator.scope = ['openid', 'profile', 'email', 'address', 'offline_access']
+c.GenericOAuthenticator.scope = ['openid', 'profile', 'email', 'address', 'offline_access', 'wlcg', 'wlcg.groups']
 c.GenericOAuthenticator.username_key = "preferred_username"
 
 c.GenericOAuthenticator.enable_auth_state = True
