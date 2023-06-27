@@ -6,4 +6,11 @@
             "azureDnsAutoDetection": false,
         },
     },
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-azuretools.vscode-docker"
+			]
+		}
+	},
 }
