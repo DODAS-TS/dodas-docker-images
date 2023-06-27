@@ -1,4 +1,9 @@
 {
     "image":"mcr.microsoft.com/devcontainers/base:ubuntu",
     "build":{},
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "azureDnsAutoDetection": false,
+        },
+    },
 }
