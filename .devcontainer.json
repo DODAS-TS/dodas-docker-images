@@ -1,4 +1,4 @@
 {
-    "image":"mcr.microsoft.com/devcontainers/docker-in-docker",
+    "image":"mcr.microsoft.com/devcontainers/base:ubuntu",
     "build":{},
 }
