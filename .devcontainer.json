@@ -1,6 +1,8 @@
 {
     "image":"mcr.microsoft.com/devcontainers/base:ubuntu",
     "build":{},
+    "runArgs": ["--init", "--privileged"],
+    "overrideCommand": false,
     "features": {
         "docker-in-docker": {
             "version": "latest",
