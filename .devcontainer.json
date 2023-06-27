@@ -1,13 +1,4 @@
 {
-    "image":"mcr.microsoft.com/devcontainers/base:ubuntu",
+    "image":"mcr.microsoft.com/devcontainers/docker-in-docker",
     "build":{},
-    "runArgs": ["--init", "--privileged"],
-    "overrideCommand": false,
-    "features": {
-        "docker-in-docker": {
-            "version": "latest",
-            "moby": true,
-            "dockerDashComposeVersion": "v1"
-        }
-    }
 }
