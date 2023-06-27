@@ -1,6 +1,6 @@
 {
     "image":"mcr.microsoft.com/devcontainers/base:ubuntu",
-    "build":{},
+    "postStartCommand": "sudo dockerd &> /tmp/docker.log &",
     "features": {
         "ghcr.io/devcontainers/features/docker-in-docker:2": {
             "azureDnsAutoDetection": false,
