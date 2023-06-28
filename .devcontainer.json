@@ -1,18 +1,3 @@
 {
     "image":"mcr.microsoft.com/devcontainers/base:ubuntu",
-    "postStartCommand": "sudo dockerd &> /tmp/docker.log &",
-    "features": {
-        "ghcr.io/devcontainers/features/docker-in-docker:2": {
-            "azureDnsAutoDetection": false,
-            "moby": false,
-        },
-    },
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"ms-azuretools.vscode-docker"
-			]
-		}
-	},
-	"postStartCommand": "sudo dockerd &> /tmp/docker.log &",
 }
