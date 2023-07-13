@@ -61,3 +61,5 @@ ENV SPARK_HOME=/usr/local/spark \
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+TAG dodasts/spark:v.3.4.1
